@@ -1,0 +1,39 @@
+package de.hsos.kbse.jobboerse.boundary.faces;
+
+import java.io.IOException;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
+/**
+ *
+ * @author nilsgeschwinde
+ *
+ * Requires you to be logged in, in order to see the member pages
+ */
+
+@WebFilter("/members/*")
+public class LoginFilter implements Filter {
+
+    @Override
+    public void doFilter(ServletRequest sr, ServletResponse sr1, FilterChain fc) throws IOException, ServletException {
+
+        throw new UnsupportedOperationException("Not supported yet.");
+        /*
+       System.out.println("LoginFilter");
+        
+        if (CookieService.getCookieValue((HttpServletRequest) sr, "userToken") == null) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+        
+        // FixMe Check if user is valid
+        fc.doFilter(sr, sr1);
+
+         */
+    }
+}
