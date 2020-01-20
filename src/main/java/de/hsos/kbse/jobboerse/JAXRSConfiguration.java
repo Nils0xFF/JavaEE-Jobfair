@@ -1,4 +1,4 @@
-package com.airhacks;
+package de.hsos.kbse.jobboerse;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

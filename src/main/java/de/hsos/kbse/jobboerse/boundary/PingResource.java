@@ -1,4 +1,4 @@
-package com.airhacks.ping.boundary;
+package de.hsos.kbse.jobboerse.boundary;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
