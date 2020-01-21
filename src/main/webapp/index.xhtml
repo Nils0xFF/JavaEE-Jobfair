@@ -10,13 +10,21 @@
         <title>Job Boerse</title>
     </h:head>
     <h:body>
-        #{ loginview.count() }
-        #{ loginview.countSession() }
-        <h:form>
-            <p:commandButton action="/blub/test.xhtml?faces-redirect=true" value="Members"></p:commandButton>
-            <p:commandButton action="#{ loginview.login() }" value="Login"></p:commandButton>
-            <p:commandButton action="#{ loginview.logout() }" value="Logout"></p:commandButton> 
-        </h:form>
+        <header>
+            
+        </header>
+        <main>        
+            <h1>Wilkommen zu der besten Seite im Internet</h1>
+            #{ loginview.count() }
+            #{ loginview.countSession() }
+            <h:form>
+                <p:commandButton action="/members/test.xhtml?faces-redirect=true" value="Members"></p:commandButton>
+                <p:commandButton action="#{ loginview.login() }" value="Login"></p:commandButton>
+                <p:commandButton action="#{ loginview.logout() }" value="Logout"></p:commandButton> 
+            </h:form>
+        </main>
+        <footer>
+        </footer>
 
     </h:body>
 </html>
