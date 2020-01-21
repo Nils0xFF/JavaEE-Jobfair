@@ -1,7 +1,5 @@
 package de.hsos.kbse.jobboerse.boundary.faces;
 
-import de.hsos.kbse.jobboerse.entity.facades.requirementsFacade;
-import de.hsos.kbse.jobboerse.entity.requirements;
 import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
@@ -26,11 +24,11 @@ public class LoginFace {
     @Inject
     private Testr test;
     
-    @Inject
-    private requirementsFacade jpa;
+    //@Inject
+    //private requirementsFacade jpa;
     
     public void login(){
-        jpa.create(new requirements(1L, "Test", 5.0f));
+        //jpa.create(new requirements(1L, "Test", 5.0f));
         // FacesContext.getCurrentInstance().getExternalContext().addResponseCookie("login", "test", null);
         // FIXME: try to log in, set token on valid
         //FacesContext.getCurrentInstance().getExternalContext().se;

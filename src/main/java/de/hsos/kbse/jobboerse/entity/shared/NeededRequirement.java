@@ -1,46 +1,35 @@
-package de.hsos.kbse.jobboerse.entity;
+package de.hsos.kbse.jobboerse.entity.shared;
 
 import java.io.Serializable;
-import javax.enterprise.inject.Vetoed;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  *
  * @author lennartwoltering
  */
-@Vetoed
 @Entity
-public class requirements implements Serializable {
+public class NeededRequirement implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
     
-    private String name;
+    @OneToOne
+    private Requirement requirement;
     
     private float weight;
 
-    
-    public requirements(Long id, String name, float weight){
-        this.id = id;
-        this.name = name;
-        this.weight = weight;
-    }
-    
-    public requirements(){
-        
+    public Requirement getRequirement() {
+        return requirement;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setRequirement(Requirement requirement) {
+        this.requirement = requirement;
     }
 
     public float getWeight() {
@@ -52,7 +41,7 @@ public class requirements implements Serializable {
     }
     
     
-    
+
     public Long getId() {
         return id;
     }
@@ -71,10 +60,10 @@ public class requirements implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof requirements)) {
+        if (!(object instanceof NeededRequirement)) {
             return false;
         }
-        requirements other = (requirements) object;
+        NeededRequirement other = (NeededRequirement) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -83,7 +72,7 @@ public class requirements implements Serializable {
 
     @Override
     public String toString() {
-        return "de.hsos.kbse.jobboerse.entity.requirements[ id=" + id + " ]";
+        return "de.hsos.kbse.jobboerse.entity.NeededRequirement[ id=" + id + " ]";
     }
     
 }

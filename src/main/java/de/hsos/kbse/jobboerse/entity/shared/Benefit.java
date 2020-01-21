@@ -1,4 +1,4 @@
-package de.hsos.kbse.jobboerse.entity;
+package de.hsos.kbse.jobboerse.entity.shared;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
@@ -11,12 +11,33 @@ import javax.persistence.Id;
  * @author lennartwoltering
  */
 @Entity
-public class requirements2 implements Serializable {
+public class Benefit implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
+    
+    private String name;
+    private String description;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
+    
 
     public Long getId() {
         return id;
@@ -36,10 +57,10 @@ public class requirements2 implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof requirements2)) {
+        if (!(object instanceof Benefit)) {
             return false;
         }
-        requirements2 other = (requirements2) object;
+        Benefit other = (Benefit) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -48,7 +69,7 @@ public class requirements2 implements Serializable {
 
     @Override
     public String toString() {
-        return "de.hsos.kbse.jobboerse.entity.requirements2[ id=" + id + " ]";
+        return "de.hsos.kbse.jobboerse.entity.Benefit[ id=" + id + " ]";
     }
     
 }
