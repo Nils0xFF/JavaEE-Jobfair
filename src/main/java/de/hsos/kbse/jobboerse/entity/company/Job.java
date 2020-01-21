@@ -1,12 +1,15 @@
 package de.hsos.kbse.jobboerse.entity.company;
 
 import de.hsos.kbse.jobboerse.entity.shared.Address;
+import de.hsos.kbse.jobboerse.entity.shared.NeededRequirement;
 import de.hsos.kbse.jobboerse.enums.SAL_Relation;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 /**
@@ -34,6 +37,9 @@ public class Job implements Serializable {
     
     @OneToOne
     private Contact contact;
+    
+    @OneToMany
+    private List<NeededRequirement> needed;
 
     public SAL_Relation getRelation() {
         return relation;
