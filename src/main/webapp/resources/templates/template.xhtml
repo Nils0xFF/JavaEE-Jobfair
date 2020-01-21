@@ -6,11 +6,13 @@
 
     <h:head>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"></link>
+        <h:outputStylesheet name="css/open-iconic/font/css/open-iconic-bootstrap.css"/>
         <h:outputStylesheet library="css" name="style.css"/>
+        <h:outputStylesheet library="css" name="#{stylesheet}"/>
         <title>JobFair - #{ title }</title>
     </h:head>
 
-    <h:body>
+    <h:body id="body">
 
         <div id="page">
 

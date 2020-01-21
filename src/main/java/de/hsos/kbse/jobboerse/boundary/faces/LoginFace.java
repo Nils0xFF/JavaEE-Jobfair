@@ -25,9 +25,7 @@ public class LoginFace {
     private Testr test;
     
     public void login(){
-        // FacesContext.getCurrentInstance().getExternalContext().addResponseCookie("login", "test", null);
-        // FIXME: try to log in, set token on valid
-        //FacesContext.getCurrentInstance().getExternalContext().se;
+
         CookieService.addCookie((HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse(), "userToken", "NilsIstToll", 2592000);
     }
     
@@ -40,8 +38,12 @@ public class LoginFace {
         return CookieService.getCookieValue((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest(), "userToken");
     }
     
-    public int count(){
+    public int countUp(){
         return counter++;
+    }
+    
+        public int count(){
+        return counter;
     }
     
     public int countSession(){

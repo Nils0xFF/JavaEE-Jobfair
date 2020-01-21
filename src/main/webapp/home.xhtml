@@ -7,15 +7,36 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
+
+
     <ui:composition template="resources/templates/template.xhtml">
+
+        <ui:param name="stylesheet" value="home.css"/>
+        <ui:param name="transparentNav" value="true" />
         <ui:param name="title" value="Home" />
         <ui:define name="content">
-            <h:form>
-                <p:commandLink action="#{ sessionController.login() }">Test</p:commandLink>
-                <p:commandButton action="#{ sessionController.login() }" label="Test123"></p:commandButton>
-            </h:form>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="jumbotron jumbotron-big col-md-6 text-white d-flex" id="jumbotron-employee">
+                        <div class="justify-content-center align-self-center text-center w-100">
+                            <h1>Finde deinen Traumjob!</h1>
+                            <p>Nicht länger suchen, jetzt finden!</p>
+                            <p:link class="btn btn-success" outcome="home">Jetzt Anmelden!</p:link> 
+                        </div>
+                    </div>
 
+                    <div class="jumbotron jumbotron-big text-center col-md-6 text-white d-flex" id="jumbotron-company">
+                        <div class="justify-content-center align-self-center text-center w-100">
+                            <h1>Verstärkung gesucht?!</h1>
+                            <p>Nicht länger suchen, jetzt finden!</p>
+                            <p:link class="btn btn-success" outcome="home">Jetzt Anmelden!</p:link> 
+                        </div>
+
+                    </div>
+                </div>
+            </div>
         </ui:define>
+        <ui:define name="footer"></ui:define>
     </ui:composition>
 
 </html>
