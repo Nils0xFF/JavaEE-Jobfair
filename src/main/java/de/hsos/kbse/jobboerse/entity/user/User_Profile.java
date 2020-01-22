@@ -32,6 +32,72 @@ public class User_Profile implements Serializable {
     private String telefon;
     private Graduation grad;
 
+    public static class Builder {
+
+        private String firstname;
+        private String lastname;
+        private String description;
+        private String email;
+        private String telefon;
+        private Graduation grad;
+
+        private Builder() {
+        }
+
+        public Builder firstname(final String value) {
+            this.firstname = value;
+            return this;
+        }
+
+        public Builder lastname(final String value) {
+            this.lastname = value;
+            return this;
+        }
+
+        public Builder description(final String value) {
+            this.description = value;
+            return this;
+        }
+
+        public Builder email(final String value) {
+            this.email = value;
+            return this;
+        }
+
+        public Builder telefon(final String value) {
+            this.telefon = value;
+            return this;
+        }
+
+        public Builder grad(final Graduation value) {
+            this.grad = value;
+            return this;
+        }
+
+        public User_Profile build() {
+            return new User_Profile(firstname, lastname, description, email, telefon, grad);
+        }
+    }
+
+    public User_Profile() {
+    }
+
+    public static User_Profile.Builder builder() {
+        return new User_Profile.Builder();
+    }
+
+    private User_Profile(final String firstname, final String lastname, final String description, final String email, final String telefon, final Graduation grad) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.description = description;
+        this.email = email;
+        this.telefon = telefon;
+        this.grad = grad;
+    }
+    
+    
+    
+    
     public String getFirstname() {
         return firstname;
     }

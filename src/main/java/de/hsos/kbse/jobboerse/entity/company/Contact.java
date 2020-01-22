@@ -2,6 +2,7 @@ package de.hsos.kbse.jobboerse.entity.company;
 
 import de.hsos.kbse.jobboerse.enums.Title;
 import java.io.Serializable;
+import javax.enterprise.inject.Vetoed;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,6 +12,7 @@ import javax.persistence.Id;
  *
  * @author lennartwoltering
  */
+@Vetoed
 @Entity
 public class Contact implements Serializable {
 
@@ -25,6 +27,64 @@ public class Contact implements Serializable {
     private String email;
     private String phone;
 
+    public static class Builder {
+
+        private Title title;
+        private String firstname;
+        private String lastname;
+        private String email;
+        private String phone;
+
+        private Builder() {
+        }
+
+        public Builder title(final Title value) {
+            this.title = value;
+            return this;
+        }
+
+        public Builder firstname(final String value) {
+            this.firstname = value;
+            return this;
+        }
+
+        public Builder lastname(final String value) {
+            this.lastname = value;
+            return this;
+        }
+
+        public Builder email(final String value) {
+            this.email = value;
+            return this;
+        }
+
+        public Builder phone(final String value) {
+            this.phone = value;
+            return this;
+        }
+
+        public Contact build() {
+            return new Contact(title, firstname, lastname, email, phone);
+        }
+    }
+
+    public Contact() {
+    }
+
+    public static Contact.Builder builder() {
+        return new Contact.Builder();
+    }
+
+    private Contact(final Title title, final String firstname, final String lastname, final String email, final String phone) {
+        this.title = title;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.phone = phone;
+    }
+
+    
+    
     public Title getTitle() {
         return title;
     }

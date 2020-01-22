@@ -5,8 +5,11 @@
  */
 package de.hsos.kbse.jobboerse.entity.user;
 
+import de.hsos.kbse.jobboerse.entity.shared.SearchRequest;
 import java.io.Serializable;
+import java.util.ArrayList;
 import javax.enterprise.inject.Vetoed;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,7 +22,7 @@ import javax.persistence.OneToOne;
  */
 @Vetoed
 @Entity
-public class User implements Serializable {
+public class SeekingUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -28,10 +31,53 @@ public class User implements Serializable {
     
     private boolean firstVisit;
     
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL,
+            orphanRemoval=true)
     private User_Profile profile;
+    
+    @OneToOne(cascade = CascadeType.ALL,
+            orphanRemoval=true)
+    private SearchRequest searchrequest;
     //Login?
 
+    public static class Builder {
+
+        private boolean firstVisit;
+        private User_Profile profile;
+
+        private Builder() {
+        }
+
+        public Builder profile(final User_Profile value) {
+            this.profile = value;
+            return this;
+        }
+
+        public SeekingUser build() {
+            return new SeekingUser(true, profile);
+        }
+    }
+
+    public SeekingUser() {
+    }
+
+    public static SeekingUser.Builder builder() {
+        return new SeekingUser.Builder();
+    }
+
+    private SeekingUser(final boolean firstVisit, final User_Profile profile) {
+        this.firstVisit = firstVisit;
+        this.profile = profile;
+    }
+
+    public SearchRequest getSearchrequest() {
+        return searchrequest;
+    }
+
+    public void setSearchrequest(SearchRequest searchrequest) {
+        this.searchrequest = searchrequest;
+    }
+    
     public boolean isFirstVisit() {
         return firstVisit;
     }
@@ -66,10 +112,10 @@ public class User implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof User)) {
+        if (!(object instanceof SeekingUser)) {
             return false;
         }
-        User other = (User) object;
+        SeekingUser other = (SeekingUser) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

@@ -3,6 +3,8 @@ package de.hsos.kbse.jobboerse.entity.company;
 import de.hsos.kbse.jobboerse.entity.shared.Address;
 import de.hsos.kbse.jobboerse.enums.WorkerCount;
 import java.io.Serializable;
+import javax.enterprise.inject.Vetoed;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,6 +15,7 @@ import javax.persistence.OneToOne;
  *
  * @author lennartwoltering
  */
+@Vetoed
 @Entity
 public class CompanyProfile implements Serializable {
 
@@ -23,11 +26,69 @@ public class CompanyProfile implements Serializable {
     private String name;
     private String description;
     private WorkerCount workercount;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Address adress;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Contact contact;
 
+    public static class Builder {
+
+        private String name;
+        private String description;
+        private WorkerCount workercount;
+        private Address adress;
+        private Contact contact;
+
+        private Builder() {
+        }
+
+        public Builder name(final String value) {
+            this.name = value;
+            return this;
+        }
+
+        public Builder description(final String value) {
+            this.description = value;
+            return this;
+        }
+
+        public Builder workercount(final WorkerCount value) {
+            this.workercount = value;
+            return this;
+        }
+
+        public Builder adress(final Address value) {
+            this.adress = value;
+            return this;
+        }
+
+        public Builder contact(final Contact value) {
+            this.contact = value;
+            return this;
+        }
+
+        public CompanyProfile build() {
+            return new CompanyProfile(name, description, workercount, adress, contact);
+        }
+    }
+
+    public CompanyProfile() {
+    }
+
+    public static CompanyProfile.Builder builder() {
+        return new CompanyProfile.Builder();
+    }
+
+    private CompanyProfile(final String name, final String description, final WorkerCount workercount, final Address adress, final Contact contact) {
+        this.name = name;
+        this.description = description;
+        this.workercount = workercount;
+        this.adress = adress;
+        this.contact = contact;
+    }
+
+    
+    
     public String getName() {
         return name;
     }

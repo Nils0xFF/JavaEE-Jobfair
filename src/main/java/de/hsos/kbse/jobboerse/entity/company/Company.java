@@ -3,10 +3,13 @@ package de.hsos.kbse.jobboerse.entity.company;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
 import java.io.Serializable;
 import java.util.List;
+import javax.enterprise.inject.Vetoed;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -14,6 +17,7 @@ import javax.persistence.OneToOne;
  *
  * @author lennartwoltering
  */
+@Vetoed
 @Entity
 public class Company implements Serializable {
 
@@ -21,16 +25,67 @@ public class Company implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Job> jobs;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private CompanyProfile profile;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Contact contact;
-    @OneToMany
+    @ManyToMany
     private List<Benefit> benefits;
     //LOGIN?!
 
+    public static class Builder {
+
+        private List<Job> jobs;
+        private CompanyProfile profile;
+        private Contact contact;
+        private List<Benefit> benefits;
+
+        private Builder() {
+        }
+
+        public Builder jobs(final List<Job> value) {
+            this.jobs = value;
+            return this;
+        }
+
+        public Builder profile(final CompanyProfile value) {
+            this.profile = value;
+            return this;
+        }
+
+        public Builder contact(final Contact value) {
+            this.contact = value;
+            return this;
+        }
+
+        public Builder benefits(final List<Benefit> value) {
+            this.benefits = value;
+            return this;
+        }
+
+        public Company build() {
+            return new Company(jobs, profile, contact, benefits);
+        }
+    }
+
+    public Company() {
+    }
+
+    public static Company.Builder builder() {
+        return new Company.Builder();
+    }
+
+    private Company(final List<Job> jobs, final CompanyProfile profile, final Contact contact, final List<Benefit> benefits) {
+        this.jobs = jobs;
+        this.profile = profile;
+        this.contact = contact;
+        this.benefits = benefits;
+    }
+
+    
+    
     public List<Job> getJobs() {
         return jobs;
     }
