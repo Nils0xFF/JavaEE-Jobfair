@@ -5,12 +5,22 @@
 
     <url-mapping id="home">
         <pattern value="/" />
-        <view-id value="/faces/home.xhtml" />
+        <view-id value="/faces/pages/public/index.xhtml" />
     </url-mapping>
         
     <url-mapping id="dashboard">
         <pattern value="/dashboard" />
-        <view-id value="/faces/members/index.xhtml" />
+        <view-id value="/faces/pages/members/index.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="registerCompany">
+        <pattern value="/registerCompany" />
+        <view-id value="/faces/pages/public/registerCompany.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="registerEmployee">
+        <pattern value="/registerEmployee" />
+        <view-id value="/faces/pages/public/registerEmployee.xhtml" />
     </url-mapping>
 
 </pretty-config>

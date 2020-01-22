@@ -4,7 +4,7 @@
     background: rgba(0,0,0,0.5) no-repeat center center / cover;
     border-radius: 0 !important;
     padding-top: 15vh !important;
-    z-index: -1 !important;
+    z-index: 1 !important;
 }
 
 *[id^='jumbotron']:after {
