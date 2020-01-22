@@ -1,6 +1,7 @@
 package de.hsos.kbse.jobboerse.entity.shared;
 
 import java.io.Serializable;
+import javax.enterprise.inject.Vetoed;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,6 +12,7 @@ import javax.persistence.OneToOne;
  *
  * @author lennartwoltering
  */
+@Vetoed
 @Entity
 public class NeededRequirement implements Serializable {
 
@@ -23,6 +25,43 @@ public class NeededRequirement implements Serializable {
     private Requirement requirement;
     
     private float weight;
+
+    public static class Builder {
+
+        private Requirement requirement;
+        private float weight;
+
+        private Builder() {
+        }
+
+        public Builder requirement(final Requirement value) {
+            this.requirement = value;
+            return this;
+        }
+
+        public Builder weight(final float value) {
+            this.weight = value;
+            return this;
+        }
+
+        public NeededRequirement build() {
+            return new NeededRequirement(requirement, weight);
+        }
+    }
+
+    public NeededRequirement() {
+    }
+
+    public static NeededRequirement.Builder builder() {
+        return new NeededRequirement.Builder();
+    }
+
+    private NeededRequirement(final Requirement requirement, final float weight) {
+        this.requirement = requirement;
+        this.weight = weight;
+    }
+    
+    
 
     public Requirement getRequirement() {
         return requirement;

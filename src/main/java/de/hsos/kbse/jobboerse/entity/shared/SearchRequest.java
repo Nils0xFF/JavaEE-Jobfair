@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 /**
@@ -28,9 +29,60 @@ public class SearchRequest implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    @OneToMany
+    @OneToMany()
     private List<Job> favorites;
+    
+    @ManyToMany
+    private List<Benefit> benefits;
+    
+    @ManyToMany
+    private List<Requirement> requirements;
 
+    public static class Builder {
+
+        private List<Job> favorites;
+        private List<Benefit> benefits;
+        private List<Requirement> requirements;
+
+        private Builder() {
+        }
+
+        public Builder favorites(final List<Job> value) {
+            this.favorites = value;
+            return this;
+        }
+
+        public Builder benefits(final List<Benefit> value) {
+            this.benefits = value;
+            return this;
+        }
+
+        public Builder requirements(final List<Requirement> value) {
+            this.requirements = value;
+            return this;
+        }
+
+        public SearchRequest build() {
+            return new SearchRequest(favorites, benefits, requirements);
+        }
+    }
+
+    public SearchRequest() {
+    }
+
+    public static SearchRequest.Builder builder() {
+        return new SearchRequest.Builder();
+    }
+
+    private SearchRequest(final List<Job> favorites, final List<Benefit> benefits, final List<Requirement> requirements) {
+        this.favorites = favorites;
+        this.benefits = benefits;
+        this.requirements = requirements;
+    }
+
+    
+    
+    
     public List<Job> getFavorites() {
         return favorites;
     }
@@ -55,11 +107,7 @@ public class SearchRequest implements Serializable {
         this.requirements = requirements;
     }
     
-    @OneToMany
-    private List<Benefit> benefits;
     
-    @OneToMany
-    private List<Requirement> requirements;
 
     public Long getId() {
         return id;

@@ -1,5 +1,6 @@
 package de.hsos.kbse.jobboerse.boundary.faces;
 
+import de.hsos.kbse.jobboerse.entity.facades.AddressFacade;
 import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
@@ -24,8 +25,8 @@ public class LoginFace {
     @Inject
     private Testr test;
     
-    //@Inject
-    //private requirementsFacade jpa;
+    @Inject
+    private AddressFacade af;
     
     public void login(){
         //jpa.create(new requirements(1L, "Test", 5.0f));
