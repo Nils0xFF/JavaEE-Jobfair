@@ -1,7 +1,6 @@
 package de.hsos.kbse.jobboerse.entity.shared;
 
 import java.io.Serializable;
-import javax.enterprise.inject.Vetoed;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,7 +10,6 @@ import javax.persistence.Id;
  *
  * @author lennartwoltering
  */
-@Vetoed
 @Entity
 public class Benefit implements Serializable {
 
@@ -23,43 +21,6 @@ public class Benefit implements Serializable {
     private String name;
     private String description;
 
-    public static class Builder {
-
-        private String name;
-        private String description;
-
-        private Builder() {
-        }
-
-        public Builder name(final String value) {
-            this.name = value;
-            return this;
-        }
-
-        public Builder description(final String value) {
-            this.description = value;
-            return this;
-        }
-
-        public Benefit build() {
-            return new Benefit(name, description);
-        }
-    }
-
-    public Benefit() {
-    }
-
-    public static Benefit.Builder builder() {
-        return new Benefit.Builder();
-    }
-
-    private Benefit(final String name, final String description) {
-        this.name = name;
-        this.description = description;
-    }
-
-    
-    
     public String getName() {
         return name;
     }

@@ -27,65 +27,6 @@ public class Address implements Serializable {
     private String housenumber;
     private String country;
 
-    public static class Builder {
-
-        private String city;
-        private String postalcode;
-        private String street;
-        private String housenumber;
-        private String country;
-
-        private Builder() {
-        }
-
-        public Builder city(final String value) {
-            this.city = value;
-            return this;
-        }
-
-        public Builder postalcode(final String value) {
-            this.postalcode = value;
-            return this;
-        }
-
-        public Builder street(final String value) {
-            this.street = value;
-            return this;
-        }
-
-        public Builder housenumber(final String value) {
-            this.housenumber = value;
-            return this;
-        }
-
-        public Builder country(final String value) {
-            this.country = value;
-            return this;
-        }
-
-        public Address build() {
-            return new Address(city, postalcode, street, housenumber, country);
-        }
-    }
-
-    public Address() {
-    }
-
-    public static Address.Builder builder() {
-        return new Address.Builder();
-    }
-
-    private Address(final String city, final String postalcode, final String street, final String housenumber, final String country) {
-        this.city = city;
-        this.postalcode = postalcode;
-        this.street = street;
-        this.housenumber = housenumber;
-        this.country = country;
-    }
-
-    
-    
-    
     public String getCity() {
         return city;
     }

@@ -3,19 +3,16 @@ package de.hsos.kbse.jobboerse.entity.company;
 import de.hsos.kbse.jobboerse.entity.shared.Requirement;
 import java.io.Serializable;
 import java.util.List;
-import javax.enterprise.inject.Vetoed;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 /**
  *
  * @author lennartwoltering
  */
-@Vetoed
 @Entity
 public class JobField implements Serializable {
 
@@ -26,46 +23,9 @@ public class JobField implements Serializable {
     
     private String name;
     
-    @ManyToMany
+    @OneToMany
     private List<Requirement> requirements;
 
-    public static class Builder {
-
-        private String name;
-        private List<Requirement> requirements;
-
-        private Builder() {
-        }
-
-        public Builder name(final String value) {
-            this.name = value;
-            return this;
-        }
-
-        public Builder requirements(final List<Requirement> value) {
-            this.requirements = value;
-            return this;
-        }
-
-        public JobField build() {
-            return new JobField(name, requirements);
-        }
-    }
-
-    public JobField() {
-    }
-
-    public static JobField.Builder builder() {
-        return new JobField.Builder();
-    }
-
-    private JobField(final String name, final List<Requirement> requirements) {
-        this.name = name;
-        this.requirements = requirements;
-    }
-
-    
-    
     public String getName() {
         return name;
     }
