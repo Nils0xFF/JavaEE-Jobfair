@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            EMAIL:<p:inputText value="#{test.email}"/><br/>
+            PW:<p:inputText value="#{test.pw}"/><br/>
+            FIRSTNAME:<p:inputText value="#{test.firstname}"/><br/>
+            LASTNAME:<p:inputText value="#{test.lastname}"/><br/>
+            TELEFON:<p:inputText value="#{test.telefon}"/><br/>
+            DESCRIPTION:<p:inputText value="#{test.desc}"/><br/>
+            GRADUATION:<h:selectOneMenu value="#{test.grades}" >
+                <f:selectItems value="#{test.statuses}" var="status"
+        itemValue="#{status}" itemLabel="#{status.grad}" />
+            </h:selectOneMenu><br/>
+            <p:commandButton action="#{test.createLogin()}" value="Register"></p:commandButton>
+            <p:commandButton action="#{test.createPorfile()}" value="Profil erstellen"/>
+            <p:commandButton action="#{test.createPorfile()}" value="Profil bearbeiten"/>
+            <p:commandButton action="#{test.removeUser()}" value="Löschen"/>
+        </h:form>
+    </h:body>
+</html>
+
