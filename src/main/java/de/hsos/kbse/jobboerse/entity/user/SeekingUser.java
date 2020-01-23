@@ -5,6 +5,7 @@
  */
 package de.hsos.kbse.jobboerse.entity.user;
 
+import de.hsos.kbse.jobboerse.entity.shared.Login;
 import de.hsos.kbse.jobboerse.entity.shared.SearchRequest;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,6 +32,9 @@ public class SeekingUser implements Serializable {
     
     private boolean firstVisit;
     
+    @OneToOne
+    private Login login;
+    
     @OneToOne(cascade = CascadeType.ALL,
             orphanRemoval=true)
     private User_Profile profile;
@@ -38,7 +42,6 @@ public class SeekingUser implements Serializable {
     @OneToOne(cascade = CascadeType.ALL,
             orphanRemoval=true)
     private SearchRequest searchrequest;
-    //Login?
 
     public static class Builder {
 
