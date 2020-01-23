@@ -7,7 +7,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
-    <ui:composition template="templates/template.xhtml">
+    <ui:composition template="/pages/templates/template.xhtml">
         <ui:param name="stylesheet" value="home.css"/>
         <ui:param name="transparentNav" value="true" />
         <ui:param name="title" value="Home" />
@@ -18,7 +18,10 @@
                         <div class="justify-content-center align-self-center text-center w-100">
                             <h1>Finde deinen Traumjob!</h1>
                             <h5>Nicht länger suchen, jetzt finden!</h5>
-                            <p:link class="btn btn-success" outcome="registerEmployee">Los gehts!</p:link> 
+                            <p:link class="btn btn-success" outcome="registerEmployee">Los gehts!</p:link>
+                            <h:form>
+                                <p:commandButton action="#{sessionController.login}" ajax="false"></p:commandButton>
+                            </h:form>
                         </div>
                     </div>
 
