@@ -5,23 +5,24 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      >
 
     <ui:composition template="/pages/templates/template.xhtml">
         <ui:param name="stylesheet" value="home.css"/>
         <ui:param name="transparentNav" value="true" />
         <ui:param name="title" value="Home" />
-        <ui:define name="content">
+        <ui:define name="content"> 
             <div class="container-fluid">
                 <div class="row">
                     <div class="jumbotron jumbotron-big col-md-6 text-white d-flex" id="jumbotron-employee">
                         <div class="justify-content-center align-self-center text-center w-100">
                             <h1>Finde deinen Traumjob!</h1>
                             <h5>Nicht länger suchen, jetzt finden!</h5>
-                            <p:link class="btn btn-success" outcome="registerEmployee">Los gehts!</p:link>
-                            <h:form>
-                                <p:commandButton action="#{sessionController.login}" ajax="false"></p:commandButton>
-                            </h:form>
+                            <a class="btn btn-success btn-lg" data-toggle="modal" data-target="#registerModalEmployee" role="button">Jetzt Regisrieren</a> 
                         </div>
                     </div>
 
@@ -29,12 +30,91 @@
                         <div class="justify-content-center align-self-center text-center w-100">
                             <h1>Verstärkung gesucht?!</h1>
                             <h5>Nicht länger suchen, jetzt finden!</h5>
-                            <p:link class="btn btn-success" outcome="registerCompany">Los gehts!</p:link> 
+                            <a class="btn btn-success btn-lg" data-toggle="modal" data-target="#registerModalComp" role="button">Jetzt Regisrieren</a>      
                         </div>
 
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="registerModalComp" tabindex="-1" role="dialog" aria-labelledby="registerModalComp" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="registerModalHead">Registrieren - Unternehmen</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <h:form>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <p:outputLabel for="@next" value="E-Mail"/>
+                                    <p:inputText class="form-control" id="accountEmail" value=" " >
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText>                                    
+                                </div>
+                                <div class="form-group">
+                                    <p:outputLabel for="@next" value="Password"/>
+                                    <p:password class="form-control" id="password" value=" " feedback="true" inline="false">
+                                        <p:clientValidator event="keyup"/>
+                                    </p:password>
+                                </div>
+                                <div class="form-group">
+                                    <p:outputLabel for="@next" value="Confirm Password"/>
+                                    <p:password class="form-control" id="passwordRepeat" value=" " feedback="true" inline="false">
+                                        <p:clientValidator event="keyup"/>
+                                    </p:password>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <p:commandButton class="btn btn-primary" value="Registrieren" action="#{sessionController.login()}" ajax="false" actionListener="#{sessionController.login()}" ></p:commandButton>
+                            </div>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="registerModalEmployee" tabindex="-1" role="dialog" aria-labelledby="registerModalComp" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="registerModalEmployeeHead">Registrieren - Arbeitnehmer</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <h:form>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <p:outputLabel for="@next" value="E-Mail"/>
+                                    <p:inputText class="form-control" id="accountEmail" value=" " >
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText>                                    
+                                </div>
+                                <div class="form-group">
+                                    <p:outputLabel for="@next" value="Password"/>
+                                    <p:password class="form-control" id="password" value=" " feedback="true" inline="false">
+                                        <p:clientValidator event="keyup"/>
+                                    </p:password>
+                                </div>
+                                <div class="form-group">
+                                    <p:outputLabel for="@next" value="Confirm Password"/>
+                                    <p:password class="form-control" id="passwordRepeat" value=" " feedback="true" inline="false">
+                                        <p:clientValidator event="keyup"/>
+                                    </p:password>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <p:commandButton class="btn btn-primary" value="Registrieren" action="#{sessionController.login()}" ajax="false" actionListener="#{sessionController.login()}" ></p:commandButton>
+                            </div>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+
         </ui:define>
         <ui:define name="footer"></ui:define>
     </ui:composition>
