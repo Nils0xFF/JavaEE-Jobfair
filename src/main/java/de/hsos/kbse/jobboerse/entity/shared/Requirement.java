@@ -47,6 +47,9 @@ public class Requirement implements Serializable {
         }
     }
 
+    public Requirement() {
+    }
+
     public static Requirement.Builder builder() {
         return new Requirement.Builder();
     }
