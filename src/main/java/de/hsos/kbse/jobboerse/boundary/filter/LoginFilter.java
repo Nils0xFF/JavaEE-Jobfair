@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * Requires you to be logged in, in order to see the member pages
  */
-@WebFilter(urlPatterns = "/faces/members/*", dispatcherTypes = {REQUEST, FORWARD})
+@WebFilter(urlPatterns = "/faces/pages/members/*", dispatcherTypes = {REQUEST, FORWARD})
 public class LoginFilter implements Filter {
 
     @Inject

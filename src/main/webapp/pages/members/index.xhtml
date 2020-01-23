@@ -1,12 +1,21 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-    </h:body>
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="../templates/template.xhtml">
+        <ui:param name="stylesheet" value="dashboard.css"/>
+        <ui:param name="transparentNav" value="false" />
+        <ui:param name="title" value="Dashboard" />
+        <ui:define name="content">
+            <ui:include src="#{sessionController.userIsCompany() ? 'companyDashboard.xhtml' : 'employeeDashboard.xhtml'}" rendered="false">
+
+            </ui:include>
+        </ui:define>
+        <ui:define name="footer"></ui:define>
+    </ui:composition>
+
 </html>
 
