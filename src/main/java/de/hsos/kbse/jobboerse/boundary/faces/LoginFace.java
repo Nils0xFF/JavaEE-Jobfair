@@ -1,5 +1,6 @@
 package de.hsos.kbse.jobboerse.boundary.faces;
 
+import de.hsos.kbse.jobboerse.entity.facades.AddressFacade;
 import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
@@ -24,9 +25,14 @@ public class LoginFace {
     @Inject
     private Testr test;
     
+    @Inject
+    private AddressFacade af;
+    
     public void login(){
 
+
         CookieService.addCookie((HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse(), "userToken", "NilsIstToll", 2592000);
+
     }
     
     public void logout(){
