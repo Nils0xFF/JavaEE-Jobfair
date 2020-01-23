@@ -5,6 +5,7 @@
  */
 package de.hsos.kbse.jobboerse.entity.user;
 
+import de.hsos.kbse.jobboerse.entity.shared.Address;
 import de.hsos.kbse.jobboerse.enums.Graduation;
 import java.io.Serializable;
 import javax.enterprise.inject.Vetoed;
@@ -12,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -28,6 +30,8 @@ public class User_Profile implements Serializable {
     private String firstname;
     private String lastname;
     private String description;
+    @OneToOne
+    private Address address;
     private String email;
     private String telefon;
     private Graduation grad;
@@ -37,6 +41,7 @@ public class User_Profile implements Serializable {
         private String firstname;
         private String lastname;
         private String description;
+        private Address address;
         private String email;
         private String telefon;
         private Graduation grad;
@@ -58,6 +63,11 @@ public class User_Profile implements Serializable {
             this.description = value;
             return this;
         }
+        
+        public Builder address(final Address value) {
+            this.address = value;
+            return this;
+        }
 
         public Builder email(final String value) {
             this.email = value;
@@ -75,7 +85,7 @@ public class User_Profile implements Serializable {
         }
 
         public User_Profile build() {
-            return new User_Profile(firstname, lastname, description, email, telefon, grad);
+            return new User_Profile(firstname, lastname, description, address, email, telefon, grad);
         }
     }
 
@@ -86,10 +96,11 @@ public class User_Profile implements Serializable {
         return new User_Profile.Builder();
     }
 
-    private User_Profile(final String firstname, final String lastname, final String description, final String email, final String telefon, final Graduation grad) {
+    private User_Profile(final String firstname, final String lastname, final String description, final Address address, final String email, final String telefon, final Graduation grad) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.description = description;
+        this.address = address;
         this.email = email;
         this.telefon = telefon;
         this.grad = grad;
@@ -120,6 +131,14 @@ public class User_Profile implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+    
+    public Address getAddress() {
+        return this.address;
+    }
+    
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public String getEmail() {
