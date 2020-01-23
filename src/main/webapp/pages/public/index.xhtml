@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!-- Author: Nils Geschwinde -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="templates/template.xhtml">
+        <ui:param name="stylesheet" value="home.css"/>
+        <ui:param name="transparentNav" value="true" />
+        <ui:param name="title" value="Home" />
+        <ui:define name="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="jumbotron jumbotron-big col-md-6 text-white d-flex" id="jumbotron-employee">
+                        <div class="justify-content-center align-self-center text-center w-100">
+                            <h1>Finde deinen Traumjob!</h1>
+                            <h5>Nicht länger suchen, jetzt finden!</h5>
+                            <p:link class="btn btn-success" outcome="registerEmployee">Los gehts!</p:link> 
+                        </div>
+                    </div>
+
+                    <div class="jumbotron jumbotron-big text-center col-md-6 text-white d-flex" id="jumbotron-company">
+                        <div class="justify-content-center align-self-center text-center w-100">
+                            <h1>Verstärkung gesucht?!</h1>
+                            <h5>Nicht länger suchen, jetzt finden!</h5>
+                            <p:link class="btn btn-success" outcome="registerCompany">Los gehts!</p:link> 
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </ui:define>
+        <ui:define name="footer"></ui:define>
+    </ui:composition>
+
+</html>
+
