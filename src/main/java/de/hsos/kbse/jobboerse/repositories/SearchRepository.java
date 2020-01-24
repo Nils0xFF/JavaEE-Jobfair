@@ -24,7 +24,7 @@ import javax.inject.Inject;
  * @author lennartwoltering
  */
 @RequestScoped
-public class SearchRepo {
+public class SearchRepository {
     @Inject 
     private SearchRequestFacade searchrequests;
     
