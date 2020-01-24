@@ -8,6 +8,7 @@ package de.hsos.kbse.jobboerse.repository;
 import de.hsos.kbse.jobboerse.entity.facades.LoginFacade;
 import de.hsos.kbse.jobboerse.entity.facades.SeekingUserFacade;
 import de.hsos.kbse.jobboerse.entity.facades.User_ProfileFacade;
+import de.hsos.kbse.jobboerse.entity.shared.Address;
 import de.hsos.kbse.jobboerse.entity.shared.Login;
 import de.hsos.kbse.jobboerse.entity.user.SeekingUser;
 import de.hsos.kbse.jobboerse.entity.user.User_Profile;
@@ -75,6 +76,23 @@ public class UserRepo {
         return false; 
     }
     
+    public boolean createAddress(String email, String street, String housenumber, String city, String postalcode, String country){
+        Login login = logins.findByEmail(email);
+        if(login != null){
+            Address toInsert = Address.builder()
+                    .street(street)
+                    .housenumber(housenumber)
+                    .city(city)
+                    .postalcode(postalcode)
+                    .country(country)
+                    .build();
+            login.getSeekingUser().getProfile().setAddress(toInsert);
+            logins.edit(login);
+            return true;
+        }
+        return false;
+    }
+    
     public boolean editUserProfile(String email, String firstname, String lastname, String description, String telefon, Graduation graduation){
         Login login = logins.findByEmail(email);
         if(login != null){
@@ -119,6 +137,10 @@ public class UserRepo {
             return login.getSeekingUser();
         }
         return null;
+    }
+    
+    public void edit(SeekingUser value){
+        users.edit(value);
     }
     
 }

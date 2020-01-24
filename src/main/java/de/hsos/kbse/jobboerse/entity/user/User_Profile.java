@@ -9,6 +9,7 @@ import de.hsos.kbse.jobboerse.entity.shared.Address;
 import de.hsos.kbse.jobboerse.enums.Graduation;
 import java.io.Serializable;
 import javax.enterprise.inject.Vetoed;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -31,7 +32,8 @@ public class User_Profile implements Serializable {
     private String lastname;
     private String description;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL,
+            orphanRemoval = true)
     private Address address;
 
     private String telefon;
@@ -80,7 +82,7 @@ public class User_Profile implements Serializable {
         }
 
         public User_Profile build() {
-            return new User_Profile(firstname, lastname, description, telefon, grad);
+            return new User_Profile(firstname, lastname, description, telefon, address, grad);
 
         }
     }
@@ -92,11 +94,15 @@ public class User_Profile implements Serializable {
         return new User_Profile.Builder();
     }
 
-    private User_Profile(final String firstname, final String lastname, final String description, final String telefon, final Graduation grad) {
+    private User_Profile(final String firstname, final String lastname, final String description, final String telefon, final Address address, final Graduation grad) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.description = description;
-        this.address = address;
+        if(address == null){
+            this.address = new Address();
+        }else{
+            this.address = address;
+        }
         this.telefon = telefon;
         this.grad = grad;
     }
