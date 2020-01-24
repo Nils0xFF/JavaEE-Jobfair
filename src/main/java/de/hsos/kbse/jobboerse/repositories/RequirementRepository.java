@@ -5,8 +5,8 @@
  */
 package de.hsos.kbse.jobboerse.repositories;
 
-import de.hsos.kbse.jobboerse.entity.facades.BenefitFacade;
-import de.hsos.kbse.jobboerse.entity.shared.Benefit;
+import de.hsos.kbse.jobboerse.entity.facades.RequirementFacade;
+import de.hsos.kbse.jobboerse.entity.shared.Requirement;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
@@ -15,61 +15,58 @@ import javax.inject.Inject;
  * @author soere
  */
 @RequestScoped
-public class BenefitRepository {
-    
+public class RequirementRepository {
     @Inject
-    BenefitFacade bf;
-    
-    public BenefitRepository() { }
+    RequirementFacade rf;
     
     public void create(String name, String desc) {
-        Benefit benefit = Benefit.builder().name(name).description(desc).build();
-        bf.create(benefit);
+        Requirement req = Requirement.builder().name(name).description(desc).build();
+        rf.create(req);
     }
     
     public void update(Long id, String name, String desc) {
-        Benefit old = bf.find(id);
+        Requirement old = rf.find(id);
         old.setName(name);
         old.setDescription(desc);
-        bf.edit(old);
+        rf.edit(old);
     }
     
     public void update(String name, String sub, String desc) {
-        Benefit old = bf.findByName(name);
-        old.setName(name);
+        Requirement old = rf.findByName(name);
+        old.setName(sub);
         old.setDescription(desc);
-        bf.edit(old);
+        rf.edit(old);
     }
     
     public void updateName(Long id, String name) {
-        Benefit old = bf.find(id);
+        Requirement old = rf.find(id);
         old.setName(name);
-        bf.edit(old);
+        rf.edit(old);
     }
     
     public void updateName(String name, String sub) {
-        Benefit old = bf.findByName(name);
+        Requirement old = rf.findByName(name);
         old.setName(name);
-        bf.edit(old);
+        rf.edit(old);
     }
     
     public void updateDescription(Long id, String desc) {
-        Benefit old = bf.find(id);
+        Requirement old = rf.find(id);
         old.setDescription(desc);
-        bf.edit(old);
+        rf.edit(old);
     }
     
     public void updateDescription(String name, String desc) {
-        Benefit old = bf.findByName(name);
+        Requirement old = rf.findByName(name);
         old.setDescription(desc);
-        bf.edit(old);
+        rf.edit(old);
     }
     
     public void delete(Long id) {
-        bf.remove(bf.find(id));
+        rf.remove(rf.find(id));
     }
     
     public void delete(String name) {
-        bf.remove(bf.findByName(name));
+        rf.remove(rf.findByName(name));
     }
 }
