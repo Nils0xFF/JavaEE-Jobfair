@@ -10,6 +10,7 @@ import javax.ejb.Stateless;
 import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -30,4 +31,12 @@ public class JobFieldFacade extends AbstractFacade<JobField> {
         super(JobField.class);
     }
     
+    public JobField findByName(String name) {
+        String queryString = "SELECT jf FROM JobField jf "
+                + "WHERE jf.name IS NULL OR jf.name = :name";
+
+        TypedQuery<JobField> query = em.createQuery(queryString, JobField.class);
+        query.setParameter("name", name);
+        return query.getSingleResult();
+    }    
 }

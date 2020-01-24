@@ -29,11 +29,10 @@ public class LoginFace {
     private AddressFacade af;
     
     public void login(){
-        //jpa.create(new requirements(1L, "Test", 5.0f));
-        // FacesContext.getCurrentInstance().getExternalContext().addResponseCookie("login", "test", null);
-        // FIXME: try to log in, set token on valid
-        //FacesContext.getCurrentInstance().getExternalContext().se;
-        //CookieService.addCookie((HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse(), "userToken", "NilsIstToll", 2592000);
+
+
+        CookieService.addCookie((HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse(), "userToken", "NilsIstToll", 2592000);
+
     }
     
     public void logout(){
@@ -45,8 +44,12 @@ public class LoginFace {
         return CookieService.getCookieValue((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest(), "userToken");
     }
     
-    public int count(){
+    public int countUp(){
         return counter++;
+    }
+    
+        public int count(){
+        return counter;
     }
     
     public int countSession(){

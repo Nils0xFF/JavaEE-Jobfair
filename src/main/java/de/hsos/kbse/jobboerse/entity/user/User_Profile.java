@@ -5,6 +5,7 @@
  */
 package de.hsos.kbse.jobboerse.entity.user;
 
+import de.hsos.kbse.jobboerse.entity.shared.Address;
 import de.hsos.kbse.jobboerse.enums.Graduation;
 import java.io.Serializable;
 import javax.enterprise.inject.Vetoed;
@@ -12,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -28,6 +30,10 @@ public class User_Profile implements Serializable {
     private String firstname;
     private String lastname;
     private String description;
+
+    @OneToOne
+    private Address address;
+
     private String telefon;
     private Graduation grad;
 
@@ -36,6 +42,7 @@ public class User_Profile implements Serializable {
         private String firstname;
         private String lastname;
         private String description;
+        private Address address;
         private String telefon;
         private Graduation grad;
 
@@ -56,6 +63,11 @@ public class User_Profile implements Serializable {
             this.description = value;
             return this;
         }
+        
+        public Builder address(final Address value) {
+            this.address = value;
+            return this;
+        }
 
         public Builder telefon(final String value) {
             this.telefon = value;
@@ -69,6 +81,7 @@ public class User_Profile implements Serializable {
 
         public User_Profile build() {
             return new User_Profile(firstname, lastname, description, telefon, grad);
+
         }
     }
 
@@ -83,6 +96,7 @@ public class User_Profile implements Serializable {
         this.firstname = firstname;
         this.lastname = lastname;
         this.description = description;
+        this.address = address;
         this.telefon = telefon;
         this.grad = grad;
     }
@@ -109,6 +123,14 @@ public class User_Profile implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+    
+    public Address getAddress() {
+        return this.address;
+    }
+    
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
 

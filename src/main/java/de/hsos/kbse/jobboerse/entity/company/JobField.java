@@ -4,12 +4,12 @@ import de.hsos.kbse.jobboerse.entity.shared.Requirement;
 import java.io.Serializable;
 import java.util.List;
 import javax.enterprise.inject.Vetoed;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 
 /**
  *
@@ -24,6 +24,7 @@ public class JobField implements Serializable {
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
     
+    @Column(unique=true)
     private String name;
     
     @ManyToMany
@@ -81,8 +82,14 @@ public class JobField implements Serializable {
     public void setRequirements(List<Requirement> requirements) {
         this.requirements = requirements;
     }
-
     
+    public void addRequirement(Requirement req) {
+        this.requirements.add(req);
+    }   
+    
+    public void removeRequirement(Requirement req) {
+        this.requirements.remove(req);
+    }
     
     public Long getId() {
         return id;
