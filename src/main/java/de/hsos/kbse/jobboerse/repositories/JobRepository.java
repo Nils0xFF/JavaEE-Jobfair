@@ -28,8 +28,8 @@ public class JobRepository {
     
     public JobRepository() { }
     
-    public void create(String name, Sal_Relation relation, Double salary, String description, Address address, Contact contact, Company company, List<NeededRequirement> needed) {
-        Job job = Job.builder().name(name).relation(relation).salary(salary).description(description).address(address).contact(contact).company(company).needed(needed).build();
+    public void create(String name, Sal_Relation relation, Double salary, String description, Address address, Company company, List<NeededRequirement> needed) {
+        Job job = Job.builder().name(name).relation(relation).salary(salary).description(description).address(address).company(company).needed(needed).build();
         jf.create(job);
     }
     
@@ -37,14 +37,13 @@ public class JobRepository {
         return jf.findAll();
     }
     
-    public void update(Long id, String name, Sal_Relation relation, Double salary, String description, Address address, Contact contact, Company company, List<NeededRequirement> needed) {
+    public void update(Long id, String name, Sal_Relation relation, Double salary, String description, Address address, Company company, List<NeededRequirement> needed) {
         Job old = jf.find(id);
         old.setName(name);
         old.setRelation(relation);
         old.setSalary(salary);
         old.setDescription(description);
         old.setAddress(address);
-        old.setContact(contact);
         old.setCompany(company);
         old.setNeeded(needed);
         jf.edit(old);
@@ -77,12 +76,6 @@ public class JobRepository {
     public void updateAddress(Long id, Address address) {
         Job old = jf.find(id);
         old.setAddress(address);
-        jf.edit(old);
-    }
-    
-    public void updateContact(Long id, Contact contact) {
-        Job old = jf.find(id);
-        old.setContact(contact);
         jf.edit(old);
     }
     

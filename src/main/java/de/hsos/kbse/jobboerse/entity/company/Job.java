@@ -41,10 +41,6 @@ public class Job implements Serializable {
     private Address address;
     
     @OneToOne(cascade = CascadeType.ALL,
-            orphanRemoval=true)
-    private Contact contact;
-    
-    @OneToOne(cascade = CascadeType.ALL,
             orphanRemoval = true)
     private Company company;
     
@@ -58,7 +54,6 @@ public class Job implements Serializable {
         private Double salary;
         private String description;
         private Address address;
-        private Contact contact;
         private Company company;
         private List<NeededRequirement> needed;
 
@@ -89,11 +84,6 @@ public class Job implements Serializable {
             this.address = value;
             return this;
         }
-
-        public Builder contact(final Contact value) {
-            this.contact = value;
-            return this;
-        }
         
         public Builder company(final Company value) {
             this.company = value;
@@ -106,7 +96,7 @@ public class Job implements Serializable {
         }
 
         public Job build() {
-            return new Job(relation, name, salary, description, address, contact, company, needed);
+            return new Job(relation, name, salary, description, address, company, needed);
         }
     }
 
@@ -116,13 +106,12 @@ public class Job implements Serializable {
         return new Job.Builder();
     }
 
-    private Job(final Sal_Relation relation, final String name, final Double salary, final String description, final Address address, final Contact contact, final Company company, final List<NeededRequirement> needed) {
+    private Job(final Sal_Relation relation, final String name, final Double salary, final String description, final Address address, final Company company, final List<NeededRequirement> needed) {
         this.relation = relation;
         this.name = name;
         this.salary = salary;
         this.description = description;
         this.address = address;
-        this.contact = contact;
         this.company = company;
         this.needed = needed;
     }    
@@ -165,14 +154,6 @@ public class Job implements Serializable {
     
     public void setAddress(Address address) {
         this.address = address;
-    }
-
-    public Contact getContact() {
-        return contact;
-    }
-
-    public void setContact(Contact contact) {
-        this.contact = contact;
     }
 
     public Company getCompany() {
