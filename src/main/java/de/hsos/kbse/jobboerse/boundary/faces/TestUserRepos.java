@@ -6,7 +6,7 @@
 package de.hsos.kbse.jobboerse.boundary.faces;
 
 import de.hsos.kbse.jobboerse.enums.Graduation;
-import de.hsos.kbse.jobboerse.repository.UserRepo;
+import de.hsos.kbse.jobboerse.repositories.UserRepository;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -29,7 +29,7 @@ public class TestUserRepos {
     private String desc;
     
     @Inject
-    private UserRepo ur;
+    private UserRepository ur;
     
     @Enumerated(EnumType.ORDINAL)
     private Graduation grades;
@@ -111,11 +111,11 @@ public class TestUserRepos {
         this.desc = desc;
     }
 
-    public UserRepo getUr() {
+    public UserRepository getUr() {
         return ur;
     }
 
-    public void setUr(UserRepo ur) {
+    public void setUr(UserRepository ur) {
         this.ur = ur;
     }
     

@@ -11,11 +11,9 @@ import de.hsos.kbse.jobboerse.entity.shared.Requirement;
 import java.io.Serializable;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.Vetoed;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.RollbackException;
-import javax.transaction.Transactional;
 
 /**
  *

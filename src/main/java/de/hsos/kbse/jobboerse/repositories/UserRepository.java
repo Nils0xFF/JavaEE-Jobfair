@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.hsos.kbse.jobboerse.repository;
+package de.hsos.kbse.jobboerse.repositories;
 
 import de.hsos.kbse.jobboerse.entity.facades.LoginFacade;
 import de.hsos.kbse.jobboerse.entity.facades.SeekingUserFacade;
@@ -23,7 +23,7 @@ import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
  * @author lennartwoltering
  */
 @RequestScoped
-public class UserRepo {
+public class UserRepository {
     @Inject 
     private LoginFacade logins;
     
