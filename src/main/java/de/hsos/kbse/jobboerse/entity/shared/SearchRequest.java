@@ -6,6 +6,8 @@
 package de.hsos.kbse.jobboerse.entity.shared;
 
 import de.hsos.kbse.jobboerse.entity.company.Job;
+import de.hsos.kbse.jobboerse.entity.company.JobField;
+import de.hsos.kbse.jobboerse.entity.user.WeightedJob;
 import java.io.Serializable;
 import java.util.List;
 import javax.enterprise.inject.Vetoed;
@@ -15,6 +17,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -30,30 +33,39 @@ public class SearchRequest implements Serializable {
     private Long id;
     
     @OneToMany()
-    private List<Job> favorites;
+    private List<WeightedJob> foundJobs;
     
     @ManyToMany
     private List<Benefit> benefits;
     
     @ManyToMany
     private List<Requirement> requirements;
+    
+    @OneToOne
+    private JobField jobfield;
 
     public static class Builder {
 
-        private List<Job> favorites;
+        private List<WeightedJob> foundJobs;
         private List<Benefit> benefits;
         private List<Requirement> requirements;
+        private JobField jobField;
 
         private Builder() {
         }
 
-        public Builder favorites(final List<Job> value) {
-            this.favorites = value;
+        public Builder foundJobs(final List<WeightedJob> value) {
+            this.foundJobs = value;
             return this;
         }
 
         public Builder benefits(final List<Benefit> value) {
             this.benefits = value;
+            return this;
+        }
+        
+        public Builder jobField(final JobField value) {
+            this.jobField = value;
             return this;
         }
 
@@ -63,7 +75,7 @@ public class SearchRequest implements Serializable {
         }
 
         public SearchRequest build() {
-            return new SearchRequest(favorites, benefits, requirements);
+            return new SearchRequest(foundJobs, benefits, requirements, jobField);
         }
     }
 
@@ -74,21 +86,27 @@ public class SearchRequest implements Serializable {
         return new SearchRequest.Builder();
     }
 
-    private SearchRequest(final List<Job> favorites, final List<Benefit> benefits, final List<Requirement> requirements) {
-        this.favorites = favorites;
+    private SearchRequest(final List<WeightedJob> foundJobs, final List<Benefit> benefits, final List<Requirement> requirements, final JobField jobfield) {
+        this.foundJobs = foundJobs;
         this.benefits = benefits;
         this.requirements = requirements;
+        this.jobfield = jobfield;
     }
 
-    
-    
-    
-    public List<Job> getFavorites() {
-        return favorites;
+    public JobField getJobfield() {
+        return jobfield;
     }
 
-    public void setFavorites(List<Job> favorites) {
-        this.favorites = favorites;
+    public void setJobfield(JobField jobfield) {
+        this.jobfield = jobfield;
+    }
+    
+    public List<WeightedJob> getFoundJobs() {
+        return foundJobs;
+    }
+
+    public void setFoundJobs(List<WeightedJob> foundJobs) {
+        this.foundJobs = foundJobs;
     }
 
     public List<Benefit> getBenefits() {

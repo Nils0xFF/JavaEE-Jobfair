@@ -7,6 +7,8 @@ package de.hsos.kbse.jobboerse.boundary.faces;
 
 import de.hsos.kbse.jobboerse.enums.Graduation;
 import de.hsos.kbse.jobboerse.repositories.UserRepository;
+import de.hsos.kbse.jobboerse.enums.Salutation;
+import de.hsos.kbse.jobboerse.enums.Title;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -55,7 +57,7 @@ public class TestUserRepos {
     
     @Transactional
     public void createPorfile(){
-        ur.createUserProfile(email, firstname, lastname, desc, telefon, grades);
+        ur.createUserProfile(email, Salutation.mister , Title.Emtpy ,firstname, lastname, desc, telefon, grades);
     }
     
     @Transactional

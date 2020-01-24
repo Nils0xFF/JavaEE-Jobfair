@@ -5,16 +5,20 @@
  */
 package de.hsos.kbse.jobboerse.entity.user;
 
+import de.hsos.kbse.jobboerse.entity.company.Job;
 import de.hsos.kbse.jobboerse.entity.shared.Login;
 import de.hsos.kbse.jobboerse.entity.shared.SearchRequest;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import javax.enterprise.inject.Vetoed;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 /**
@@ -42,6 +46,9 @@ public class SeekingUser implements Serializable {
     @OneToOne(cascade = CascadeType.ALL,
             orphanRemoval=true)
     private SearchRequest searchrequest; 
+    
+    @OneToMany
+    private List<Job> favorites;
 
     public static class Builder {
 
@@ -80,6 +87,7 @@ public class SeekingUser implements Serializable {
     
     private SeekingUser(final boolean completed, final User_Profile profile) {
         this.completed = completed;
+        this.favorites = new ArrayList<>();
         this.searchrequest = new SearchRequest();
         if(profile == null){
             this.profile = new User_Profile();
