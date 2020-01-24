@@ -12,7 +12,7 @@ import de.hsos.kbse.jobboerse.entity.shared.Requirement;
 import de.hsos.kbse.jobboerse.entity.shared.SearchRequest;
 import de.hsos.kbse.jobboerse.entity.user.SeekingUser;
 import de.hsos.kbse.jobboerse.entity.user.WeightedJob;
-import de.hsos.kbse.jobboerse.repository.UserRepo;
+import de.hsos.kbse.jobboerse.repositories.UserRepository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -29,7 +29,7 @@ public class SearchRepo {
     private SearchRequestFacade searchrequests;
     
     @Inject
-    private UserRepo users;
+    private UserRepository users;
     
     public boolean createSearchRequirements(String email, List<Requirement> fullfilledRequirements, List<Benefit> wishedBenefits, JobField jobfield){
         SeekingUser foundUser = users.getUserByEmail(email);

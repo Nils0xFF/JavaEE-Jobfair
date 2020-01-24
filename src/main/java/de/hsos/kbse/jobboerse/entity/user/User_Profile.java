@@ -35,7 +35,6 @@ public class User_Profile implements Serializable {
     private String firstname;
     private String lastname;
     private String description;
-    private Title title;
     private int age;
 
     @OneToOne(cascade = CascadeType.ALL,
@@ -52,7 +51,6 @@ public class User_Profile implements Serializable {
         private Salutation salutation;
         private Title title;    
         private String description;
-        private Title title;
         private int age;
         private Address address;
         private String telefon;
@@ -81,11 +79,6 @@ public class User_Profile implements Serializable {
 
         public Builder description(final String value) {
             this.description = value;
-            return this;
-        }
-        
-        public Builder title(final Title value) {
-            this.title = value;
             return this;
         }
         
@@ -178,15 +171,7 @@ public class User_Profile implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    
-    public Title getTitle() {
-        return title;
-    }
-    
-    public void setTitle(Title title) {
-        this.title = title;
-    }
-    
+        
     public int getAge() {
         return age;
     }
