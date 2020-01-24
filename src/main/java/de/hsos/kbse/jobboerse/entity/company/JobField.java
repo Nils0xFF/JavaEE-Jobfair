@@ -24,7 +24,7 @@ public class JobField implements Serializable {
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
     
-    @Column(unique=true)
+    @Column(unique = true)
     private String name;
     
     @ManyToMany

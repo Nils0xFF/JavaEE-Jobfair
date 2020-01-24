@@ -33,7 +33,7 @@ public class JobFieldFacade extends AbstractFacade<JobField> {
     
     public JobField findByName(String name) {
         String queryString = "SELECT jf FROM JobField jf "
-                + "WHERE jf.name IS NULL OR jf.name = :name";
+                + "WHERE jf.name = :name";
 
         TypedQuery<JobField> query = em.createQuery(queryString, JobField.class);
         query.setParameter("name", name);

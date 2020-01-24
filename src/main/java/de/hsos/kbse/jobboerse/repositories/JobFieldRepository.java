@@ -19,9 +19,9 @@ import javax.transaction.RollbackException;
  *
  * @author soere
  */
-@Named
 @RequestScoped
 public class JobFieldRepository implements Serializable {
+    
     @Inject
     private JobFieldFacade jff;
     
@@ -40,13 +40,13 @@ public class JobFieldRepository implements Serializable {
         return jff.findByName(name);
     }
     
-    public void update(int id, String name) throws RollbackException {
+    public void updateName(int id, String name) throws RollbackException {
         JobField old = jff.find(id);
         old.setName(name);
         jff.edit(old);
     }
     
-    public void update(int id, List<Requirement> reqs) throws RollbackException {
+    public void updateRequirements(int id, List<Requirement> reqs) throws RollbackException {
         JobField old = jff.find(id);
         old.setRequirements(reqs);
         jff.edit(old);
@@ -59,9 +59,9 @@ public class JobFieldRepository implements Serializable {
         jff.edit(old);
     }
     
-    public void update(String name, String n) {
+    public void updateName(String name, String sub) {
         JobField old = jff.findByName(name);
-        old.setName(n);
+        old.setName(sub);
         jff.edit(old);
     }
     
@@ -81,7 +81,7 @@ public class JobFieldRepository implements Serializable {
         jff.remove(jff.find(id));
     }
     
-    public void deleteByName(String name) {
+    public void delete(String name) {
         jff.remove(jff.findByName(name));
     }    
 }
