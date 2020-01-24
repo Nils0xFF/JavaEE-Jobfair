@@ -23,8 +23,8 @@ import javax.persistence.OneToOne;
 @Entity
 public class Login implements Serializable {
 
-    @OneToOne(mappedBy = "login",
-            cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL,
+    orphanRemoval = true)
     private SeekingUser seekingUser;
 
     private static final long serialVersionUID = 1L;
@@ -78,14 +78,24 @@ public class Login implements Serializable {
     }
 
     private Login(final SeekingUser seekingUser, final String password, final String group_name, final String email) {
+        if(seekingUser == null){
+            this.seekingUser = new SeekingUser();
+        }else{
         this.seekingUser = seekingUser;
+        }
         this.password = password;
         this.group_name = group_name;
         this.email = email;
     }
 
-    
-    
+    public SeekingUser getSeekingUser() {
+        return seekingUser;
+    }
+
+    public void setSeekingUser(SeekingUser seekingUser) {
+        this.seekingUser = seekingUser;
+    }
+
     public String getPassword() {
         return password;
     }

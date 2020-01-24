@@ -30,9 +30,10 @@ public class User_Profile implements Serializable {
     private String firstname;
     private String lastname;
     private String description;
+
     @OneToOne
     private Address address;
-    private String email;
+
     private String telefon;
     private Graduation grad;
 
@@ -42,7 +43,6 @@ public class User_Profile implements Serializable {
         private String lastname;
         private String description;
         private Address address;
-        private String email;
         private String telefon;
         private Graduation grad;
 
@@ -69,11 +69,6 @@ public class User_Profile implements Serializable {
             return this;
         }
 
-        public Builder email(final String value) {
-            this.email = value;
-            return this;
-        }
-
         public Builder telefon(final String value) {
             this.telefon = value;
             return this;
@@ -85,7 +80,8 @@ public class User_Profile implements Serializable {
         }
 
         public User_Profile build() {
-            return new User_Profile(firstname, lastname, description, address, email, telefon, grad);
+            return new User_Profile(firstname, lastname, description, telefon, grad);
+
         }
     }
 
@@ -96,18 +92,14 @@ public class User_Profile implements Serializable {
         return new User_Profile.Builder();
     }
 
-    private User_Profile(final String firstname, final String lastname, final String description, final Address address, final String email, final String telefon, final Graduation grad) {
+    private User_Profile(final String firstname, final String lastname, final String description, final String telefon, final Graduation grad) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.description = description;
         this.address = address;
-        this.email = email;
         this.telefon = telefon;
         this.grad = grad;
     }
-    
-    
-    
     
     public String getFirstname() {
         return firstname;
@@ -141,13 +133,6 @@ public class User_Profile implements Serializable {
         this.address = address;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getTelefon() {
         return telefon;
