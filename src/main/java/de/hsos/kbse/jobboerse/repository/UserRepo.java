@@ -13,6 +13,8 @@ import de.hsos.kbse.jobboerse.entity.shared.Login;
 import de.hsos.kbse.jobboerse.entity.user.SeekingUser;
 import de.hsos.kbse.jobboerse.entity.user.User_Profile;
 import de.hsos.kbse.jobboerse.enums.Graduation;
+import de.hsos.kbse.jobboerse.enums.Salutation;
+import de.hsos.kbse.jobboerse.enums.Title;
 import java.util.HashMap;
 import java.util.Map;
 import javax.enterprise.context.RequestScoped;
@@ -58,10 +60,12 @@ public class UserRepo {
         return false;
     }
     
-    public boolean createUserProfile(String email, String firstname, String lastname, String description, String telefon, Graduation graduation){
+    public boolean createUserProfile(String email, Salutation salutation, Title title ,String firstname, String lastname, String description, String telefon, Graduation graduation){
         Login login = logins.findByEmail(email);
         if(login != null){
         User_Profile profileToInsert =  User_Profile.builder()
+                .salutation(salutation)
+                .title(title)
                 .firstname(firstname)
                 .lastname(lastname)
                 .description(description)
@@ -93,10 +97,12 @@ public class UserRepo {
         return false;
     }
     
-    public boolean editUserProfile(String email, String firstname, String lastname, String description, String telefon, Graduation graduation){
+    public boolean editUserProfile(String email, Salutation salutation, Title title, String firstname, String lastname, String description, String telefon, Graduation graduation){
         Login login = logins.findByEmail(email);
         if(login != null){
             User_Profile toEdit = login.getSeekingUser().getProfile();
+            toEdit.setSalutation(salutation);
+            toEdit.setTitle(title);
             toEdit.setFirstname(firstname);
             toEdit.setLastname(lastname);
             toEdit.setTelefon(telefon);

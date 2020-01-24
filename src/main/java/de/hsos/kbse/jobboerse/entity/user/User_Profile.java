@@ -7,6 +7,8 @@ package de.hsos.kbse.jobboerse.entity.user;
 
 import de.hsos.kbse.jobboerse.entity.shared.Address;
 import de.hsos.kbse.jobboerse.enums.Graduation;
+import de.hsos.kbse.jobboerse.enums.Salutation;
+import de.hsos.kbse.jobboerse.enums.Title;
 import java.io.Serializable;
 import javax.enterprise.inject.Vetoed;
 import javax.persistence.CascadeType;
@@ -28,6 +30,8 @@ public class User_Profile implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
+    private Salutation salutation;
+    private Title title;
     private String firstname;
     private String lastname;
     private String description;
@@ -43,6 +47,8 @@ public class User_Profile implements Serializable {
 
         private String firstname;
         private String lastname;
+        private Salutation salutation;
+        private Title title;    
         private String description;
         private Address address;
         private String telefon;
@@ -58,6 +64,14 @@ public class User_Profile implements Serializable {
 
         public Builder lastname(final String value) {
             this.lastname = value;
+            return this;
+        }
+        public Builder salutation(final Salutation value) {
+            this.salutation = value;
+            return this;
+        }
+        public Builder title(final Title value) {
+            this.title = value;
             return this;
         }
 
@@ -82,7 +96,7 @@ public class User_Profile implements Serializable {
         }
 
         public User_Profile build() {
-            return new User_Profile(firstname, lastname, description, telefon, address, grad);
+            return new User_Profile(salutation, title ,firstname, lastname, description, telefon, address, grad);
 
         }
     }
@@ -94,7 +108,9 @@ public class User_Profile implements Serializable {
         return new User_Profile.Builder();
     }
 
-    private User_Profile(final String firstname, final String lastname, final String description, final String telefon, final Address address, final Graduation grad) {
+    private User_Profile(final Salutation salutation, final Title title, final String firstname, final String lastname, final String description, final String telefon, final Address address, final Graduation grad) {
+        this.salutation = salutation;
+        this.title = title;
         this.firstname = firstname;
         this.lastname = lastname;
         this.description = description;
@@ -106,6 +122,24 @@ public class User_Profile implements Serializable {
         this.telefon = telefon;
         this.grad = grad;
     }
+
+    public Salutation getSalutation() {
+        return salutation;
+    }
+
+    public void setSalutation(Salutation salutation) {
+        this.salutation = salutation;
+    }
+
+    public Title getTitle() {
+        return title;
+    }
+
+    public void setTitle(Title title) {
+        this.title = title;
+    }
+    
+    
     
     public String getFirstname() {
         return firstname;

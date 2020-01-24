@@ -41,6 +41,7 @@ public class SearchRepo {
                     .jobField(jobfield)
                     .build();
             foundUser.setSearchrequest(toInsert);
+            foundUser.setCompleted(true);
             users.edit(foundUser);
             return true;
         }
