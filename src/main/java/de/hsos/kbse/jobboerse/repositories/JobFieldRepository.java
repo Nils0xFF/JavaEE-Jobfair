@@ -27,8 +27,8 @@ public class JobFieldRepository implements Serializable {
     
     public JobFieldRepository() {}
 
-    public void create(String name, List<Requirement> requirements) {
-        JobField jobfield = JobField.builder().name(name).requirements(requirements).build();
+    public void create(String name) {
+        JobField jobfield = JobField.builder().name(name).build();
         jff.create(jobfield);
     }
     
@@ -40,40 +40,25 @@ public class JobFieldRepository implements Serializable {
         return jff.findByName(name);
     }
     
+    public List<JobField> findAll() {
+        return jff.findAll();
+    }
+    
     public void updateName(int id, String name) throws RollbackException {
         JobField old = jff.find(id);
         old.setName(name);
         jff.edit(old);
     }
     
-    public void updateRequirements(int id, List<Requirement> reqs) throws RollbackException {
-        JobField old = jff.find(id);
-        old.setRequirements(reqs);
-        jff.edit(old);
-    }
-    
-    public void update(int id, String name, List<Requirement> reqs) throws RollbackException {
+    public void update(int id, String name) throws RollbackException {
         JobField old = jff.find(id);
         old.setName(name);
-        old.setRequirements(reqs);
         jff.edit(old);
     }
     
     public void updateName(String name, String sub) {
         JobField old = jff.findByName(name);
         old.setName(sub);
-        jff.edit(old);
-    }
-    
-    public void addRequirement(Long id, Requirement req) throws RollbackException {
-        JobField old = jff.find(id);
-        old.addRequirement(req);
-        jff.edit(old);
-    }
-    
-    public void removeRequirement(Long id, Requirement req) throws RollbackException {
-        JobField old = jff.find(id);
-        old.removeRequirement(req);
         jff.edit(old);
     }
     

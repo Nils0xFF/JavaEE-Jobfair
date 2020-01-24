@@ -2,7 +2,7 @@ package de.hsos.kbse.jobboerse.entity.company;
 
 import de.hsos.kbse.jobboerse.entity.shared.Address;
 import de.hsos.kbse.jobboerse.entity.shared.NeededRequirement;
-import de.hsos.kbse.jobboerse.enums.SAL_Relation;
+import de.hsos.kbse.jobboerse.enums.Sal_Relation;
 import java.io.Serializable;
 import java.util.List;
 import javax.enterprise.inject.Vetoed;
@@ -28,7 +28,7 @@ public class Job implements Serializable {
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
     
-    private SAL_Relation relation;
+    private Sal_Relation relation;
     
     private String name;
     
@@ -44,23 +44,28 @@ public class Job implements Serializable {
             orphanRemoval=true)
     private Contact contact;
     
+    @OneToOne(cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private Company company;
+    
     @ManyToMany
     private List<NeededRequirement> needed;
 
     public static class Builder {
 
-        private SAL_Relation relation;
+        private Sal_Relation relation;
         private String name;
         private Double salary;
         private String description;
         private Address address;
         private Contact contact;
+        private Company company;
         private List<NeededRequirement> needed;
 
         private Builder() {
         }
 
-        public Builder relation(final SAL_Relation value) {
+        public Builder relation(final Sal_Relation value) {
             this.relation = value;
             return this;
         }
@@ -89,6 +94,11 @@ public class Job implements Serializable {
             this.contact = value;
             return this;
         }
+        
+        public Builder company(final Company value) {
+            this.company = value;
+            return this;
+        }
 
         public Builder needed(final List<NeededRequirement> value) {
             this.needed = value;
@@ -96,34 +106,32 @@ public class Job implements Serializable {
         }
 
         public Job build() {
-            return new Job(relation, name, salary, description, address, contact, needed);
+            return new Job(relation, name, salary, description, address, contact, company, needed);
         }
     }
 
-    public Job() {
-    }
+    public Job() { }
 
     public static Job.Builder builder() {
         return new Job.Builder();
     }
 
-    private Job(final SAL_Relation relation, final String name, final Double salary, final String description, final Address address, final Contact contact, final List<NeededRequirement> needed) {
+    private Job(final Sal_Relation relation, final String name, final Double salary, final String description, final Address address, final Contact contact, final Company company, final List<NeededRequirement> needed) {
         this.relation = relation;
         this.name = name;
         this.salary = salary;
         this.description = description;
         this.address = address;
         this.contact = contact;
+        this.company = company;
         this.needed = needed;
-    }
-
+    }    
     
-    
-    public SAL_Relation getRelation() {
+    public Sal_Relation getRelation() {
         return relation;
     }
 
-    public void setRelation(SAL_Relation relation) {
+    public void setRelation(Sal_Relation relation) {
         this.relation = relation;
     }
 
@@ -151,7 +159,45 @@ public class Job implements Serializable {
         this.description = description;
     }
 
+    public Address getAddress() {
+        return address;
+    }
     
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public Contact getContact() {
+        return contact;
+    }
+
+    public void setContact(Contact contact) {
+        this.contact = contact;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    public List<NeededRequirement> getNeeded() {
+        return needed;
+    }
+
+    public void setNeeded(List<NeededRequirement> needed) {
+        this.needed = needed;
+    }
+    
+    public void addNeededRequirement(NeededRequirement needed) {
+        this.needed.add(needed);
+    }
+    
+    public void removeNeededRequirement(NeededRequirement needed) {
+        this.needed.remove(needed);
+    }
     
     public Long getId() {
         return id;

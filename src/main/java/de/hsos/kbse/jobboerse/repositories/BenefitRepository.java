@@ -7,6 +7,7 @@ package de.hsos.kbse.jobboerse.repositories;
 
 import de.hsos.kbse.jobboerse.entity.facades.BenefitFacade;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
+import java.util.List;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
@@ -25,6 +26,14 @@ public class BenefitRepository {
     public void create(String name, String desc) {
         Benefit benefit = Benefit.builder().name(name).description(desc).build();
         bf.create(benefit);
+    }
+    
+    public Benefit findByName(String name) {
+        return bf.findByName(name);
+    }
+    
+    public List<Benefit> findAll() {
+        return bf.findAll();
     }
     
     public void update(Long id, String name, String desc) {

@@ -7,6 +7,7 @@ package de.hsos.kbse.jobboerse.repositories;
 
 import de.hsos.kbse.jobboerse.entity.facades.RequirementFacade;
 import de.hsos.kbse.jobboerse.entity.shared.Requirement;
+import java.util.List;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
@@ -22,6 +23,14 @@ public class RequirementRepository {
     public void create(String name, String desc) {
         Requirement req = Requirement.builder().name(name).description(desc).build();
         rf.create(req);
+    }
+    
+    public Requirement findByName(String name) {
+        return rf.findByName(name);
+    }
+    
+    public List<Requirement> findAll() {
+        return rf.findAll();
     }
     
     public void update(Long id, String name, String desc) {

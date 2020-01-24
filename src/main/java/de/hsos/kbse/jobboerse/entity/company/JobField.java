@@ -1,15 +1,12 @@
 package de.hsos.kbse.jobboerse.entity.company;
 
-import de.hsos.kbse.jobboerse.entity.shared.Requirement;
 import java.io.Serializable;
-import java.util.List;
 import javax.enterprise.inject.Vetoed;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 
 /**
  *
@@ -26,14 +23,10 @@ public class JobField implements Serializable {
     
     @Column(unique = true)
     private String name;
-    
-    @ManyToMany
-    private List<Requirement> requirements;
 
     public static class Builder {
 
         private String name;
-        private List<Requirement> requirements;
 
         private Builder() {
         }
@@ -43,13 +36,8 @@ public class JobField implements Serializable {
             return this;
         }
 
-        public Builder requirements(final List<Requirement> value) {
-            this.requirements = value;
-            return this;
-        }
-
         public JobField build() {
-            return new JobField(name, requirements);
+            return new JobField(name);
         }
     }
 
@@ -60,9 +48,8 @@ public class JobField implements Serializable {
         return new JobField.Builder();
     }
 
-    private JobField(final String name, final List<Requirement> requirements) {
+    private JobField(final String name) {
         this.name = name;
-        this.requirements = requirements;
     }
 
     
@@ -73,22 +60,6 @@ public class JobField implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<Requirement> getRequirements() {
-        return requirements;
-    }
-
-    public void setRequirements(List<Requirement> requirements) {
-        this.requirements = requirements;
-    }
-    
-    public void addRequirement(Requirement req) {
-        this.requirements.add(req);
-    }   
-    
-    public void removeRequirement(Requirement req) {
-        this.requirements.remove(req);
     }
     
     public Long getId() {

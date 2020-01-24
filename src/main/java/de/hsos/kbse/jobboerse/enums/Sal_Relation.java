@@ -4,7 +4,7 @@ package de.hsos.kbse.jobboerse.enums;
  *
  * @author lennartwoltering
  */
-public enum SAL_Relation {
+public enum Sal_Relation {
     NJ("Nebenjob"),
     HT("Halbtags"),
     VT("Volltags"),
@@ -12,7 +12,7 @@ public enum SAL_Relation {
     
     private final String desc;
     
-    private SAL_Relation(String desc){
+    private Sal_Relation(String desc){
         this.desc = desc;
     }
     

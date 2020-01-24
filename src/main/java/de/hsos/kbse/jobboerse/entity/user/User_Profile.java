@@ -7,8 +7,10 @@ package de.hsos.kbse.jobboerse.entity.user;
 
 import de.hsos.kbse.jobboerse.entity.shared.Address;
 import de.hsos.kbse.jobboerse.enums.Graduation;
+import de.hsos.kbse.jobboerse.enums.Title;
 import java.io.Serializable;
 import javax.enterprise.inject.Vetoed;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,8 +32,10 @@ public class User_Profile implements Serializable {
     private String firstname;
     private String lastname;
     private String description;
+    private Title title;
+    private int age;
 
-    @OneToOne
+    @OneToOne (cascade = CascadeType.ALL, orphanRemoval = true)
     private Address address;
 
     private String telefon;
@@ -42,6 +46,8 @@ public class User_Profile implements Serializable {
         private String firstname;
         private String lastname;
         private String description;
+        private Title title;
+        private int age;
         private Address address;
         private String telefon;
         private Graduation grad;
@@ -64,6 +70,16 @@ public class User_Profile implements Serializable {
             return this;
         }
         
+        public Builder title(final Title value) {
+            this.title = value;
+            return this;
+        }
+        
+        public Builder age(final int value) {
+            this.age = value;
+            return this;
+        }
+        
         public Builder address(final Address value) {
             this.address = value;
             return this;
@@ -80,7 +96,7 @@ public class User_Profile implements Serializable {
         }
 
         public User_Profile build() {
-            return new User_Profile(firstname, lastname, description, telefon, grad);
+            return new User_Profile(firstname, lastname, description, title, age, address, telefon, grad);
 
         }
     }
@@ -92,10 +108,12 @@ public class User_Profile implements Serializable {
         return new User_Profile.Builder();
     }
 
-    private User_Profile(final String firstname, final String lastname, final String description, final String telefon, final Graduation grad) {
+    private User_Profile(final String firstname, final String lastname, final String description, final Title title, final int age, final Address address, final String telefon, final Graduation grad) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.description = description;
+        this.title = title;
+        this.age = age;
         this.address = address;
         this.telefon = telefon;
         this.grad = grad;
@@ -123,6 +141,22 @@ public class User_Profile implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+    
+    public Title getTitle() {
+        return title;
+    }
+    
+    public void setTitle(Title title) {
+        this.title = title;
+    }
+    
+    public int getAge() {
+        return age;
+    }
+    
+    public void setAge(int age) {
+        this.age = age;
     }
     
     public Address getAddress() {
