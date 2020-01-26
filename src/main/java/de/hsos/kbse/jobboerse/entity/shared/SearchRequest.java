@@ -36,20 +36,17 @@ public class SearchRequest implements Serializable {
     private List<WeightedJob> foundJobs;
     
     @ManyToMany
-    private List<Benefit> benefits;
+    private List<Benefit> wishedBenefits;
     
     @ManyToMany
-    private List<Requirement> requirements;
-    
-    @OneToOne
-    private JobField jobfield;
+    private List<JobField> jobfield;
 
     public static class Builder {
 
         private List<WeightedJob> foundJobs;
         private List<Benefit> benefits;
         private List<Requirement> requirements;
-        private JobField jobField;
+        private List<JobField> jobField;
 
         private Builder() {
         }
@@ -64,7 +61,7 @@ public class SearchRequest implements Serializable {
             return this;
         }
         
-        public Builder jobField(final JobField value) {
+        public Builder jobField(final List<JobField> value) {
             this.jobField = value;
             return this;
         }
@@ -86,18 +83,17 @@ public class SearchRequest implements Serializable {
         return new SearchRequest.Builder();
     }
 
-    private SearchRequest(final List<WeightedJob> foundJobs, final List<Benefit> benefits, final List<Requirement> requirements, final JobField jobfield) {
+    private SearchRequest(final List<WeightedJob> foundJobs, final List<Benefit> benefits, final List<Requirement> requirements, final List<JobField> jobfield) {
         this.foundJobs = foundJobs;
-        this.benefits = benefits;
-        this.requirements = requirements;
+        this.wishedBenefits = benefits;
         this.jobfield = jobfield;
     }
 
-    public JobField getJobfield() {
+    public List<JobField> getJobfield() {
         return jobfield;
     }
 
-    public void setJobfield(JobField jobfield) {
+    public void setJobfield(List<JobField> jobfield) {
         this.jobfield = jobfield;
     }
     
@@ -109,23 +105,13 @@ public class SearchRequest implements Serializable {
         this.foundJobs = foundJobs;
     }
 
-    public List<Benefit> getBenefits() {
-        return benefits;
+    public List<Benefit> getWishedBenefits() {
+        return wishedBenefits;
     }
 
-    public void setBenefits(List<Benefit> benefits) {
-        this.benefits = benefits;
+    public void setWishedBenefits(List<Benefit> wishedBenefits) {
+        this.wishedBenefits = wishedBenefits;
     }
-
-    public List<Requirement> getRequirements() {
-        return requirements;
-    }
-
-    public void setRequirements(List<Requirement> requirements) {
-        this.requirements = requirements;
-    }
-    
-    
 
     public Long getId() {
         return id;

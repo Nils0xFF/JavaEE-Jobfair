@@ -83,21 +83,6 @@ public class LoginBacking {
        System.out.println(status);
        return status;
     }
-    /*
-    public void register(){
-        Map<String, String> parameters = new HashMap<>();
-        parameters.put("Pbkdf2PasswordHash.Iterations", "3072");
-        parameters.put("Pbkdf2PasswordHash.Algorithm", "PBKDF2WithHmacSHA512");
-        parameters.put("Pbkdf2PasswordHash.SaltSizeBytes", "64");
-        passwordHash.initialize(parameters);
-        caller callere = new caller();
-        callere.setName(email);
-        callere.setPassword(passwordHash.generate(password.toCharArray()));
-        callere.setGroup_name("USER");
-        cf.create(callere);
-    }
-    */
-    
  
    // getters & setters
 

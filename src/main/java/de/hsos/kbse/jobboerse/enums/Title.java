@@ -15,5 +15,10 @@ public enum Title {
     private Title(String address){
         this.address = address;
     }
+
+    public String getAddress() {
+        return address;
+    }
+    
     
 }

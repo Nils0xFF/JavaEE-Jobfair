@@ -12,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 /**
@@ -46,6 +45,9 @@ public class Job implements Serializable {
     
     @ManyToMany
     private List<NeededRequirement> needed;
+    
+    @OneToOne
+    private JobField jobfield;
 
     public static class Builder {
 
@@ -55,11 +57,17 @@ public class Job implements Serializable {
         private String description;
         private Address address;
         private Company company;
+        private JobField jobfield;
         private List<NeededRequirement> needed;
 
         private Builder() {
         }
 
+        public Builder jobField(final JobField value){
+            this.jobfield = value;
+            return this;
+        }
+        
         public Builder relation(final Sal_Relation value) {
             this.relation = value;
             return this;
@@ -96,7 +104,7 @@ public class Job implements Serializable {
         }
 
         public Job build() {
-            return new Job(relation, name, salary, description, address, company, needed);
+            return new Job(relation, name, salary, description, address, company, needed, jobfield);
         }
     }
 
@@ -106,7 +114,7 @@ public class Job implements Serializable {
         return new Job.Builder();
     }
 
-    private Job(final Sal_Relation relation, final String name, final Double salary, final String description, final Address address, final Company company, final List<NeededRequirement> needed) {
+    private Job(final Sal_Relation relation, final String name, final Double salary, final String description, final Address address, final Company company, final List<NeededRequirement> needed, final JobField jobfield) {
         this.relation = relation;
         this.name = name;
         this.salary = salary;
@@ -114,6 +122,7 @@ public class Job implements Serializable {
         this.address = address;
         this.company = company;
         this.needed = needed;
+        this.jobfield = jobfield;
     }    
     
     public Sal_Relation getRelation() {

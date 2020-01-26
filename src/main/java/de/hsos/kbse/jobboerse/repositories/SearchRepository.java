@@ -8,11 +8,9 @@ package de.hsos.kbse.jobboerse.repositories;
 import de.hsos.kbse.jobboerse.entity.company.JobField;
 import de.hsos.kbse.jobboerse.entity.facades.SearchRequestFacade;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
-import de.hsos.kbse.jobboerse.entity.shared.Requirement;
 import de.hsos.kbse.jobboerse.entity.shared.SearchRequest;
 import de.hsos.kbse.jobboerse.entity.user.SeekingUser;
 import de.hsos.kbse.jobboerse.entity.user.WeightedJob;
-import de.hsos.kbse.jobboerse.repositories.UserRepository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -29,13 +27,12 @@ public class SearchRepository {
     private SearchRequestFacade searchrequests;
     
     @Inject
-    private UserRepository users;
+    private GeneralUserRepository users;
     
-    public boolean createSearchRequirements(String email, List<Requirement> fullfilledRequirements, List<Benefit> wishedBenefits, JobField jobfield){
+    public boolean createSearchRequirements(String email, List<Benefit> wishedBenefits, List<JobField> jobfield){
         SeekingUser foundUser = users.getUserByEmail(email);
         if(foundUser != null){
             SearchRequest toInsert = SearchRequest.builder()
-                    .requirements(fullfilledRequirements)
                     .benefits(wishedBenefits)
                     .foundJobs(new ArrayList<>())
                     .jobField(jobfield)
@@ -56,7 +53,7 @@ public class SearchRepository {
         return null;
     }
     
-    public JobField getJobField(String email){
+    public List<JobField> getJobField(String email){
         SeekingUser foundUser = users.getUserByEmail(email);
         if(foundUser != null){
             return foundUser.getSearchrequest().getJobfield();
@@ -64,20 +61,20 @@ public class SearchRepository {
         return null;
     }
     
-    public List<Requirement> getFullfilledRequirements(String email){
+    public List<Benefit> getWishedBenefits(String email){
         SeekingUser foundUser = users.getUserByEmail(email);
         if(foundUser != null){
-            return foundUser.getSearchrequest().getRequirements();
+            return foundUser.getSearchrequest().getWishedBenefits();
         }
         return null;
     }
     
-    public List<Benefit> getWishedBenefits(String email){
-        SeekingUser foundUser = users.getUserByEmail(email);
-        if(foundUser != null){
-            return foundUser.getSearchrequest().getBenefits();
+    public void updateFoundJobs(String email, List<WeightedJob> foundJobs){
+        SearchRequest request = getSearchRequest(email);
+        if(request != null){
+            request.setFoundJobs(foundJobs);
+            searchrequests.edit(request);
         }
-        return null;
     }
     
     public List<WeightedJob> getFoundJobs(String email){

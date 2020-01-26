@@ -6,17 +6,24 @@
 package de.hsos.kbse.jobboerse.entity.user;
 
 import de.hsos.kbse.jobboerse.entity.shared.Address;
+import de.hsos.kbse.jobboerse.entity.shared.Requirement;
 import de.hsos.kbse.jobboerse.enums.Graduation;
 import de.hsos.kbse.jobboerse.enums.Salutation;
 import de.hsos.kbse.jobboerse.enums.Title;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
 import javax.enterprise.inject.Vetoed;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -35,11 +42,16 @@ public class User_Profile implements Serializable {
     private String firstname;
     private String lastname;
     private String description;
-    private int age;
+    
+    @Temporal(TemporalType.DATE)
+    private Date birthday;
 
     @OneToOne(cascade = CascadeType.ALL,
             orphanRemoval = true)
     private Address address;
+    
+    @ManyToMany
+    private List<Requirement> fullfiledRequirements;
 
     private String telefon;
     private Graduation grad;
@@ -51,10 +63,11 @@ public class User_Profile implements Serializable {
         private Salutation salutation;
         private Title title;    
         private String description;
-        private int age;
+        private Date birthday;
         private Address address;
         private String telefon;
         private Graduation grad;
+        private List<Requirement> fullfilledRequirements;
 
         private Builder() {
         }
@@ -82,8 +95,8 @@ public class User_Profile implements Serializable {
             return this;
         }
         
-        public Builder age(final int value) {
-            this.age = value;
+        public Builder birthday(final Date value) {
+            this.birthday = value;
             return this;
         }
         
@@ -102,12 +115,19 @@ public class User_Profile implements Serializable {
             return this;
         }
 
+        public Builder fullfilledRequirements(final List<Requirement> value){
+            this.fullfilledRequirements = value;
+            return this;
+        }
+        
         public User_Profile build() {
-            return new User_Profile(salutation, title ,firstname, lastname, description, telefon, address, grad);
+            return new User_Profile(salutation, title ,firstname, lastname, description, telefon, address, grad, birthday, fullfilledRequirements);
 
         }
     }
 
+    
+    
     public User_Profile() {
     }
 
@@ -115,12 +135,13 @@ public class User_Profile implements Serializable {
         return new User_Profile.Builder();
     }
 
-    private User_Profile(final Salutation salutation, final Title title, final String firstname, final String lastname, final String description, final String telefon, final Address address, final Graduation grad) {
+    private User_Profile(final Salutation salutation, final Title title, final String firstname, final String lastname, final String description, final String telefon, final Address address, final Graduation grad, final Date birthday, final List<Requirement> fullfilledRequirements) {
         this.salutation = salutation;
         this.title = title;
         this.firstname = firstname;
         this.lastname = lastname;
         this.description = description;
+        this.birthday = birthday;
         if(address == null){
             this.address = new Address();
         }else{
@@ -128,8 +149,17 @@ public class User_Profile implements Serializable {
         }
         this.telefon = telefon;
         this.grad = grad;
+        this.fullfiledRequirements = fullfilledRequirements;
     }
 
+    public List<Requirement> getFullfiledRequirements() {
+        return fullfiledRequirements;
+    }
+
+    public void setFullfiledRequirements(List<Requirement> fullfiledRequirements) {
+        this.fullfiledRequirements = fullfiledRequirements;
+    }
+    
     public Salutation getSalutation() {
         return salutation;
     }
@@ -145,8 +175,6 @@ public class User_Profile implements Serializable {
     public void setTitle(Title title) {
         this.title = title;
     }
-    
-    
     
     public String getFirstname() {
         return firstname;
@@ -172,12 +200,12 @@ public class User_Profile implements Serializable {
         this.description = description;
     }
         
-    public int getAge() {
-        return age;
+    public Date getBirthday() {
+        return birthday;
     }
     
-    public void setAge(int age) {
-        this.age = age;
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
     
     public Address getAddress() {

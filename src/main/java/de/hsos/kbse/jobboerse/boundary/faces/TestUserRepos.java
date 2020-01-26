@@ -5,16 +5,25 @@
  */
 package de.hsos.kbse.jobboerse.boundary.faces;
 
+import de.hsos.kbse.jobboerse.controllers.UserRegistrationController;
+import de.hsos.kbse.jobboerse.entity.company.Job;
+import de.hsos.kbse.jobboerse.entity.shared.Requirement;
 import de.hsos.kbse.jobboerse.enums.Graduation;
-import de.hsos.kbse.jobboerse.repositories.UserRepository;
+import de.hsos.kbse.jobboerse.repositories.GeneralUserRepository;
 import de.hsos.kbse.jobboerse.enums.Salutation;
 import de.hsos.kbse.jobboerse.enums.Title;
+import de.hsos.kbse.jobboerse.repositories.JobRepository;
+import de.hsos.kbse.jobboerse.repositories.RequirementRepository;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.transaction.Transactional;
+import org.primefaces.model.DualListModel;
 
 /**
  *
@@ -23,15 +32,47 @@ import javax.transaction.Transactional;
 @Named("test")
 @RequestScoped
 public class TestUserRepos {
-    private String email;
-    private String pw;
-    private String firstname;
-    private String lastname;
-    private String telefon;
-    private String desc;
+    private String email, pw;
+    private String firstname, lastname,telefon,desc;
+    private Date birthday;
+    private String street, housenumber, city, postalcode, country;
+    
+    @Enumerated(EnumType.STRING)
+    private Salutation salutation;
+
+    public Salutation[] getSalutationValues() {
+        return Salutation.values();
+    }
+
+    public Salutation getSalutations() {
+        return salutation;
+    }
+    
+    @Enumerated(EnumType.STRING)
+    private Title titles;
+
+    public Title[] getTitleValues() {
+        return Title.values();
+    } 
+
+    public Title getTitles() {
+        return titles;
+    }
+    
+    private List<Requirement> reqTarget = new ArrayList<Requirement>();
+    private DualListModel<Requirement> selectedRequirements;
     
     @Inject
-    private UserRepository ur;
+    private JobRepository jobRepo;
+    
+    @Inject
+    private RequirementRepository requirementRepo;
+    
+    @Inject
+    private UserRegistrationController regCntrl;
+    
+    @Inject
+    private GeneralUserRepository ur;
     
     @Enumerated(EnumType.ORDINAL)
     private Graduation grades;
@@ -48,16 +89,30 @@ public class TestUserRepos {
         this.grades = grades;
     }
     
-    
-    
     @Transactional
     public void createLogin(){
-        ur.createLogin(email, pw);
+        ur.createLogin(email, pw); 
     }
     
-    @Transactional
+    public void printJobs(){
+        for(Job j : jobRepo.findJobsByJobField("Softwareentwicklung")){
+            System.out.println(j.getName());
+        }
+    }
+    
     public void createPorfile(){
-        ur.createUserProfile(email, Salutation.mister , Title.Emtpy ,firstname, lastname, desc, telefon, grades);
+        /*
+        ur.createLogin(email, pw);
+        regCntrl.createUserProfile(salutation, titles, firstname, lastname, desc, telefon, birthday);
+        regCntrl.createAddress(street, housenumber, city, postalcode, country);
+        regCntrl.createQualifications("test@test.de", grades, selectedRequirements.getTarget());
+*/
+        //ur.createUserProfile(email, Salutation.mister , Title.Emtpy ,firstname, lastname, desc, telefon, grades);
+
+    }
+    
+    public void createQualis(){
+        //regCntrl.createQualifications("test@test.de", grades, selectedRequirements.getTarget());
     }
     
     @Transactional
@@ -65,6 +120,90 @@ public class TestUserRepos {
         ur.deleteUser(email);
     }
 
+    public void getRequirements(){
+        selectedRequirements = new DualListModel<Requirement>(
+         requirementRepo.findAll(), reqTarget);
+    }
+
+    public DualListModel<Requirement> getSelectedRequirements() {
+        getRequirements();
+        return selectedRequirements;
+    }
+
+    public void setSelectedRequirements(DualListModel<Requirement> selectedRequirements) {
+        this.selectedRequirements = selectedRequirements;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+ 
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public Salutation getSalutation() {
+        return salutation;
+    }
+    
+    public Title getTitle(){
+        return titles;
+    }
+    
+    public void setTitle(Title title){
+        this.titles = title;
+    }
+
+    public void setSalutation(Salutation salutation) {
+        this.salutation = salutation;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getHousenumber() {
+        return housenumber;
+    }
+
+    public void setHousenumber(String housenumber) {
+        this.housenumber = housenumber;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getPostalcode() {
+        return postalcode;
+    }
+
+    public void setPostalcode(String postalcode) {
+        this.postalcode = postalcode;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+    
+    
+    
+    
+    
+    
+    
     public String getEmail() {
         return email;
     }
@@ -113,11 +252,11 @@ public class TestUserRepos {
         this.desc = desc;
     }
 
-    public UserRepository getUr() {
+    public GeneralUserRepository getUr() {
         return ur;
     }
 
-    public void setUr(UserRepository ur) {
+    public void setUr(GeneralUserRepository ur) {
         this.ur = ur;
     }
     

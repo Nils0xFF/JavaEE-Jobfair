@@ -103,6 +103,10 @@ public class JobRepository {
         jf.edit(old);
     }
     
+    public List<Job> findJobsByJobField(String name){
+        return jf.findJobsByJobField(name);
+    }
+    
     public void delete(Long id) {
         jf.remove(jf.find(id));
     }

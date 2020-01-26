@@ -33,7 +33,7 @@ public class Company implements Serializable {
     private Contact contact;
     @ManyToMany
     private List<Benefit> benefits;
-    //LOGIN?!
+
 
     public static class Builder {
 

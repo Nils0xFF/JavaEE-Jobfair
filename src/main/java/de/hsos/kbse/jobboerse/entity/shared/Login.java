@@ -5,6 +5,7 @@
  */
 package de.hsos.kbse.jobboerse.entity.shared;
 
+import de.hsos.kbse.jobboerse.entity.company.Company;
 import de.hsos.kbse.jobboerse.entity.user.SeekingUser;
 import java.io.Serializable;
 import javax.enterprise.inject.Vetoed;
@@ -23,10 +24,6 @@ import javax.persistence.OneToOne;
 @Entity
 public class Login implements Serializable {
 
-    @OneToOne(cascade = CascadeType.ALL,
-    orphanRemoval = true)
-    private SeekingUser seekingUser;
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
@@ -34,6 +31,14 @@ public class Login implements Serializable {
     private String password;
     private String group_name;
     private String email;
+    
+    @OneToOne(cascade = CascadeType.ALL,
+    orphanRemoval = true)
+    private SeekingUser seekingUser;
+    
+    @OneToOne(cascade = CascadeType.ALL,
+    orphanRemoval = true)
+    private Company company;
 
     public static class Builder {
 
@@ -41,6 +46,7 @@ public class Login implements Serializable {
         private String password;
         private String group_name;
         private String email;
+        private Company company;
 
         private Builder() {
         }
@@ -48,6 +54,11 @@ public class Login implements Serializable {
         public Builder seekingUser(final SeekingUser value) {
             this.seekingUser = value;
             return this;
+        }
+        
+        public Builder company(final Company value){
+            this.company = value;
+            return this;            
         }
 
         public Builder password(final String value) {
@@ -66,7 +77,7 @@ public class Login implements Serializable {
         }
 
         public Login build() {
-            return new Login(seekingUser, password, group_name, email);
+            return new Login(seekingUser,company, password, group_name, email);
         }
     }
 
@@ -77,12 +88,9 @@ public class Login implements Serializable {
         return new Login.Builder();
     }
 
-    private Login(final SeekingUser seekingUser, final String password, final String group_name, final String email) {
-        if(seekingUser == null){
-            this.seekingUser = new SeekingUser();
-        }else{
+    private Login(final SeekingUser seekingUser,final Company company , final String password, final String group_name, final String email) {
         this.seekingUser = seekingUser;
-        }
+        this.company = company;
         this.password = password;
         this.group_name = group_name;
         this.email = email;
@@ -111,6 +119,16 @@ public class Login implements Serializable {
     public void setGroup_name(String group_name) {
         this.group_name = group_name;
     }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+    
+    
 
     public String getEmail() {
         return email;
