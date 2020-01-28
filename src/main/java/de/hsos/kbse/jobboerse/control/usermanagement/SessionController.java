@@ -3,7 +3,9 @@ package de.hsos.kbse.jobboerse.control.usermanagement;
 import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
+import javax.security.enterprise.SecurityContext;
 
 /**
  *
@@ -13,27 +15,25 @@ import javax.inject.Named;
 @SessionScoped
 public class SessionController implements Serializable {
 
+    @Inject
+    private SecurityContext context;
+
     private boolean isLoggedIn = false;
 
     private boolean isAdmin = false;
 
     private boolean isCompany = true;
 
-    public String login() {
-        System.out.print("Login!");
-        isLoggedIn = true;
-        return "/pages/members/index";
+    public void logout() {
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
     }
 
-    public String logout() {
-        isLoggedIn = false;
-        System.out.print("Logout!" + this.userIsLoggedIn());
-        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-        return "/pages/public/index";
+    public boolean userHasSetup() {
+        return true;
     }
 
     public boolean userIsLoggedIn() {
-        return isLoggedIn;
+        return context.isCallerInRole("USER");
     }
 
     public boolean userIsAdmin() {
@@ -42,6 +42,10 @@ public class SessionController implements Serializable {
 
     public boolean userIsCompany() {
         return isCompany;
+    }
+
+    public String getUserName() {
+        return context.getCallerPrincipal().getName();
     }
 
 }
