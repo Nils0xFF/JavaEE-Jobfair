@@ -29,7 +29,7 @@ public class SessionController implements Serializable {
     }
 
     public boolean userHasSetup() {
-        return true;
+        return false;
     }
 
     public boolean userIsLoggedIn() {

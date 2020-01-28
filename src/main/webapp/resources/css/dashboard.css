@@ -6,7 +6,7 @@
 @media (min-width:34em) {
     .card-deck > .card
     {
-        width: 29%;
+        width: 29% !important;
         flex-wrap: wrap;
         flex: initial; 
     }
