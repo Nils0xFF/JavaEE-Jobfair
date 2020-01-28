@@ -1,0 +1,171 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+    <div class="container mt-5">
+        <div class="card">
+            <h5 class="card-header">Erstmalige Einrichtung</h5>
+            <div class="card-body">
+                <h:form>
+                    <p:wizard showNavBar="false" showStepStatus="true" widgetVar="wiz">
+                        <p:tab id="personal" title="Persönliche Daten">
+                            <div class="form-row">
+                                <div class="col-sm-3">
+                                    <p:outputLabel for="@next" value="Anrede"/>
+                                    <h:selectOneMenu class="custom-select #{salutation.valid ? '' : 'is-invalid'}" binding="#{salutation}" required="true">
+                                        <f:selectItem itemLabel="-" itemValue="" />
+                                        <f:selectItem itemLabel="Herr" itemValue="Herr" />
+                                        <f:selectItem itemLabel="Frau" itemValue="Frau" />
+                                        <p:clientValidator />
+                                    </h:selectOneMenu>
+                                    <h:message for="@previous" class="small text-danger"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <p:outputLabel for="@next" value="Title"/>
+                                    <h:selectOneMenu id="title" class="custom-select">
+                                        <f:selectItem itemLabel="-" itemValue="" />
+                                        <f:selectItem itemLabel="Dr" itemValue="Herr" />
+                                        <f:selectItem itemLabel="Prof" itemValue="Frau" />
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-sm-6 form-group">
+                                    <p:outputLabel for="@next" value="Vorname"/>
+                                    <p:inputText class="form-control #{firstName.valid ? '' : 'is-invalid'}" binding="#{firstName}" value=" " required="true">
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText>
+                                    <h:message for="@previous" class="small text-danger"/>
+                                </div>
+                                <div class="col-sm-6">
+                                    <p:outputLabel for="@next" value="Nachname"/>
+                                    <p:inputText class="form-control" id="lastName" value=" " >
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText>  
+                                </div> 
+                                <div class="col-sm-6">
+                                    <p:outputLabel for="@next" value="Geburtsdatum"/>
+                                    <p:inputText class="form-control" id="birthdate" value=" " >
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText>  
+                                </div> 
+                                <div class="col-sm-6">
+                                    <p:outputLabel for="@next" value="Telefonnummer"/>
+                                    <p:inputText class="form-control" id="telNr" value=" " >
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText>  
+                                </div> 
+                            </div>
+
+                            <div class="form-row">
+                                <div class="col-sm-9 form-group">
+                                    <p:outputLabel for="@next" value="Straße"/>
+                                    <p:inputText class="form-control #{streetName.valid ? '' : 'is-invalid'}" binding="#{streetName}" value=" " required="true">
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText>
+                                    <h:message for="@previous" class="small text-danger"/>
+                                </div>
+                                <div class="col-sm-3 form-group">
+                                    <p:outputLabel for="@next" value="Hausnummer"/>
+                                    <p:inputText class="form-control #{streetNumber.valid ? '' : 'is-invalid'}" binding="#{streetNumber}" value=" ">
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText>  
+                                </div> 
+                            </div>
+
+                            <div class="form-row">
+                                <div class="col-sm-3 form-group">
+                                    <p:outputLabel for="@next" value="PLZ"/>
+                                    <p:inputText class="form-control #{postalCode.valid ? '' : 'is-invalid'}" binding="#{postalCode}" value=" " required="true">
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText>
+                                    <h:message for="@previous" class="small text-danger"/>
+                                </div>
+                                <div class="col-sm-9 form-group">
+                                    <p:outputLabel for="@next" value="Stadt"/>
+                                    <p:inputText class="form-control #{cityName.valid ? '' : 'is-invalid'}" binding="#{cityName}" value=" ">
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText>  
+                                </div> 
+                            </div>
+
+                            <p:commandButton class="btn btn-light" value="Abbrechen" onclick="PF('wiz').back();"></p:commandButton>
+                            <p:commandButton class="btn btn-primary" value="Weiter" onclick="PF('wiz').next();" validateClient="true"></p:commandButton>
+                        </p:tab>
+
+                        <p:tab id="company" title="Qualifikationen">
+                            <div class="form-group">
+                                <p:outputLabel for="@next" value="Abschluss"/>
+                                <h:selectOneMenu id="degree" class="custom-select">
+                                    <f:selectItem itemLabel="-" itemValue="" />
+                                    <f:selectItem itemLabel="Dr" itemValue="Herr" />
+                                    <f:selectItem itemLabel="Prof" itemValue="Frau" />
+                                </h:selectOneMenu>
+                            </div>
+
+                            <div class="form-group">
+                                <p:outputLabel value="Fähigkeiten" for="@next" />
+                                <p:autoComplete id="abilities" multiple="true" value="#{autoCompleteView.data}" completeMethod="#{autoCompleteView.completeData}"
+                                                var="string" itemLabel="#{string.name}" itemValue="#{string}"  forceSelection="true"
+                                                class="form-control h-auto" converter="autoCompleteConverter" unique="false">
+
+                                    <p:column>
+                                        <h:outputText value="#{string.name}" />
+                                    </p:column>
+                                </p:autoComplete>
+                            </div>
+
+                            <div class="form-group">
+                                <p:outputLabel for="@next" value="Beschreibung"/>
+                                <p:inputTextarea class="form-control" id="description" value=" " rows="6" cols="33" >
+                                    <p:clientValidator event="keyup"/>
+                                </p:inputTextarea>
+                            </div>
+                            <p:commandButton class="btn btn-light" value="Zurück" onclick="PF('wiz').back();"></p:commandButton>
+                            <p:commandButton class="btn btn-primary" value="Weiter" onclick="PF('wiz').next();" ></p:commandButton>
+                        </p:tab>
+
+                        <p:tab id="person" title="Präferenzen">
+                            <div class="form-group">
+                                <p:outputLabel for="@next" value="Branchen"/>
+                                <h:selectManyMenu id="jobField" class="form-control">
+                                    <f:selectItem itemLabel="IT" itemValue="" />
+                                    <f:selectItem itemLabel="Sozialesr" itemValue="Herr" />
+                                    <f:selectItem itemLabel="Prof" itemValue="Frau" />
+                                </h:selectManyMenu>
+                            </div>
+
+                            <div class="form-group">
+                                <p:outputLabel value="Benefits" for="@next" />
+                                <p:autoComplete multiple="true" value="#{autoCompleteView.data}" completeMethod="#{autoCompleteView.completeData}"
+                                                var="string" itemLabel="#{string.name}" itemValue="#{string}"  forceSelection="true"
+                                                class="form-control h-auto" converter="autoCompleteConverter" unique="false">
+
+                                    <p:column>
+                                        <h:outputText value="#{string.name}" />
+                                    </p:column>
+                                </p:autoComplete>
+                            </div>
+
+                            <p:commandButton class="btn btn-light" value="Zurück" onclick="PF('wiz').back();"></p:commandButton>
+                            <p:commandButton class="btn btn-primary" value="Weiter" onclick="PF('wiz').next();" ></p:commandButton>
+                        </p:tab>
+
+                        <p:tab id="overview" title="Übersicht">
+
+                            <p:commandButton class="btn btn-light" value="Zurück" onclick="PF('wiz').back();"></p:commandButton>
+                            <p:commandButton class="btn btn-primary" value="Weiter" action=" " ajax="true" validateClient="true"></p:commandButton>
+                        </p:tab>
+                    </p:wizard>
+
+                </h:form>
+            </div>
+        </div>
+    </div>
+</html>
+

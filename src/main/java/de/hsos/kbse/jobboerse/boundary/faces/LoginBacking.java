@@ -5,7 +5,11 @@
  */
 package de.hsos.kbse.jobboerse.boundary.faces;
 
+import de.hsos.kbse.jobboerse.entity.facades.LoginFacade;
+import de.hsos.kbse.jobboerse.entity.shared.Login;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
@@ -28,14 +32,18 @@ import static javax.security.enterprise.authentication.mechanism.http.Authentica
 import javax.security.enterprise.credential.Credential;
 import javax.security.enterprise.credential.Password;
 import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
+import javax.transaction.Transactional;
 //import javax.ws.rs.core.SecurityContext;
 
 @Named
 @RequestScoped
 public class LoginBacking {
     
+    @Inject
+    private LoginFacade cf;
+    
     @NotEmpty
-    @Size(min = 8, message = "Password must have at least 8 characters")
+    // @Size(min = 8, message = "Password must have at least 8 characters")
     private String password;
  
     @NotEmpty
@@ -65,7 +73,7 @@ public class LoginBacking {
             case SUCCESS:
                 facesContext.addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_INFO, "Login succeed", null));
-                externalContext.redirect(externalContext.getRequestContextPath() + "/members/test.xhtml");
+                externalContext.redirect(externalContext.getRequestContextPath() + "/dashboard");
                 break;
             case NOT_DONE:
         }
@@ -83,6 +91,22 @@ public class LoginBacking {
        System.out.println(status);
        return status;
     }
+    
+    @Transactional
+    public void register(){
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("Pbkdf2PasswordHash.Iterations", "3072");
+        parameters.put("Pbkdf2PasswordHash.Algorithm", "PBKDF2WithHmacSHA512");
+        parameters.put("Pbkdf2PasswordHash.SaltSizeBytes", "64");
+        passwordHash.initialize(parameters);
+        Login callere = new Login();
+        callere.setEmail(email);
+        callere.setPassword(passwordHash.generate(password.toCharArray()));
+        callere.setGroup_name("USER");
+        cf.create(callere);
+    }
+    
+    
  
    // getters & setters
 
@@ -101,12 +125,6 @@ public class LoginBacking {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public SecurityContext getSecurityContext() {
-        return securityContext;
-    }
-
-    public void setSecurityContext(SecurityContext securityContext) {
-        this.securityContext = securityContext;
-    }
+    
+    
 }

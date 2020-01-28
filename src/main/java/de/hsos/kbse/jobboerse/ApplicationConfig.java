@@ -21,11 +21,11 @@ import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
        cookieMaxAgeSeconds = 3600
 )
 @CustomFormAuthenticationMechanismDefinition(
-  loginToContinue = @LoginToContinue(loginPage = "/index.xhtml"))
+  loginToContinue = @LoginToContinue(loginPage = "/pages/public/index.xhtml"))
 @DatabaseIdentityStoreDefinition(
     dataSourceLookup = "java:app/JindiJob",
-    callerQuery = "select password from login where name = ?",
-    groupsQuery = "select group_name from login where name = ?",
+    callerQuery = "select password from login where email = ?",
+    groupsQuery = "select group_name from login where email = ?",
     hashAlgorithm = Pbkdf2PasswordHash.class,
     priorityExpression = "30",
     hashAlgorithmParameters = {

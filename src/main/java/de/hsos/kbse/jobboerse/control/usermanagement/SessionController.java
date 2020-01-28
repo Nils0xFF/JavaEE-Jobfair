@@ -2,36 +2,50 @@ package de.hsos.kbse.jobboerse.control.usermanagement;
 
 import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
+import javax.security.enterprise.SecurityContext;
 
 /**
  *
  * @author nilsgeschwinde
  */
-
 @Named("sessionController")
 @SessionScoped
 public class SessionController implements Serializable {
 
-    private boolean isLoggedIn;
+    @Inject
+    private SecurityContext context;
 
-    private boolean isAdmin;
+    private boolean isLoggedIn = false;
 
-    public void login(){
-        System.out.print("Login!");
-        isLoggedIn = true;
+    private boolean isAdmin = false;
+
+    private boolean isCompany = true;
+
+    public void logout() {
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
     }
-    
-    public void logout(){
-        isLoggedIn = false;
+
+    public boolean userHasSetup() {
+        return true;
     }
-    
+
     public boolean userIsLoggedIn() {
-        return isLoggedIn;
+        return context.isCallerInRole("USER");
     }
 
     public boolean userIsAdmin() {
         return isAdmin;
+    }
+
+    public boolean userIsCompany() {
+        return isCompany;
+    }
+
+    public String getUserName() {
+        return context.getCallerPrincipal().getName();
     }
 
 }

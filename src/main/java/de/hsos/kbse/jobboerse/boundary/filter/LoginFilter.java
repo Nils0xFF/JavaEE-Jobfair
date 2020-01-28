@@ -20,22 +20,28 @@ import javax.servlet.http.HttpServletResponse;
  *
  * Requires you to be logged in, in order to see the member pages
  */
-@WebFilter(urlPatterns = "/faces/members/*", dispatcherTypes = {REQUEST, FORWARD})
+@WebFilter(urlPatterns = "/faces/pages/members/*", dispatcherTypes = {REQUEST, FORWARD})
 public class LoginFilter implements Filter {
-
+    
     @Inject
     private SessionController sessionCtrl;
-
+    
     @Override
     public void doFilter(ServletRequest sr, ServletResponse sr1, FilterChain fc) throws IOException, ServletException {
-
+        
+        HttpServletResponse response = (HttpServletResponse) sr1;
+        HttpServletRequest request = (HttpServletRequest) sr;
+        
         if (sessionCtrl.userIsLoggedIn()) {
-            fc.doFilter(sr, sr1);
+            if (sessionCtrl.userHasSetup() || request.getRequestURI().substring(request.getContextPath().length()).replaceAll("[/]+$", "").contains("setup")) {
+                fc.doFilter(sr, sr1);
+            } else {
+                
+                response.sendRedirect(request.getContextPath() + "/setup");
+            }
         } else {
-            HttpServletResponse response = (HttpServletResponse) sr1;
-            HttpServletRequest request = (HttpServletRequest) sr;
             response.sendRedirect(request.getContextPath() + "/");
         }
-
+        
     }
 }

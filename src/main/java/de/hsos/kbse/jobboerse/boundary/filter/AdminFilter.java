@@ -19,7 +19,7 @@ import javax.servlet.annotation.WebFilter;
  * Requires you to be logged in, in order to see the member pages
  */
 
-@WebFilter(urlPatterns = "/faces/admin/*", dispatcherTypes = {REQUEST, FORWARD})
+@WebFilter(urlPatterns = "/faces/pages/admin/*", dispatcherTypes = {REQUEST, FORWARD})
 public class AdminFilter implements Filter {
 
     @Inject
