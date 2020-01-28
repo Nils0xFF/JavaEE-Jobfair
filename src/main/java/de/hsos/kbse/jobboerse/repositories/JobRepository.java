@@ -6,7 +6,6 @@
 package de.hsos.kbse.jobboerse.repositories;
 
 import de.hsos.kbse.jobboerse.entity.company.Company;
-import de.hsos.kbse.jobboerse.entity.company.Contact;
 import de.hsos.kbse.jobboerse.entity.company.Job;
 import de.hsos.kbse.jobboerse.entity.facades.JobFacade;
 import de.hsos.kbse.jobboerse.entity.shared.Address;

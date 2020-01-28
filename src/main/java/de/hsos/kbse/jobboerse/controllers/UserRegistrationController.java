@@ -10,7 +10,6 @@ import de.hsos.kbse.jobboerse.entity.shared.Login;
 import de.hsos.kbse.jobboerse.entity.shared.Requirement;
 import de.hsos.kbse.jobboerse.entity.user.SeekingUser;
 import de.hsos.kbse.jobboerse.entity.user.User_Profile;
-import static de.hsos.kbse.jobboerse.entity.user.User_Profile_.grad;
 import de.hsos.kbse.jobboerse.enums.Graduation;
 import de.hsos.kbse.jobboerse.enums.Salutation;
 import de.hsos.kbse.jobboerse.enums.Title;
