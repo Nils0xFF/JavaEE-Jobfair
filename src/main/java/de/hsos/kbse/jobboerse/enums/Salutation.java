@@ -19,4 +19,10 @@ public enum Salutation {
     private Salutation(String salut) {
         this.salut = salut;
     }
+
+    public String getSalut() {
+        return salut;
+    }
+    
+    
 }

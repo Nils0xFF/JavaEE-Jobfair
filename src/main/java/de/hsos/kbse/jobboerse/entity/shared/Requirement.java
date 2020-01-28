@@ -59,8 +59,6 @@ public class Requirement implements Serializable {
         this.description = description;
     }
 
-    
-    
     public String getName() {
         return name;
     }

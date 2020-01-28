@@ -5,16 +5,20 @@
  */
 package de.hsos.kbse.jobboerse.entity.user;
 
+import de.hsos.kbse.jobboerse.entity.company.Job;
 import de.hsos.kbse.jobboerse.entity.shared.Login;
 import de.hsos.kbse.jobboerse.entity.shared.SearchRequest;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import javax.enterprise.inject.Vetoed;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 /**
@@ -30,7 +34,7 @@ public class SeekingUser implements Serializable {
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
     
-    private boolean firstVisit;
+    private boolean completed;
     
     @OneToOne
     private Login login;
@@ -41,11 +45,14 @@ public class SeekingUser implements Serializable {
     
     @OneToOne(cascade = CascadeType.ALL,
             orphanRemoval=true)
-    private SearchRequest searchrequest;
+    private SearchRequest searchrequest; 
+    
+    @OneToMany
+    private List<Job> favorites;
 
     public static class Builder {
 
-        private boolean firstVisit;
+        private boolean completed;
         private User_Profile profile;
 
         private Builder() {
@@ -57,7 +64,7 @@ public class SeekingUser implements Serializable {
         }
 
         public SeekingUser build() {
-            return new SeekingUser(true, profile);
+            return new SeekingUser(false, profile);
         }
     }
 
@@ -68,9 +75,25 @@ public class SeekingUser implements Serializable {
         return new SeekingUser.Builder();
     }
 
-    private SeekingUser(final boolean firstVisit, final User_Profile profile) {
-        this.firstVisit = firstVisit;
-        this.profile = profile;
+    public Login getLogin() {
+        return login;
+    }
+
+    public void setLogin(Login login) {
+        this.login = login;
+    }
+
+    
+    
+    private SeekingUser(final boolean completed, final User_Profile profile) {
+        this.completed = completed;
+        this.favorites = new ArrayList<>();
+        this.searchrequest = new SearchRequest();
+        if(profile == null){
+            this.profile = new User_Profile();
+        }else{
+            this.profile = profile;
+        }
     }
 
     public SearchRequest getSearchrequest() {
@@ -81,12 +104,12 @@ public class SeekingUser implements Serializable {
         this.searchrequest = searchrequest;
     }
     
-    public boolean isFirstVisit() {
-        return firstVisit;
+    public boolean hasCompleted() {
+        return completed;
     }
 
-    public void setFirstVisit(boolean firstVisit) {
-        this.firstVisit = firstVisit;
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 
     public User_Profile getProfile() {

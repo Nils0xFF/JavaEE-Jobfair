@@ -1,67 +1,42 @@
-package de.hsos.kbse.jobboerse.entity.company;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package de.hsos.kbse.jobboerse.entity.shared;
 
 import java.io.Serializable;
 import javax.enterprise.inject.Vetoed;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 
 /**
  *
- * @author lennartwoltering
+ * @author soere
  */
 @Vetoed
 @Entity
-public class JobField implements Serializable {
+public class Picture implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
     
-    @Column(unique = true)
-    private String name;
-
-    public static class Builder {
-
-        private String name;
-
-        private Builder() {
-        }
-
-        public Builder name(final String value) {
-            this.name = value;
-            return this;
-        }
-
-        public JobField build() {
-            return new JobField(name);
-        }
-    }
-
-    public JobField() {
-    }
-
-    public static JobField.Builder builder() {
-        return new JobField.Builder();
-    }
-
-    private JobField(final String name) {
-        this.name = name;
-    }
-
+    @Lob
+    private byte[] data;
     
-    
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public byte[] getData() {
+        return data;
     }
     
+    public void setData(byte[] data) {
+        this.data = data;
+    }
+
     public Long getId() {
         return id;
     }
@@ -80,10 +55,10 @@ public class JobField implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof JobField)) {
+        if (!(object instanceof Picture)) {
             return false;
         }
-        JobField other = (JobField) object;
+        Picture other = (Picture) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -92,7 +67,7 @@ public class JobField implements Serializable {
 
     @Override
     public String toString() {
-        return "de.hsos.kbse.jobboerse.entity.JobField[ id=" + id + " ]";
+        return "de.hsos.kbse.jobboerse.entity.shared.Picture[ id=" + id + " ]";
     }
     
 }

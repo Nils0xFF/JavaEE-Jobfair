@@ -1,5 +1,6 @@
 package de.hsos.kbse.jobboerse.entity.company;
 
+import de.hsos.kbse.jobboerse.enums.Salutation;
 import de.hsos.kbse.jobboerse.enums.Title;
 import java.io.Serializable;
 import javax.enterprise.inject.Vetoed;
@@ -21,6 +22,7 @@ public class Contact implements Serializable {
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
 
+    private Salutation salutation;
     private Title title;
     private String firstname;
     private String lastname;
@@ -29,6 +31,7 @@ public class Contact implements Serializable {
 
     public static class Builder {
 
+        private Salutation salutation;
         private Title title;
         private String firstname;
         private String lastname;
@@ -38,6 +41,11 @@ public class Contact implements Serializable {
         private Builder() {
         }
 
+        public Builder salutation(final Salutation value) {
+            this.salutation = value;
+            return this;
+        }
+        
         public Builder title(final Title value) {
             this.title = value;
             return this;
@@ -64,7 +72,7 @@ public class Contact implements Serializable {
         }
 
         public Contact build() {
-            return new Contact(title, firstname, lastname, email, phone);
+            return new Contact(salutation, title, firstname, lastname, email, phone);
         }
     }
 
@@ -75,7 +83,8 @@ public class Contact implements Serializable {
         return new Contact.Builder();
     }
 
-    private Contact(final Title title, final String firstname, final String lastname, final String email, final String phone) {
+    private Contact(final Salutation salutation,final Title title, final String firstname, final String lastname, final String email, final String phone) {
+        this.salutation = salutation;
         this.title = title;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -83,7 +92,13 @@ public class Contact implements Serializable {
         this.phone = phone;
     }
 
-    
+    public Salutation getSalutation() {
+        return salutation;
+    }
+
+    public void setSalutation(Salutation salutation) {
+        this.salutation = salutation;
+    }
     
     public Title getTitle() {
         return title;

@@ -2,6 +2,7 @@ package de.hsos.kbse.jobboerse.entity.shared;
 
 import java.io.Serializable;
 import javax.enterprise.inject.Vetoed;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,6 +21,7 @@ public class Benefit implements Serializable {
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
     
+    @Column(unique = true)
     private String name;
     private String description;
 
@@ -76,8 +78,6 @@ public class Benefit implements Serializable {
         this.description = description;
     }
     
-    
-
     public Long getId() {
         return id;
     }

@@ -35,4 +35,10 @@ public enum Graduation {
     private Graduation(String grad){
        this.grad = grad;
     }
+
+    public String getGrad() {
+        return grad;
+    }
+    
+    
 }
