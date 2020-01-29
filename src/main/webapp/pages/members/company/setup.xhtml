@@ -24,7 +24,7 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <p:outputLabel for="@next" value="Größe"/>
-                                    <h:selectOneMenu class="custom-select #{salutation.valid ? '' : 'is-invalid'}" binding="#{salutation}" required="true">
+                                    <h:selectOneMenu class="custom-select #{size.valid ? '' : 'is-invalid'}" binding="#{size}" required="true">
                                         <f:selectItem itemLabel="-" itemValue="" />
                                         <f:selectItem itemLabel="10-100" itemValue="Herr" />
                                         <f:selectItem itemLabel="50-10000" itemValue="Frau" />
@@ -56,6 +56,16 @@
                                     </p:inputText>  
                                 </div> 
                             </div>
+
+                            <p:outputLabel value="Benefits" for="@next" />
+                            <p:autoComplete id="benefits" multiple="true" value="#{autoCompleteView.data}" completeMethod="#{autoCompleteView.completeData}"
+                                            var="string" itemLabel="#{string.name}" itemValue="#{string}"  forceSelection="true"
+                                            class="form-control h-auto" converter="autoCompleteConverter" unique="false">
+
+                                <p:column>
+                                    <h:outputText value="#{string.name}" />
+                                </p:column>
+                            </p:autoComplete>
 
                             <div class="form-row">
                                 <div class="col-sm-3 form-group">
