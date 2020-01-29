@@ -83,8 +83,6 @@ public class SeekingUser implements Serializable {
         this.login = login;
     }
 
-    
-    
     private SeekingUser(final boolean completed, final User_Profile profile) {
         this.completed = completed;
         this.favorites = new ArrayList<>();

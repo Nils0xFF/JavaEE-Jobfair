@@ -12,6 +12,7 @@ import de.hsos.kbse.jobboerse.entity.facades.User_ProfileFacade;
 import de.hsos.kbse.jobboerse.entity.shared.Address;
 import de.hsos.kbse.jobboerse.entity.shared.Login;
 import de.hsos.kbse.jobboerse.entity.shared.Requirement;
+import de.hsos.kbse.jobboerse.entity.shared.SearchRequest;
 import de.hsos.kbse.jobboerse.entity.user.SeekingUser;
 import de.hsos.kbse.jobboerse.entity.user.User_Profile;
 import de.hsos.kbse.jobboerse.enums.Graduation;
@@ -51,12 +52,22 @@ public class GeneralUserRepository {
         return logins.findByEmail(email) != null;
     }
     
-    public boolean createUser(Login toInsert){
-        if (!checkEmailExists(toInsert.getEmail())) {
-            logins.create(toInsert);
+    public boolean createUser(User_Profile toInsert, SearchRequest searchInsert, String email){
+        Login login = logins.findByEmail(email);
+        if (login != null) {
+            System.out.println("CREATE USER: REPO");
+            login.getSeekingUser().setProfile(toInsert);
+            login.getSeekingUser().setSearchrequest(searchInsert);
+            login.getSeekingUser().setLogin(login);
+            login.getSeekingUser().setCompleted(true);
+            logins.edit(login);
             return true;
         }
         return false;
+    }
+    
+    public void createLogin(Login login){
+        logins.create(login);
     }
     
     

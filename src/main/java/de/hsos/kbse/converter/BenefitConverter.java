@@ -5,9 +5,8 @@
  */
 package de.hsos.kbse.converter;
 
-import de.hsos.kbse.jobboerse.entity.facades.RequirementFacade;
-import de.hsos.kbse.jobboerse.entity.shared.Requirement;
-import de.hsos.kbse.jobboerse.repositories.RequirementRepository;
+import de.hsos.kbse.jobboerse.entity.shared.Benefit;
+import de.hsos.kbse.jobboerse.repositories.BenefitRepository;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -20,12 +19,12 @@ import org.primefaces.model.DualListModel;
  *
  * @author lennartwoltering
  */
-@FacesConverter(value = "RequirementConverter", managed = true)
-public class RequirementConverter implements Converter {
-
+@FacesConverter(value = "BenefitConverter", managed = true)
+public class BenefitConverter implements Converter{
+    
     @Inject
-    private RequirementRepository requirementRepo;
-
+    BenefitRepository benefitRepo;
+    
     @Override
     public Object getAsObject(FacesContext fc, UIComponent uic, String string) {
         Object ret = null;
@@ -33,7 +32,7 @@ public class RequirementConverter implements Converter {
             Object dualList = ((PickList) uic).getValue();
             DualListModel dl = (DualListModel) dualList;
             for (Object o : dl.getSource()) {
-                String id = "" + ((Requirement) o).getId();
+                String id = "" + ((Benefit) o).getId();
                 if (string.equals(id)) {
                     ret = o;
                     break;
@@ -41,7 +40,7 @@ public class RequirementConverter implements Converter {
             }
             if (ret == null) {
                 for (Object o : dl.getTarget()) {
-                    String id = "" + ((Requirement) o).getId();
+                    String id = "" + ((Benefit) o).getId();
                     if (string.equals(id)) {
                         ret = o;
                         break;
@@ -49,14 +48,13 @@ public class RequirementConverter implements Converter {
                 }
             }
         } else {
-            
+            System.out.println("BENEFIT");
             if (string != null && string.trim().length() > 0) {
-                System.out.println(Long.parseLong(string.trim()));
-                System.out.println(requirementRepo);
-                return requirementRepo.find(Long.parseLong(string.trim()));
+
+                ret = benefitRepo.find(Long.valueOf(string));
 
             }
-           
+            return ret;
         }
         return null;
 
@@ -64,10 +62,6 @@ public class RequirementConverter implements Converter {
 
     @Override
     public String getAsString(FacesContext fc, UIComponent uic, Object t) {
-        if (t == null) {
-            return "";
-        }
-        return ((Requirement) t).getId().toString(); //To change body of generated methods, choose Tools | Templates.
+        return ((Benefit) t).getId().toString(); //To change body of generated methods, choose Tools | Templates.
     }
-
 }

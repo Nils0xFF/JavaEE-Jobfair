@@ -5,9 +5,12 @@
  */
 package de.hsos.kbse.jobboerse.controllers;
 
+import de.hsos.kbse.jobboerse.entity.company.JobField;
 import de.hsos.kbse.jobboerse.entity.shared.Address;
+import de.hsos.kbse.jobboerse.entity.shared.Benefit;
 import de.hsos.kbse.jobboerse.entity.shared.Login;
 import de.hsos.kbse.jobboerse.entity.shared.Requirement;
+import de.hsos.kbse.jobboerse.entity.shared.SearchRequest;
 import de.hsos.kbse.jobboerse.entity.user.SeekingUser;
 import de.hsos.kbse.jobboerse.entity.user.User_Profile;
 import de.hsos.kbse.jobboerse.enums.Graduation;
@@ -15,17 +18,13 @@ import de.hsos.kbse.jobboerse.enums.Salutation;
 import de.hsos.kbse.jobboerse.enums.Title;
 import de.hsos.kbse.jobboerse.repositories.GeneralUserRepository;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.ManagedBean;
-import javax.enterprise.context.Conversation;
-import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
 
 /**
@@ -45,12 +44,14 @@ public class UserRegistrationController implements Serializable{
     private Login login;
     private User_Profile userProfile;
     private Address userAddress;
+    private SearchRequest searchrequest;
     
-    public boolean checkEmailAvailability(String email){
+    private boolean checkEmailAvailability(String email){
         return !userRepo.checkEmailExists(email);
     }
     
-    public UserRegistrationController createLogin(String email, String password){
+    public boolean createLogin(String email, String password){
+        if(checkEmailAvailability(email)){
             Map<String, String> parameters = new HashMap<>();
             parameters.put("Pbkdf2PasswordHash.Iterations", "3072");
             parameters.put("Pbkdf2PasswordHash.Algorithm", "PBKDF2WithHmacSHA512");
@@ -62,17 +63,19 @@ public class UserRegistrationController implements Serializable{
                     .seekingUser(new SeekingUser())
                     .group_name("USER")
                     .build();
-            return this;
+            userRepo.createLogin(login);
+            return true;
+            }
+            return false;
     }
     
     public UserRegistrationController createUserProfile(Salutation salutation, Title title, String firstname, 
-            String lastname, String description, String telefon, Date birthday){
+            String lastname, String telefon, Date birthday){
             userProfile = User_Profile.builder()
                     .salutation(salutation)
                     .title(title)
                     .firstname(firstname)
                     .lastname(lastname)
-                    .description(description)
                     .telefon(telefon)
                     .birthday(birthday)
                     .build();
@@ -81,7 +84,6 @@ public class UserRegistrationController implements Serializable{
     
     public UserRegistrationController createAddress(String street, String housenumber, String city, 
             String postalcode, String country){
-        System.out.println("ADDRESS: " + userProfile.getFirstname());
             userAddress = Address.builder()
                     .street(street)
                     .housenumber(housenumber)
@@ -93,14 +95,26 @@ public class UserRegistrationController implements Serializable{
             return this;
     }
     
-    public boolean createQualifications(Graduation grad, List<Requirement> fullfilledRequirements){
-        login.getSeekingUser().setProfile(userProfile);
+    public UserRegistrationController createQualifications(Graduation grad, List<Requirement> fullfilledRequirements, String description){
         userProfile.setGrad(grad);
+        userProfile.setDescription(description);
         userProfile.setFullfiledRequirements(fullfilledRequirements);
-        if(userRepo.createUser(login)){
-            return true;
-        }
-        return false;
+        return this;
+    }
+    
+    public UserRegistrationController setupSearchParameters(List<Benefit> wishedBenefits, List<JobField> jobfields){
+        searchrequest = SearchRequest.builder()
+                .benefits(wishedBenefits)
+                .jobField(jobfields)
+                .build();
+        return this;
+    }
+    
+    
+    
+    public boolean finishRegistration(String email){
+        System.out.println(userProfile.getFirstname());
+        return userRepo.createUser(userProfile,searchrequest, email);
     }
     
 }

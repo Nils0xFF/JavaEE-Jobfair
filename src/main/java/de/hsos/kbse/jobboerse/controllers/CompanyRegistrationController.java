@@ -100,9 +100,9 @@ public class CompanyRegistrationController {
         login.getCompany().setContact(contact);
         login.getCompany().setProfile(profile);
         login.getCompany().setJobs(new ArrayList());
-        if(userRepo.createUser(login)){
-            return true;
-        }
+        //if(userRepo.createUser(login)){
+          //  return true;
+        //}
         return false;
     }
 }

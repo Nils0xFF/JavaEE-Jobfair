@@ -23,6 +23,11 @@ public class BenefitRepository {
     
     public BenefitRepository() { }
     
+    
+    public Benefit find(Long id){
+        return bf.find(id);
+    }
+    
     public void create(String name, String desc) {
         Benefit benefit = Benefit.builder().name(name).description(desc).build();
         bf.create(benefit);

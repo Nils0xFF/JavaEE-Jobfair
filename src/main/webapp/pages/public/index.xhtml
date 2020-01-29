@@ -89,26 +89,26 @@
                             <div class="modal-body">
                                 <div class="form-group">
                                     <p:outputLabel for="@next" value="E-Mail"/>
-                                    <p:inputText class="form-control" id="accountEmail" value=" " >
+                                    <p:inputText class="form-control" id="accountEmail" value="#{UserRegisterFace.email}" >
                                         <p:clientValidator event="keyup"/>
                                     </p:inputText>                                    
                                 </div>
                                 <div class="form-group">
                                     <p:outputLabel for="@next" value="Password"/>
-                                    <p:password class="form-control" id="password" value=" " feedback="true" inline="false">
+                                    <p:password class="form-control" id="password" value="#{UserRegisterFace.pw}" feedback="true" inline="false">
                                         <p:clientValidator event="keyup"/>
                                     </p:password>
                                 </div>
                                 <div class="form-group">
                                     <p:outputLabel for="@next" value="Confirm Password"/>
-                                    <p:password class="form-control" id="passwordRepeat" value=" " feedback="true" inline="false">
+                                    <p:password class="form-control" id="passwordRepeat" value="#{UserRegisterFace.pw2}" feedback="true" inline="false">
                                         <p:clientValidator event="keyup"/>
                                     </p:password>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <p:commandButton class="btn btn-primary" value="Registrieren" action="#{sessionController.login()}" ajax="false" actionListener="#{sessionController.login()}" ></p:commandButton>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+                                <p:commandButton class="btn btn-primary" value="Registrieren" action="#{UserRegisterFace.registerLogin()}" ajax="false" actionListener="#{UserRegisterFace.registerLogin()}" ></p:commandButton>
                             </div>
                         </h:form>
                     </div>
