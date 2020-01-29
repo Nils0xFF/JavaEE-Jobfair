@@ -1,14 +1,17 @@
 package de.hsos.kbse.jobboerse.entity.company;
 
 import de.hsos.kbse.jobboerse.entity.shared.Address;
+import de.hsos.kbse.jobboerse.entity.shared.Benefit;
 import de.hsos.kbse.jobboerse.enums.WorkerCount;
 import java.io.Serializable;
+import java.util.List;
 import javax.enterprise.inject.Vetoed;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 
 /**
@@ -27,17 +30,20 @@ public class CompanyProfile implements Serializable {
     private String description;
     private WorkerCount workercount;
     @OneToOne(cascade = CascadeType.ALL)
-    private Address adress;
+    private Address address;
     @OneToOne(cascade = CascadeType.ALL)
     private Contact contact;
+    @ManyToMany
+    private List<Benefit> benefits;
 
     public static class Builder {
 
         private String name;
         private String description;
         private WorkerCount workercount;
-        private Address adress;
+        private Address address;
         private Contact contact;
+        private List<Benefit> benefits;
 
         private Builder() {
         }
@@ -57,8 +63,8 @@ public class CompanyProfile implements Serializable {
             return this;
         }
 
-        public Builder adress(final Address value) {
-            this.adress = value;
+        public Builder address(final Address value) {
+            this.address = value;
             return this;
         }
 
@@ -66,9 +72,14 @@ public class CompanyProfile implements Serializable {
             this.contact = value;
             return this;
         }
+        
+        public Builder benefits(final List<Benefit> value) {
+            this.benefits = value;
+            return this;
+        }
 
         public CompanyProfile build() {
-            return new CompanyProfile(name, description, workercount, adress, contact);
+            return new CompanyProfile(name, description, workercount, address, contact, benefits);
         }
     }
 
@@ -79,14 +90,14 @@ public class CompanyProfile implements Serializable {
         return new CompanyProfile.Builder();
     }
 
-    private CompanyProfile(final String name, final String description, final WorkerCount workercount, final Address adress, final Contact contact) {
+    private CompanyProfile(final String name, final String description, final WorkerCount workercount, final Address address, final Contact contact, final List<Benefit> benefits) {
         this.name = name;
         this.description = description;
         this.workercount = workercount;
-        this.adress = adress;
+        this.address = address;
         this.contact = contact;
+        this.benefits = benefits;
     }
-
     
     
     public String getName() {
@@ -113,12 +124,12 @@ public class CompanyProfile implements Serializable {
         this.workercount = workercount;
     }
 
-    public Address getAdress() {
-        return adress;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setAdress(Address adress) {
-        this.adress = adress;
+    public void setAddress(Address adress) {
+        this.address = adress;
     }
 
     public Contact getContact() {
@@ -129,6 +140,21 @@ public class CompanyProfile implements Serializable {
         this.contact = contact;
     }
 
+    public List<Benefit> getBenefits() {
+        return benefits;
+    }
+    
+    public void setBenefits(List<Benefit> benefits) {
+        this.benefits = benefits;
+    }
+    
+    public void addBenefit(Benefit benefit) {
+        this.benefits.add(benefit);
+    }
+    
+    public void removeBenefit(Benefit benefit) {
+        this.benefits.remove(benefit);
+    }
     
     
     public Long getId() {

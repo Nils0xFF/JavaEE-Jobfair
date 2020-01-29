@@ -70,7 +70,7 @@ public class CompanyRegistrationController {
                     .postalcode(postalcode)
                     .country(country)
                     .build();
-            profile.setAdress(address);
+            profile.setAddress(address);
             return this;
     }
     
@@ -96,8 +96,8 @@ public class CompanyRegistrationController {
     }
     
     public boolean finishRegistration(List<Benefit> benefits){
-        login.getCompany().setBenefits(benefits);
-        login.getCompany().setContact(contact);
+        login.getCompany().getProfile().setBenefits(benefits);
+        login.getCompany().getProfile().setContact(contact);
         login.getCompany().setProfile(profile);
         login.getCompany().setJobs(new ArrayList());
         if(userRepo.createUser(login)){

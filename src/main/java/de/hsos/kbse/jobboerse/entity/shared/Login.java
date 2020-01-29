@@ -77,18 +77,17 @@ public class Login implements Serializable {
         }
 
         public Login build() {
-            return new Login(seekingUser,company, password, group_name, email);
+            return new Login(seekingUser, company, password, group_name, email);
         }
     }
 
-    public Login() {
-    }
+    public Login() { }
 
     public static Login.Builder builder() {
         return new Login.Builder();
     }
 
-    private Login(final SeekingUser seekingUser,final Company company , final String password, final String group_name, final String email) {
+    private Login(final SeekingUser seekingUser, final Company company , final String password, final String group_name, final String email) {
         this.seekingUser = seekingUser;
         this.company = company;
         this.password = password;

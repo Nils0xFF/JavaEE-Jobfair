@@ -51,7 +51,7 @@ public class BasicMatchingAlgorithm implements MatchingAlgorithm {
             WeightedJob foundJob = new WeightedJob();
             for (Benefit userBenefits : userRequest.getWishedBenefits()) {
                 boolean foundBenefit = false;
-                for (Benefit cmpyBenefits : available.getCompany().getBenefits()) {
+                for (Benefit cmpyBenefits : available.getCompany().getProfile().getBenefits()) {
                     if (cmpyBenefits.getName().equals(userBenefits.getName())) {
                         foundBenefit = true;
                         break;
