@@ -6,14 +6,14 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <div class="container wide">
         <div class="row mt-4">
-            <div class="col-sm-4">
+            <div class="col-lg-4">
                 <div class="bg-white mt-4 shadow">
                     <div class="card-body">
                         <h2 class="card-title text-center mt-2 mb-4">Filter</h2>
                         <h:form>
                             <div class="form-group">
                                 <p:outputLabel for="@next" value="Branchen"/>
-                                <h:selectManyMenu id="jobField" class="form-control">
+                                <h:selectManyMenu id="jobField" class="custom-select">
                                     <f:selectItem itemLabel="IT" itemValue="" />
                                     <f:selectItem itemLabel="Sozialesr" itemValue="Herr" />
                                     <f:selectItem itemLabel="Prof" itemValue="Frau" />
@@ -37,45 +37,45 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-8">        
+            <div class="col-lg-8">        
                 <div class="bg-white mt-4 shadow">
                     <div class="card-body">
 
                         <h2 class="card-title text-center mt-2 mb-4">Passende Angebote</h2>
                         <div class="list-group">
-                            <a href="#" class="list-group-item list-group-item-action">
+                            <a href="#" class="list-group-item list-group-item-action pt-4 pb-5">
                                 <div class="d-flex w-100 justify-content-between">
                                     <h5 class="mb-4">Senior Crazy Frog</h5>
                                     <small>Click for Details</small>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-1 align-self-center text-center"><span class="oi oi-briefcase"></span></div>
-                                    <div class="col-sm-11">Musik</div>
+                                    <div class="col-1 align-self-center text-center"><span class="oi oi-briefcase"></span></div>
+                                    <div class="col-11">Musik</div>
                                 </div>
                                 <div class="row mt-3">
-                                    <div class="col-sm-1 align-self-center text-center"><span class="oi oi-map-marker"></span></div>
-                                    <div class="col-sm-11">Crazy Street 7a, 79080 Crazy, Deutschland</div>
+                                    <div class="col-1 align-self-center text-center"><span class="oi oi-map-marker"></span></div>
+                                    <div class="col-11">Crazy Street 7a, 79080 Crazy, Deutschland</div>
                                 </div>
                                 <div class="row mt-3">
-                                    <div class="col-sm-1 align-self-center text-center"><span class="oi oi-pencil"></span></div>
-                                    <div class="col-sm-11">Jetzt mal angenommen hier steht ein toller Text, wie würde es dann aussehen?</div>
+                                    <div class="col-1 align-self-center text-center"><span class="oi oi-pencil"></span></div>
+                                    <div class="col-11">Jetzt mal angenommen hier steht ein toller Text, wie würde es dann aussehen?</div>
                                 </div>
                                 <div class="row mt-3">
-                                    <div class="col-sm-1 align-self-center text-center"><span class="oi oi-info"></span></div>
-                                    <div class="col-sm-11">Java EE, Java SE, JSF, Web Entwicklung</div>
+                                    <div class="col-1 align-self-center text-center"><span class="oi oi-info"></span></div>
+                                    <div class="col-11">Java EE, Java SE, JSF, Web Entwicklung</div>
                                 </div>
                                 <div class="row mt-3">
-                                    <div class="col-sm-1 align-self-center text-center"><span class="oi oi-dollar"></span></div>
-                                    <div class="col-sm-11">10,000</div>
+                                    <div class="col-1 align-self-center text-center"><span class="oi oi-dollar"></span></div>
+                                    <div class="col-11">10,000</div>
                                 </div>
                                 <div class="row mt-3">
-
-                                    <div class="col-sm-11">                                
+                                    <div class="col-1 align-self-center text-center"><span class="oi oi-target"></span></div>
+                                    <div class="col-11">                                
                                         <div class="progress">
                                             <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-1 align-top text-center">50%</div>
+
                                 </div>
 
                             </a>
@@ -152,7 +152,6 @@
 
                             </a>
                         </div>
-
                     </div>
                 </div></div>
         </div>

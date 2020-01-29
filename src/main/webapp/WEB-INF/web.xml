@@ -69,6 +69,10 @@
         <welcome-file>public/index.html</welcome-file>
     </welcome-file-list>
     
+        <mime-mapping>
+        <extension>map</extension>
+        <mime-type>css/map</mime-type>
+    </mime-mapping>
     <mime-mapping>
         <extension>ttf</extension>
         <mime-type>css/fonts</mime-type>
