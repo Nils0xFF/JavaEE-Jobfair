@@ -9,14 +9,12 @@
       xmlns:jsf="http://xmlns.jcp.org/jsf">
 
     <ui:composition>
-        <nav class="navbar navbar-expand-md navbar-dark #{ transparentNav ? 'fixed-top' : 'bg-dark sticky-top'}">
+        <nav class="navbar navbar-expand-md navbar-dark #{ transparentNav ? 'fixed-top' : 'bg-dark sticky-top shadow-sm'}">
             <div class="container-fluid" jsf:id="navbar">
                 <p:link class="navbar-brand" outcome="index">JobFair</p:link>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-
-
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto" jsf:rendered="#{sessionController.userIsLoggedIn()}">
@@ -78,7 +76,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <p:commandButton class="btn btn-primary" value="Login" action="#{loginBacking.submit}" ajax="true" ></p:commandButton>
+                            <p:commandButton styleClass="btn btn-primary" value="Login" action="#{loginBacking.submit}" ajax="true" ></p:commandButton>
                         </div>
                     </h:form>
                 </div>

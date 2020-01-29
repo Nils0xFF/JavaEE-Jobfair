@@ -17,7 +17,7 @@
                             <div class="form-row">
                                 <div class="col-sm-8 form-group">
                                     <p:outputLabel for="@next" value="Name der Firma"/>
-                                    <p:inputText class="form-control #{firmName.valid ? '' : 'is-invalid'}" binding="#{firmName}" value=" " required="true">
+                                    <p:inputText styleClass="form-control #{firmName.valid ? '' : 'is-invalid'}" binding="#{firmName}" value=" " required="true">
                                         <p:clientValidator event="keyup"/>
                                     </p:inputText>
                                     <h:message for="@previous" class="small text-danger"/>

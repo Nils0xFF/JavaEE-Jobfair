@@ -17,12 +17,12 @@
                             <div class="form-row">
                                 <div class="col-sm-3">
                                     <p:outputLabel for="@next" value="Anrede"/>
-                                    <h:selectOneMenu class="custom-select #{salutation.valid ? '' : 'is-invalid'}" binding="#{salutation}" required="true">
+                                    <p:selectOneMenu class="custom-select #{salutation.valid ? '' : 'is-invalid'}" binding="#{salutation}" required="true">
                                         <f:selectItem itemLabel="-" itemValue="" />
                                         <f:selectItem itemLabel="Herr" itemValue="Herr" />
                                         <f:selectItem itemLabel="Frau" itemValue="Frau" />
                                         <p:clientValidator />
-                                    </h:selectOneMenu>
+                                    </p:selectOneMenu>
                                     <h:message for="@previous" class="small text-danger"/>
                                 </div>
                                 <div class="col-sm-3">

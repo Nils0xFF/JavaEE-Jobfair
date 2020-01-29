@@ -1,36 +1,61 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <div class="dashboard-header">
-        Wilkommen zurück, Firma XYZ!
-    </div>
-    <div class="row">
-        <div class="col-md-6 py-2">
-            <div class="card h-100">
-                <h5 class="card-header">Neuer Job</h5>
-                <div class="card-body">
-                    Neuer Job
-                </div>
-            </div>
-        </div>
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <div class="container">
+        <div class="bg-white mt-4 shadow">
+            <div class="card-body">
+                <h2 class="card-title text-center my-3">Deine Stellenanzeigen</h2>
+                <div class="row">
+                    <div class="col-md-6 py-2">
+                        <div class="card h-100">
+                            <h5 class="card-header">Neuer Job</h5>
+                            <div class="card-body align-items-center d-flex justify-content-center">
+                                <p:commandLink styleClass="btn btn-success px-5 py-4" action=" "><span class="my-auto oi oi-plus"></span></p:commandLink>  
+                            </div>
+                        </div>
+                    </div>
 
-        <div class="col-md-6 py-2">
-            <div class="card h-100">
-                <h5 class="card-header">Neuer Job</h5>
-                <div class="card-body">
-                    Neuer Job
-                </div>
-            </div>
-        </div>
+                    <div class="col-md-6 py-2">
+                        <div class="card h-100">
+                            <h5 class="card-header">Senior Crazy Frog</h5>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-1 align-self-center text-center"><span class="oi oi-briefcase"></span></div>
+                                    <div class="col-sm-11">Musik</div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-sm-1 align-self-center text-center"><span class="oi oi-map-marker"></span></div>
+                                    <div class="col-sm-11">Crazy Street 7a, 79080 Crazy, Deutschland</div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-sm-1 align-self-center text-center"><span class="oi oi-pencil"></span></div>
+                                    <div class="col-sm-11">Jetzt mal angenommen hier steht ein toller Text, wie würde es dann aussehen?</div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-sm-1 align-self-center text-center"><span class="oi oi-info"></span></div>
+                                    <div class="col-sm-11">Java EE, Java SE, JSF, Web Entwicklung</div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-sm-1 align-self-center text-center"><span class="oi oi-dollar"></span></div>
+                                    <div class="col-sm-11">10,000</div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-muted">
+                                <div class="row">
+                                    <div class="col-sm-6 align-self-center text-center">
+                                        <p:commandLink styleClass="btn btn-block btn-danger" action=" ">Löschen</p:commandLink>  
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <p:commandLink styleClass="btn btn-block btn-info" action=" ">Bearbeiten</p:commandLink>  
+                                    </div>
 
-        <div class="col-md-6 py-2">
-            <div class="card h-100">
-                <h5 class="card-header">Neuer Job</h5>
-                <div class="card-body">
-                    Neuer Job
-                    <p> dads</p>
-                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
             </div>
         </div>
     </div>

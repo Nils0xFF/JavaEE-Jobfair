@@ -12,6 +12,15 @@
         <param-name>primefaces.CLIENT_SIDE_VALIDATION</param-name>
         <param-value>true</param-value>
     </context-param>
+    
+    <context-param>
+        <param-name>com.ocpsoft.pretty.DEVELOPMENT</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>primefaces.THEME</param-name>
+        <param-value>none</param-value>
+    </context-param>
 
     <security-constraint>
         <web-resource-collection>
@@ -39,15 +48,6 @@
     <security-role>
         <role-name>ADMIN</role-name>
     </security-role>
-
-    <context-param>
-        <param-name>com.ocpsoft.pretty.DEVELOPMENT</param-name>
-        <param-value>true</param-value>
-    </context-param>
-    <context-param>
-        <param-name>primefaces.THEME</param-name>
-        <param-value>none</param-value>
-    </context-param>
 
 
     <servlet>
@@ -89,6 +89,5 @@
         <extension>eot</extension>
         <mime-type>application/vnd.ms-fontobject</mime-type>
     </mime-mapping>
-    
-    
+
 </web-app>
