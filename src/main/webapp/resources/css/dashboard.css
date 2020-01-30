@@ -3,11 +3,29 @@
     Author     : nilsgeschwinde
 */
 
-@media (min-width:34em) {
-    .card-deck > .card
-    {
-        width: 29% !important;
-        flex-wrap: wrap;
-        flex: initial; 
-    }
+#jobAccordion > .card{
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+}
+
+.job-header{
+    background: url("images/placeholders/company.jpg") no-repeat center center / cover;
+    z-index: 1 !important;
+    height: 20vw;
+    max-height: 15vh;
+}
+
+.job-header:after {
+    position: absolute;
+    content:"";
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background-color: rgba(0,0,0,.5);
+    z-index: -1;
+}
+
+.jobCard:not(:first-child){
+    margin-top: 2rem;
 }

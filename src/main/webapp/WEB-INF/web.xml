@@ -19,7 +19,7 @@
     </context-param>
     <context-param>
         <param-name>primefaces.THEME</param-name>
-        <param-value>none</param-value>
+        <param-value>omega</param-value>
     </context-param>
 
     <security-constraint>

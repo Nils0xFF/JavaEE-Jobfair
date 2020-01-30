@@ -13,11 +13,17 @@
                         <h:form>
                             <div class="form-group">
                                 <p:outputLabel for="@next" value="Branchen"/>
-                                <h:selectManyMenu id="jobField" class="custom-select">
+                                <p:selectManyMenu id="jobField" >
                                     <f:selectItem itemLabel="IT" itemValue="" />
                                     <f:selectItem itemLabel="Sozialesr" itemValue="Herr" />
-                                    <f:selectItem itemLabel="Prof" itemValue="Frau" />
-                                </h:selectManyMenu>
+                                    <f:selectItem itemLabel="Prof" itemValue="dasda" />
+                                    <f:selectItem itemLabel="Prof" itemValue="Frdasdau" />                                    
+                                    <f:selectItem itemLabel="Prof" itemValue="das" />                                    
+                                    <f:selectItem itemLabel="Prof" itemValue="das" />                                    
+                                    <f:selectItem itemLabel="Prof" itemValue="Frdsaau" />                                    
+                                    <f:selectItem itemLabel="Prof" itemValue="Frdasau" />                                    
+                                    <f:selectItem itemLabel="Prof" itemValue="Frdsaafdu" />
+                                </p:selectManyMenu>
                             </div>
 
                             <div class="form-group">
@@ -37,123 +43,209 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-8">        
+            <div class="col-lg-7">        
                 <div class="bg-white mt-4 shadow">
                     <div class="card-body">
 
                         <h2 class="card-title text-center mt-2 mb-4">Passende Angebote</h2>
-                        <div class="list-group">
-                            <a href="#" class="list-group-item list-group-item-action pt-4 pb-5">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h5 class="mb-4">Senior Crazy Frog</h5>
-                                    <small>Click for Details</small>
-                                </div>
-                                <div class="row">
-                                    <div class="col-1 align-self-center text-center"><span class="oi oi-briefcase"></span></div>
-                                    <div class="col-11">Musik</div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-1 align-self-center text-center"><span class="oi oi-map-marker"></span></div>
-                                    <div class="col-11">Crazy Street 7a, 79080 Crazy, Deutschland</div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-1 align-self-center text-center"><span class="oi oi-pencil"></span></div>
-                                    <div class="col-11">Jetzt mal angenommen hier steht ein toller Text, wie würde es dann aussehen?</div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-1 align-self-center text-center"><span class="oi oi-info"></span></div>
-                                    <div class="col-11">Java EE, Java SE, JSF, Web Entwicklung</div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-1 align-self-center text-center"><span class="oi oi-dollar"></span></div>
-                                    <div class="col-11">10,000</div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-1 align-self-center text-center"><span class="oi oi-target"></span></div>
-                                    <div class="col-11">                                
-                                        <div class="progress">
-                                            <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+
+
+                        <div class="accordion" id="jobAccordion">
+                            <div class="card jobCard">
+                                <a data-toggle="collapse" data-target="#job1" aria-expanded="true" aria-controls="job1" style="cursor: pointer">
+                                    <div class="card-header">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-0">Branche - Job Bezeichnung</h5>
+                                            <small class="align-self-center">Click for Details</small>
+
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-1  text-center"><span class="oi oi-briefcase"></span></div>
+                                            <div class="col-11 "><span>Crazy Company INC</span></div>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <div class="col-1 align-self-center text-center"><span class="oi oi-map-marker"></span></div>
+                                            <div class="col-11">Crazy Street 7a, 79080 Crazy, Deutschland</div>
                                         </div>
                                     </div>
 
-                                </div>
+                                    <div class="job-header">
 
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h5 class="mb-4">Senior Crazy Frog</h5>
-                                    <small>Click for Details</small>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-1 align-self-center text-center"><span class="oi oi-briefcase"></span></div>
-                                    <div class="col-sm-11">Musik</div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-sm-1 align-self-center text-center"><span class="oi oi-map-marker"></span></div>
-                                    <div class="col-sm-11">Crazy Street 7a, 79080 Crazy, Deutschland</div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-sm-1 align-self-center text-center"><span class="oi oi-pencil"></span></div>
-                                    <div class="col-sm-11">Jetzt mal angenommen hier steht ein toller Text, wie würde es dann aussehen?</div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-sm-1 align-self-center text-center"><span class="oi oi-info"></span></div>
-                                    <div class="col-sm-11">Java EE, Java SE, JSF, Web Entwicklung</div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-sm-1 align-self-center text-center"><span class="oi oi-dollar"></span></div>
-                                    <div class="col-sm-11">10,000</div>
-                                </div>
-                                <div class="row mt-3">
 
-                                    <div class="col-sm-11">                                
-                                        <div class="progress">
-                                            <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </a>
+
+                                <div id="job1" class="collapse" aria-labelledby="headingOne" data-parent="#jobAccordion">
+                                    <div class="card-body">
+                                        <h5>Informationen</h5>
+                                        <div class="row mt-3">
+                                            <div class="col-1 align-self-center text-center"><span class="oi oi-heart"></span></div>
+                                            <div class="col-11">Kinderfreundlich, locker, toll, schön</div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-1 align-self-center text-center"><span class="oi oi-info"></span></div>
+                                            <div class="col-11">Java EE, Java SE, JSF, Web Entwicklung</div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-1 align-self-center text-center"><span class="oi oi-pencil"></span></div>
+                                            <div class="col-11">
+                                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-1 align-self-center text-center"><span class="oi oi-dollar"></span></div>
+                                            <div class="col-11">10,000</div>
+                                        </div>
+
+                                        <div class="row mt-5">
+                                            <div class="col-12">
+                                                <h5>Kontakt</h5>
+                                            </div>
+                                            <div class="col-1 align-self-center text-center"><span class="oi oi-person"></span></div>
+                                            <div class="col-11">Hans Dieter Peter Müller</div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-1 align-self-center text-center"><span class="oi oi-phone"></span></div>
+                                            <div class="col-11">+491961989477</div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-1 align-self-center text-center"><span class="oi oi-envelope-closed"></span></div>
+                                            <div class="col-11">mail@müller.com</div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="row mt-2">
+                                        <div class="col-12">                                
+                                            <div class="progress" style="height: 20px;">
+                                                <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                                    Qualifikation: 40%
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-1 align-top text-center">50%</div>
-                                </div>
-
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h5 class="mb-4">Senior Crazy Frog</h5>
-                                    <small>Click for Details</small>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-1 align-self-center text-center"><span class="oi oi-briefcase"></span></div>
-                                    <div class="col-sm-11">Musik</div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-sm-1 align-self-center text-center"><span class="oi oi-map-marker"></span></div>
-                                    <div class="col-sm-11">Crazy Street 7a, 79080 Crazy, Deutschland</div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-sm-1 align-self-center text-center"><span class="oi oi-pencil"></span></div>
-                                    <div class="col-sm-11">Jetzt mal angenommen hier steht ein toller Text, wie würde es dann aussehen?</div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-sm-1 align-self-center text-center"><span class="oi oi-info"></span></div>
-                                    <div class="col-sm-11">Java EE, Java SE, JSF, Web Entwicklung</div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-sm-1 align-self-center text-center"><span class="oi oi-dollar"></span></div>
-                                    <div class="col-sm-11">10,000</div>
-                                </div>
-                                <div class="row mt-3">
-
-                                    <div class="col-sm-11">                                
-                                        <div class="progress">
-                                            <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="row mt-2">
+                                        <div class="col-12">
+                                            <div class="progress" style="height: 20px;">
+                                                <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                                    Benefits: 40%
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-1 align-top text-center">50%</div>
+                                    <div class="row mt-2">
+                                        <div class="col-12">                                
+                                            <div class="progress" style="height: 20px;">
+                                                <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                                    Total: 40%
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+                            </div>
 
-                            </a>
+
+                            <div class="card jobCard">
+                                <a data-toggle="collapse" data-target="#job2" aria-expanded="true" aria-controls="job2" style="cursor: pointer">
+                                    <div class="card-header">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-0">Branche - Job Bezeichnung</h5>
+                                            <small class="align-self-center">Click for Details</small>
+
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-1  text-center"><span class="oi oi-briefcase"></span></div>
+                                            <div class="col-11 "><span>Crazy Company INC</span></div>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <div class="col-1 align-self-center text-center"><span class="oi oi-map-marker"></span></div>
+                                            <div class="col-11">Crazy Street 7a, 79080 Crazy, Deutschland</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="job-header">
+
+
+                                    </div>
+                                </a>
+
+                                <div id="job2" class="collapse" aria-labelledby="headingOne" data-parent="#jobAccordion">
+                                    <div class="card-body">
+                                        <h5>Informationen</h5>
+                                        <div class="row mt-3">
+                                            <div class="col-1 align-self-center text-center"><span class="oi oi-heart"></span></div>
+                                            <div class="col-11">Kinderfreundlich, locker, toll, schön</div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-1 align-self-center text-center"><span class="oi oi-info"></span></div>
+                                            <div class="col-11">Java EE, Java SE, JSF, Web Entwicklung</div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-1 align-self-center text-center"><span class="oi oi-pencil"></span></div>
+                                            <div class="col-11">
+                                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-1 align-self-center text-center"><span class="oi oi-dollar"></span></div>
+                                            <div class="col-11">10,000</div>
+                                        </div>
+
+                                        <div class="row mt-5">
+                                            <div class="col-12">
+                                                <h5>Kontakt</h5>
+                                            </div>
+                                            <div class="col-1 align-self-center text-center"><span class="oi oi-person"></span></div>
+                                            <div class="col-11">Hans Dieter Peter Müller</div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-1 align-self-center text-center"><span class="oi oi-phone"></span></div>
+                                            <div class="col-11">+491961989477</div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-1 align-self-center text-center"><span class="oi oi-envelope-closed"></span></div>
+                                            <div class="col-11">mail@müller.com</div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="row mt-2">
+                                        <div class="col-12">                                
+                                            <div class="progress" style="height: 20px;">
+                                                <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                                    Qualifikation: 40%
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-12">
+                                            <div class="progress" style="height: 20px;">
+                                                <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                                    Benefits: 40%
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-12">                                
+                                            <div class="progress" style="height: 20px;">
+                                                <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                                    Total: 40%
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
-                </div></div>
+                </div>
+            </div>
         </div>
 
     </div>
