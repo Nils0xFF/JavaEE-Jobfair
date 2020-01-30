@@ -47,7 +47,8 @@ public class SeekingUser implements Serializable {
             orphanRemoval=true)
     private SearchRequest searchrequest; 
     
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL,
+            orphanRemoval=true)
     private List<Job> favorites;
 
     public static class Builder {

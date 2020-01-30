@@ -5,23 +5,22 @@
  */
 package de.hsos.kbse.jobboerse.boundary.faces;
 
-import de.hsos.kbse.jobboerse.boundary.faces.mockfiles.AutoCompleteData;
+import de.hsos.kbse.jobboerse.controllers.CompanyRegistrationController;
 import de.hsos.kbse.jobboerse.controllers.UserRegistrationController;
-import de.hsos.kbse.jobboerse.entity.company.JobField;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
-import de.hsos.kbse.jobboerse.entity.shared.Requirement;
-import de.hsos.kbse.jobboerse.enums.Graduation;
 import de.hsos.kbse.jobboerse.enums.Salutation;
 import de.hsos.kbse.jobboerse.enums.Title;
+import de.hsos.kbse.jobboerse.enums.WorkerCount;
 import de.hsos.kbse.jobboerse.repositories.BenefitRepository;
-import de.hsos.kbse.jobboerse.repositories.JobFieldRepository;
-import de.hsos.kbse.jobboerse.repositories.RequirementRepository;
+import java.io.IOException;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -32,23 +31,22 @@ import javax.transaction.Transactional;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 
 /**
  *
  * @author lennartwoltering
  */
-@Named("UserRegisterFace")
+@Named("CompanyRegisterFace")
 @ViewScoped
-public class UserRegisterFace implements Serializable {
-
+public class CompanyRegisterFace implements Serializable{
     @NotEmpty
     @Email(message = "Es muss eine gültige Email sein")
     private String email;
     @Min(value = 5, message = "Passwort muss länger als 5 Zeichen sein.")
     private String pw, pw2;
+    @NotEmpty
+    private String firmname;
     @NotEmpty
     private String firstname;
     @NotEmpty
@@ -58,9 +56,6 @@ public class UserRegisterFace implements Serializable {
     private String telefon;
     @NotEmpty
     private String desc;
-    @NotNull
-    @Past
-    private Date birthday;
     @Pattern(regexp= "^[^0-9]+$")
     @NotEmpty
     private String street;
@@ -71,56 +66,65 @@ public class UserRegisterFace implements Serializable {
     private String city;
     @NotEmpty
     private String postalcode, country;
-    private List<Requirement> fullfilledRequirements;
-    private List<Benefit> wishedBenefits;
-    private List<JobField> wishedJobFields;
+    private List<Benefit> fullfilledBenefits;
+    
     @Enumerated(EnumType.STRING)
     private Salutation salutation;
     @Enumerated(EnumType.STRING)
     private Title titles;
     @Enumerated(EnumType.STRING)
-    private Graduation grades;
+    private WorkerCount workercount;
     
-    private final SimpleDateFormat sdf = new SimpleDateFormat("MM/yy");
-
-    @Inject
-    UserRegistrationController userRegCntrl;
-
-    @Inject
-    RequirementRepository requirementRepo;
-
+    
     @Inject
     BenefitRepository benefitRepo;
-
+    
     @Inject
-    JobFieldRepository jobFieldRepo;
-
+    CompanyRegistrationController companyRegCntrl;
+    
     @Inject
     SecurityContext context;
-
    
 
+            
     @Transactional
-    public boolean registerLogin() {
+    public void registerLogin() {
         if (pw.equals(pw2)) {
-            return userRegCntrl.createLogin(email, pw);
+            if(companyRegCntrl.createLogin(email, pw)){
+                 FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, "Du kannst dich nun anmelden!", null));
+            }
         }
-        return false;
+         FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Registrierung fehlgeschlagen, überprüfe deine Eingaben", null));
     }
-
+    
     @Transactional
-    public boolean registerUser() {
-        return userRegCntrl
-                .createUserProfile(salutation, titles, firstname, lastname, telefon, birthday)
+    public void registerUser() {
+        if(companyRegCntrl.createProfile(email, desc, workercount)
                 .createAddress(street, housenumber, city, postalcode, country)
-                .createQualifications(grades, fullfilledRequirements, desc)
-                .setupSearchParameters(wishedBenefits, wishedJobFields)
-                .finishRegistration(context.getCallerPrincipal().getName());
+                .createContact(salutation, titles,firstname, lastname, telefon)
+                .finishRegistration(fullfilledBenefits, context.getCallerPrincipal().getName())){
+            try{
+                FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/dashboard");
+            } catch (IOException ex) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Register failed", null));
+                Logger.getLogger(CompanyRegisterFace.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Register failed", null));
+        }
     }
+    
+    
+    
+    
+    
+    
+    //-------------------
 
-    //GETTER / SETTER
-
-    //GETTER / SETTER
     public String getEmail() {
         return email;
     }
@@ -135,6 +139,14 @@ public class UserRegisterFace implements Serializable {
 
     public void setPw(String pw) {
         this.pw = pw;
+    }
+
+    public String getPw2() {
+        return pw2;
+    }
+
+    public void setPw2(String pw2) {
+        this.pw2 = pw2;
     }
 
     public String getFirstname() {
@@ -167,14 +179,6 @@ public class UserRegisterFace implements Serializable {
 
     public void setDesc(String desc) {
         this.desc = desc;
-    }
-
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
     }
 
     public String getStreet() {
@@ -217,6 +221,14 @@ public class UserRegisterFace implements Serializable {
         this.country = country;
     }
 
+    public List<Benefit> getFullfilledBenefits() {
+        return fullfilledBenefits;
+    }
+
+    public void setFullfilledBenefits(List<Benefit> fullfilledBenefits) {
+        this.fullfilledBenefits = fullfilledBenefits;
+    }
+
     public Salutation getSalutation() {
         return salutation;
     }
@@ -233,62 +245,22 @@ public class UserRegisterFace implements Serializable {
         this.titles = titles;
     }
 
-    public Graduation getGrades() {
-        return grades;
+    public String getFirmname() {
+        return firmname;
     }
 
-    public void setGrades(Graduation grades) {
-        this.grades = grades;
+    public void setFirmname(String firmname) {
+        this.firmname = firmname;
     }
 
-    public String getPw2() {
-        return pw2;
+    public WorkerCount getWorkercount() {
+        return workercount;
     }
 
-    public void setPw2(String pw2) {
-        this.pw2 = pw2;
+    public void setWorkercount(WorkerCount workercount) {
+        this.workercount = workercount;
     }
-
-    public List<Requirement> getFullfilledRequirements() {
-        return fullfilledRequirements;
-    }
-
-    public void setFullfilledRequirements(List<Requirement> fullfilledRequirements) {
-        this.fullfilledRequirements = fullfilledRequirements;
-    }
-
-    public List<Benefit> getWishedBenefits() {
-        return wishedBenefits;
-    }
-
-    public void setWishedBenefits(List<Benefit> wishedBenefits) {
-        this.wishedBenefits = wishedBenefits;
-    }
-
-    public List<JobField> getWishedJobField() {
-        return wishedJobFields;
-    }
-
-    public void setWishedJobField(List<JobField> wishedJobFields) {
-        this.wishedJobFields = wishedJobFields;
-    }
-
-    public List<JobField> getJobfields() {
-        return jobFieldRepo.findAll();
-    }
-
-    public List<Benefit> getAllBenefits() {
-        return benefitRepo.findAll();
-    }
-
-    public SimpleDateFormat getSdf() {
-        return sdf;
-    }
-
-    public Graduation[] getGraduationValues() {
-        return Graduation.values();
-    }
-
+    
     public Title[] getTitleValues() {
         return Title.values();
     }
@@ -296,5 +268,15 @@ public class UserRegisterFace implements Serializable {
     public Salutation[] getSalutationValues() {
         return Salutation.values();
     }
-
+    
+    public WorkerCount[] getWorkerValues(){
+        return WorkerCount.values();
+    }
+    
+    
+    
+    
+    
+    
+    
 }

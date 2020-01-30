@@ -121,7 +121,7 @@
 
                             <div class="form-group">
                                 <p:outputLabel value="Fähigkeiten" for="@next" />
-                                <p:autoComplete id="abilities" multiple="true" value="#{UserRegisterFace.fullfilledRequirements}" completeMethod="#{UserRegisterFace.completeRequirementData}"
+                                <p:autoComplete id="abilities" multiple="true" value="#{UserRegisterFace.fullfilledRequirements}" completeMethod="#{Autocomplete.completeRequirementData}"
                                                 var="requirement" itemLabel="#{requirement.name}" itemValue="#{requirement}"  forceSelection="true"
                                                 class="form-control h-auto" converter="RequirementConverter" unique="true" panelStyle="position: fixed;" >
 
@@ -154,7 +154,7 @@
 
                             <div class="form-group">
                                 <p:outputLabel value="Nach welchen Firmenvorteilen sollen wir für sie Ausschau halten?" for="@next" />
-                                <p:autoComplete multiple="true" value="#{UserRegisterFace.wishedBenefits}" completeMethod="#{UserRegisterFace.completeBenefitData}"
+                                <p:autoComplete multiple="true" value="#{UserRegisterFace.wishedBenefits}" completeMethod="#{Autocomplete.completeBenefitData}"
                                                 var="benefit" itemLabel="#{benefit.name}" itemValue="#{benefit}"  forceSelection="true"
                                                 class="form-control h-auto" converter="BenefitConverter" unique="true">
 

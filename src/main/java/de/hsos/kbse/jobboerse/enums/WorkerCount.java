@@ -17,5 +17,9 @@ public enum WorkerCount {
         this.count = count;
     }
     
+    public String getCount(){
+        return count;
+    }
+    
     
 }
