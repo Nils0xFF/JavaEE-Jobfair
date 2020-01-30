@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 
@@ -33,17 +34,17 @@ public class Job implements Serializable {
     
     private Double salary;
     
+    @Lob
     private String description;
     
     @OneToOne(cascade = CascadeType.ALL,
             orphanRemoval=true)
     private Address address;
     
-    @OneToOne(cascade = CascadeType.ALL,
-            orphanRemoval = true)
+    @OneToOne
     private Company company;
     
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<NeededRequirement> needed;
     
     @OneToOne
@@ -196,6 +197,16 @@ public class Job implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public JobField getJobfield() {
+        return jobfield;
+    }
+
+    public void setJobfield(JobField jobfield) {
+        this.jobfield = jobfield;
+    }
+    
+    
 
     @Override
     public int hashCode() {

@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import org.eclipse.persistence.annotations.CascadeOnDelete;
 
 /**
  *
@@ -27,22 +28,32 @@ public class Company implements Serializable {
     private Long id;
     @OneToOne
     private Login login;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
+    @CascadeOnDelete
     private List<Job> jobs;
-    @OneToOne(cascade = CascadeType.ALL)
-    private CompanyProfile profile;    
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval=true)
+    @CascadeOnDelete
+    private CompanyProfile profile; 
+    
+    private boolean completed = false;
 
 
     public static class Builder {
 
         private List<Job> jobs;
         private CompanyProfile profile;
+        private boolean completed;
 
         private Builder() {
         }
 
         public Builder jobs(final List<Job> value) {
             this.jobs = value;
+            return this;
+        }
+        
+        public Builder completed(final boolean value){
+            this.completed = value;
             return this;
         }
 
@@ -52,7 +63,7 @@ public class Company implements Serializable {
         }
 
         public Company build() {
-            return new Company(jobs, profile);
+            return new Company(jobs, profile, completed);
         }
     }
 
@@ -62,9 +73,10 @@ public class Company implements Serializable {
         return new Company.Builder();
     }
 
-    private Company(final List<Job> jobs, final CompanyProfile profile) {
+    private Company(final List<Job> jobs, final CompanyProfile profile, final boolean completed) {
         this.jobs = jobs;
         this.profile = profile;
+        this.completed = completed;
     }
 
     
@@ -99,6 +111,15 @@ public class Company implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+    
 
     @Override
     public int hashCode() {

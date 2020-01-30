@@ -14,21 +14,20 @@
                 <h:form>
                     <p:wizard showNavBar="false" showStepStatus="true" widgetVar="wiz">
                         <p:tab id="personal" title="Allgemeines">
+                            <p:separator/>
                             <div class="form-row">
                                 <div class="col-sm-8 form-group">
                                     <p:outputLabel for="@next" value="Name der Firma"/>
-                                    <p:inputText class="form-control #{firmName.valid ? '' : 'is-invalid'}" binding="#{firmName}" value=" " required="true">
+                                    <p:inputText class="form-control #{firmName.valid ? '' : 'is-invalid'}" binding="#{firmName}" value="#{CompanyRegisterFace.firmname}" required="true">
                                         <p:clientValidator event="keyup"/>
                                     </p:inputText>
                                     <h:message for="@previous" class="small text-danger"/>
                                 </div>
                                 <div class="col-sm-4">
                                     <p:outputLabel for="@next" value="Größe"/>
-                                    <h:selectOneMenu class="custom-select #{salutation.valid ? '' : 'is-invalid'}" binding="#{salutation}" required="true">
-                                        <f:selectItem itemLabel="-" itemValue="" />
-                                        <f:selectItem itemLabel="10-100" itemValue="Herr" />
-                                        <f:selectItem itemLabel="50-10000" itemValue="Frau" />
-                                        <p:clientValidator />
+                                    <h:selectOneMenu class="custom-select" value="#{CompanyRegisterFace.workercount}" >
+                                        <f:selectItems value="#{CompanyRegisterFace.workerValues}" var="workercount"
+                                                       itemValue="#{workercount}" itemLabel="#{workercount.count}" />
                                     </h:selectOneMenu>
                                     <h:message for="@previous" class="small text-danger"/>
                                 </div>
@@ -36,40 +35,59 @@
 
                             <div class="form-group">
                                 <p:outputLabel for="@next" value="Beschreibung"/>
-                                <p:inputTextarea class="form-control" id="description" value=" " rows="6" cols="33" >
+                                <p:inputTextarea class="form-control" id="description" value="#{CompanyRegisterFace.desc}" rows="6" cols="33" >
                                     <p:clientValidator event="keyup"/>
                                 </p:inputTextarea>
+                                <h:message for="@previous" class="small text-danger"/>
                             </div>
+                            <p:outputLabel value="Vorteile, die ihre Firma bietet: " for="@next" />
+                            <p:autoComplete multiple="true" value="#{CompanyRegisterFace.fullfilledBenefits}" completeMethod="#{Autocomplete.completeBenefitData}"
+                                            var="benefit" itemLabel="#{benefit.name}" itemValue="#{benefit}"  forceSelection="true"
+                                            class="form-control h-auto" converter="BenefitConverter" unique="true">
+
+                                <p:column>
+                                    <h:outputText value="#{benefit.name}" />
+                                </p:column>
+                            </p:autoComplete>
 
                             <div class="form-row">
                                 <div class="col-sm-9 form-group">
                                     <p:outputLabel for="@next" value="Straße"/>
-                                    <p:inputText class="form-control #{streetName.valid ? '' : 'is-invalid'}" binding="#{streetName}" value=" " required="true">
+                                    <p:inputText class="form-control #{streetName.valid ? '' : 'is-invalid'}" binding="#{streetName}" value="#{CompanyRegisterFace.street}" required="true">
                                         <p:clientValidator event="keyup"/>
                                     </p:inputText>
                                     <h:message for="@previous" class="small text-danger"/>
                                 </div>
                                 <div class="col-sm-3 form-group">
                                     <p:outputLabel for="@next" value="Hausnummer"/>
-                                    <p:inputText class="form-control #{streetNumber.valid ? '' : 'is-invalid'}" binding="#{streetNumber}" value=" ">
+                                    <p:inputText class="form-control #{streetNumber.valid ? '' : 'is-invalid'}" binding="#{streetNumber}" value="#{CompanyRegisterFace.housenumber}">
                                         <p:clientValidator event="keyup"/>
-                                    </p:inputText>  
+                                    </p:inputText> 
+                                    <h:message for="@previous" class="small text-danger"/>
                                 </div> 
                             </div>
 
                             <div class="form-row">
-                                <div class="col-sm-3 form-group">
+                                <div class="col-sm-4 form-group">
                                     <p:outputLabel for="@next" value="PLZ"/>
-                                    <p:inputText class="form-control #{postalCode.valid ? '' : 'is-invalid'}" binding="#{postalCode}" value=" " required="true">
+                                    <p:inputText class="form-control #{postalCode.valid ? '' : 'is-invalid'}" binding="#{postalCode}" value="#{CompanyRegisterFace.postalcode}" required="true">
                                         <p:clientValidator event="keyup"/>
                                     </p:inputText>
                                     <h:message for="@previous" class="small text-danger"/>
                                 </div>
-                                <div class="col-sm-9 form-group">
+                                <div class="col-sm-4 form-group">
                                     <p:outputLabel for="@next" value="Stadt"/>
-                                    <p:inputText class="form-control #{cityName.valid ? '' : 'is-invalid'}" binding="#{cityName}" value=" ">
+                                    <p:inputText class="form-control #{cityName.valid ? '' : 'is-invalid'}" binding="#{cityName}" value="#{CompanyRegisterFace.city}">
                                         <p:clientValidator event="keyup"/>
                                     </p:inputText>  
+                                    <h:message for="@previous" class="small text-danger"/>
+                                </div> 
+                                 <div class="col-sm-4 form-group">
+                                    <p:outputLabel for="@next" value="Land"/>
+                                    <p:inputText class="form-control #{country.valid ? '' : 'is-invalid'}" binding="#{country}" value="#{CompanyRegisterFace.country}">
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText>  
+                                    <h:message for="@previous" class="small text-danger"/>
                                 </div> 
                             </div>
 
@@ -78,51 +96,45 @@
                         </p:tab>
 
                         <p:tab id="contact" title="Kontaktperson">
+                            <p:separator/>
                             <div class="form-row">
                                 <div class="col-sm-3">
                                     <p:outputLabel for="@next" value="Anrede"/>
-                                    <h:selectOneMenu class="custom-select #{salutation.valid ? '' : 'is-invalid'}" binding="#{salutation}" required="true">
-                                        <f:selectItem itemLabel="-" itemValue="" />
-                                        <f:selectItem itemLabel="Herr" itemValue="Herr" />
-                                        <f:selectItem itemLabel="Frau" itemValue="Frau" />
-                                        <p:clientValidator />
+                                    <h:selectOneMenu class="custom-select" value="#{CompanyRegisterFace.salutation}" >
+                                        <f:selectItems value="#{CompanyRegisterFace.salutationValues}" var="salutation"
+                                                       itemValue="#{salutation}" itemLabel="#{salutation.salut}" />
                                     </h:selectOneMenu>
                                     <h:message for="@previous" class="small text-danger"/>
                                 </div>
                                 <div class="col-sm-3">
                                     <p:outputLabel for="@next" value="Title"/>
-                                    <h:selectOneMenu id="title" class="custom-select">
-                                        <f:selectItem itemLabel="-" itemValue="" />
-                                        <f:selectItem itemLabel="Dr" itemValue="Herr" />
-                                        <f:selectItem itemLabel="Prof" itemValue="Frau" />
+                                    <h:selectOneMenu id="title" class="custom-select" value="#{CompanyRegisterFace.titles}" >
+                                        <f:selectItems value="#{CompanyRegisterFace.titleValues}" var="GradTitle"
+                                                       itemValue="#{GradTitle}" itemLabel="#{GradTitle.address}" />
                                     </h:selectOneMenu>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="col-sm-6 form-group">
                                     <p:outputLabel for="@next" value="Vorname"/>
-                                    <p:inputText class="form-control #{firstName.valid ? '' : 'is-invalid'}" binding="#{firstName}" value=" " required="true">
+                                    <p:inputText class="form-control #{firstName.valid ? '' : 'is-invalid'}" binding="#{firstName}" value="#{CompanyRegisterFace.firstname}" required="true">
                                         <p:clientValidator event="keyup"/>
                                     </p:inputText>
                                     <h:message for="@previous" class="small text-danger"/>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-6 form-group">
                                     <p:outputLabel for="@next" value="Nachname"/>
-                                    <p:inputText class="form-control" id="lastName" value=" " >
+                                    <p:inputText class="form-control" id="lastName" value="#{CompanyRegisterFace.lastname}" >
                                         <p:clientValidator event="keyup"/>
                                     </p:inputText>  
+                                    <h:message for="@previous" class="small text-danger"/>
                                 </div> 
-                                <div class="col-sm-6">
-                                    <p:outputLabel for="@next" value="Geburtsdatum"/>
-                                    <p:inputText class="form-control" id="birthdate" value=" " >
-                                        <p:clientValidator event="keyup"/>
-                                    </p:inputText>  
-                                </div> 
-                                <div class="col-sm-6">
+                                <div class="col-sm-6 form-group">
                                     <p:outputLabel for="@next" value="Telefonnummer"/>
-                                    <p:inputText class="form-control" id="telNr" value=" " >
+                                    <p:inputText class="form-control" id="telNr" value="#{CompanyRegisterFace.telefon}" >
                                         <p:clientValidator event="keyup"/>
                                     </p:inputText>  
+                                    <h:message for="@previous" class="small text-danger"/>
                                 </div> 
                             </div>
 
@@ -131,9 +143,11 @@
                         </p:tab>
 
                         <p:tab id="overview" title="Übersicht">
+                            <p:separator/>
 
                             <p:commandButton class="btn btn-light" value="Zurück" onclick="PF('wiz').back();"></p:commandButton>
-                            <p:commandButton class="btn btn-primary" value="Weiter" action=" " ajax="true" validateClient="true"></p:commandButton>
+                            <p:commandButton class="btn btn-primary" value="Weiter" action="#{CompanyRegisterFace.registerUser()}" ajax="true" validateClient="true"></p:commandButton>
+                            <h:messages globalOnly="true" />
                         </p:tab>
                     </p:wizard>
 

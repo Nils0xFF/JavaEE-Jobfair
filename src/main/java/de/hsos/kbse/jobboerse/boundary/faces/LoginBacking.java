@@ -92,6 +92,7 @@ public class LoginBacking {
        return status;
     }
     
+    /*
     @Transactional
     public void register(){
         Map<String, String> parameters = new HashMap<>();
@@ -105,7 +106,7 @@ public class LoginBacking {
         callere.setGroup_name("USER");
         cf.create(callere);
     }
-    
+    */
     
  
    // getters & setters

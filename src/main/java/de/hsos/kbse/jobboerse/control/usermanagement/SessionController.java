@@ -1,5 +1,7 @@
 package de.hsos.kbse.jobboerse.control.usermanagement;
 
+import de.hsos.kbse.jobboerse.repositories.CompanyRepository;
+import de.hsos.kbse.jobboerse.repositories.GeneralUserRepository;
 import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -18,6 +20,12 @@ public class SessionController implements Serializable {
     @Inject
     private SecurityContext context;
 
+    @Inject
+    private CompanyRepository companyRepo;
+
+    @Inject
+    private GeneralUserRepository userRepo;
+
     private boolean isLoggedIn = false;
 
     private boolean isAdmin = false;
@@ -29,11 +37,19 @@ public class SessionController implements Serializable {
     }
 
     public boolean userHasSetup() {
-        return true;
+
+        if (userIsCompany()) {
+            return companyRepo.getCompanyByEmail(getUserName()).isCompleted();
+        }
+        if (userIsAdmin()) {
+            return true;
+        } else {
+            return userRepo.getUserByEmail(getUserName()).hasCompleted();
+        }
     }
 
     public boolean userIsLoggedIn() {
-        return context.isCallerInRole("USER");
+        return (context.isCallerInRole("USER") || context.isCallerInRole("COMPANY"));
     }
 
     public boolean userIsAdmin() {
@@ -41,7 +57,7 @@ public class SessionController implements Serializable {
     }
 
     public boolean userIsCompany() {
-        return isCompany;
+        return context.isCallerInRole("COMPANY");
     }
 
     public String getUserName() {

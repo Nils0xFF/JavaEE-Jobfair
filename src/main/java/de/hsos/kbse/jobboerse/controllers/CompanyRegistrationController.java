@@ -14,8 +14,10 @@ import de.hsos.kbse.jobboerse.entity.company.Company;
 import de.hsos.kbse.jobboerse.enums.Salutation;
 import de.hsos.kbse.jobboerse.enums.Title;
 import de.hsos.kbse.jobboerse.enums.WorkerCount;
+import de.hsos.kbse.jobboerse.repositories.CompanyRepository;
 import de.hsos.kbse.jobboerse.repositories.GeneralUserRepository;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +33,7 @@ import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
 public class CompanyRegistrationController {
     
     @Inject
-    private GeneralUserRepository userRepo;
+    private CompanyRepository companyRepo;
     
     @Inject
     private Pbkdf2PasswordHash passwordHash;
@@ -43,10 +45,11 @@ public class CompanyRegistrationController {
     
     
     public boolean checkEmailAvailability(String email){
-        return !userRepo.checkEmailExists(email);
+        return !companyRepo.checkEmailExists(email);
     }
     
-    public CompanyRegistrationController createLogin(String email, String password){
+    public boolean createLogin(String email, String password){
+        if(checkEmailAvailability(email)){
             Map<String, String> parameters = new HashMap<>();
             parameters.put("Pbkdf2PasswordHash.Iterations", "3072");
             parameters.put("Pbkdf2PasswordHash.Algorithm", "PBKDF2WithHmacSHA512");
@@ -58,7 +61,10 @@ public class CompanyRegistrationController {
                     .company(new Company())
                     .group_name("COMPANY")
                     .build();
-            return this;
+            companyRepo.createLogin(login);
+            return true;
+        }
+        return false;
     }
     
     public CompanyRegistrationController createAddress(String street, String housenumber, String city, 
@@ -74,10 +80,9 @@ public class CompanyRegistrationController {
             return this;
     }
     
-    public CompanyRegistrationController createContact(Salutation salutation, Title title, String contactEmail, String firstname, String lastname, String phone){
+    public CompanyRegistrationController createContact(Salutation salutation, Title title, String firstname, String lastname, String phone){
         contact = Contact.builder().salutation(salutation)
                 .title(title)
-                .email(contactEmail)
                 .firstname(firstname)
                 .lastname(lastname)
                 .phone(phone)
@@ -95,14 +100,9 @@ public class CompanyRegistrationController {
         return this;
     }
     
-    public boolean finishRegistration(List<Benefit> benefits){
-        login.getCompany().getProfile().setBenefits(benefits);
-        login.getCompany().getProfile().setContact(contact);
-        login.getCompany().setProfile(profile);
-        login.getCompany().setJobs(new ArrayList());
-        if(userRepo.createUser(login)){
-            return true;
-        }
-        return false;
+    public boolean finishRegistration(List<Benefit> benefits, String email){
+        profile.setBenefits(benefits);
+        return companyRepo.createCompany(profile, email);
+        
     }
 }

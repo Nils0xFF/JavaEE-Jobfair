@@ -110,9 +110,9 @@
 
                             <div class="form-group">
                                 <p:outputLabel value="Fähigkeiten" for="@next" />
-                                <p:autoComplete id="abilities" multiple="true" value="#{autoCompleteView.data}" completeMethod="#{autoCompleteView.completeData}"
-                                                var="string" itemLabel="#{string.name}" itemValue="#{string}"  forceSelection="true"
-                                                class="form-control h-auto" converter="autoCompleteConverter" unique="false">
+                                <p:autoComplete id="abilities" multiple="true" value="#{UserRegisterFace.fullfilledRequirements}" completeMethod="#{Autocomplete.completeRequirementData}"
+                                                var="requirement" itemLabel="#{requirement.name}" itemValue="#{requirement}"  forceSelection="true"
+                                                class="form-control h-auto" converter="RequirementConverter" unique="true" panelStyle="position: fixed;" >
 
                                     <p:column>
                                         <h:outputText value="#{string.name}" />
@@ -141,10 +141,10 @@
                             </div>
 
                             <div class="form-group">
-                                <p:outputLabel value="Benefits" for="@next" />
-                                <p:autoComplete multiple="true" value="#{autoCompleteView.data}" completeMethod="#{autoCompleteView.completeData}"
-                                                var="string" itemLabel="#{string.name}" itemValue="#{string}"  forceSelection="true"
-                                                class="form-control h-auto" converter="autoCompleteConverter" unique="false">
+                                <p:outputLabel value="Nach welchen Firmenvorteilen sollen wir für sie Ausschau halten?" for="@next" />
+                                <p:autoComplete multiple="true" value="#{UserRegisterFace.wishedBenefits}" completeMethod="#{Autocomplete.completeBenefitData}"
+                                                var="benefit" itemLabel="#{benefit.name}" itemValue="#{benefit}"  forceSelection="true"
+                                                class="form-control h-auto" converter="BenefitConverter" unique="true">
 
                                     <p:column>
                                         <h:outputText value="#{string.name}" />

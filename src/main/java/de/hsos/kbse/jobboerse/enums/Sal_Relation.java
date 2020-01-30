@@ -16,6 +16,10 @@ public enum Sal_Relation {
         this.desc = desc;
     }
     
+    public String getDesc(){
+        return desc;
+    }
+    
     
     
 }

@@ -107,6 +107,13 @@ public class JobRepository {
     }
     
     public void delete(Long id) {
-        jf.remove(jf.find(id));
+        Job found = jf.find(id);
+        found.setCompany(null);
+        jf.remove(found);
     }
+    
+    public Job find(Long id){
+        return jf.find(id);
+    }
+    
 }

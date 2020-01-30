@@ -24,12 +24,12 @@ public class NeededRequirement implements Serializable {
     @OneToOne
     private Requirement requirement;
     
-    private float weight;
+    private Integer weight;
 
     public static class Builder {
 
         private Requirement requirement;
-        private float weight;
+        private Integer weight;
 
         private Builder() {
         }
@@ -39,7 +39,7 @@ public class NeededRequirement implements Serializable {
             return this;
         }
 
-        public Builder weight(final float value) {
+        public Builder weight(final Integer value) {
             this.weight = value;
             return this;
         }
@@ -56,7 +56,7 @@ public class NeededRequirement implements Serializable {
         return new NeededRequirement.Builder();
     }
 
-    private NeededRequirement(final Requirement requirement, final float weight) {
+    private NeededRequirement(final Requirement requirement, final Integer weight) {
         this.requirement = requirement;
         this.weight = weight;
     }
@@ -71,11 +71,11 @@ public class NeededRequirement implements Serializable {
         this.requirement = requirement;
     }
 
-    public float getWeight() {
+    public Integer getWeight() {
         return weight;
     }
 
-    public void setWeight(float weight) {
+    public void setWeight(Integer weight) {
         this.weight = weight;
     }
     

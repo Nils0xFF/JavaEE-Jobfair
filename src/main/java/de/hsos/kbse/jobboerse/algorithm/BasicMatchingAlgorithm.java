@@ -43,8 +43,8 @@ public class BasicMatchingAlgorithm implements MatchingAlgorithm {
         userRequest.getJobfield().forEach((jobfield) -> {
             availableJobs.addAll(jobRepo.findJobsByJobField(jobfield.getName()));
         });
-        float initPercentageBenfits = 50.0f;
-        float initPercentageRequirements = 50.0f;
+        float initPercentageBenfits = 100.0f;
+        float initPercentageRequirements = 100.0f;
         for (Job available : availableJobs) {
             float percentageBenefits = initPercentageBenfits;
             float percentageRequirements = initPercentageRequirements;
@@ -71,7 +71,9 @@ public class BasicMatchingAlgorithm implements MatchingAlgorithm {
                 
             }
             foundJob.setJob(available);
-            foundJob.setPercentage(percentageBenefits+percentageRequirements);
+            foundJob.setBenefitPercentage(percentageBenefits);
+            foundJob.setRequirementPercentage(percentageRequirements);
+            foundJob.setTotalPercentage((percentageBenefits + percentageRequirements) / 2);
             suitableJobs.add(foundJob);
         }
         searchRepo.updateFoundJobs(email, suitableJobs);

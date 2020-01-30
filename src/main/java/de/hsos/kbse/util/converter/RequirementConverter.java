@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.hsos.kbse.converter;
+package de.hsos.kbse.util.converter;
 
 import de.hsos.kbse.jobboerse.entity.facades.RequirementFacade;
 import de.hsos.kbse.jobboerse.entity.shared.Requirement;

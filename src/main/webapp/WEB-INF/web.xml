@@ -12,6 +12,7 @@
         <param-name>primefaces.CLIENT_SIDE_VALIDATION</param-name>
         <param-value>true</param-value>
     </context-param>
+    
 
     <security-constraint>
         <web-resource-collection>
@@ -21,6 +22,7 @@
         <auth-constraint>
             <role-name>ADMIN</role-name>
             <role-name>USER</role-name>
+            <role-name>COMPANY</role-name>
         </auth-constraint>
     </security-constraint>
     <security-constraint>
@@ -37,6 +39,9 @@
         <role-name>USER</role-name>
     </security-role>
     <security-role>
+        <role-name>COMPANY</role-name>
+    </security-role>
+    <security-role>
         <role-name>ADMIN</role-name>
     </security-role>
 
@@ -46,7 +51,7 @@
     </context-param>
     <context-param>
         <param-name>primefaces.THEME</param-name>
-        <param-value>none</param-value>
+        <param-value>luna-blue</param-value>
     </context-param>
 
 

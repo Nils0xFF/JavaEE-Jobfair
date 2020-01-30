@@ -20,6 +20,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
@@ -41,6 +42,7 @@ public class User_Profile implements Serializable {
     private Title title;
     private String firstname;
     private String lastname;
+     @Lob
     private String description;
     
     @Temporal(TemporalType.DATE)

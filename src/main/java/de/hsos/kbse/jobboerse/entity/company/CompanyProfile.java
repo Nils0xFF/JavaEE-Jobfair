@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 
@@ -27,6 +28,7 @@ public class CompanyProfile implements Serializable {
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
     private String name;
+    @Lob
     private String description;
     private WorkerCount workercount;
     @OneToOne(cascade = CascadeType.ALL)

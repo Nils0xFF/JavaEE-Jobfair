@@ -16,6 +16,7 @@ import de.hsos.kbse.jobboerse.entity.facades.PictureFacade;
 import de.hsos.kbse.jobboerse.entity.shared.Address;
 import de.hsos.kbse.jobboerse.entity.shared.Login;
 import de.hsos.kbse.jobboerse.entity.company.CompanyProfile;
+import de.hsos.kbse.jobboerse.entity.company.Job;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
 import de.hsos.kbse.jobboerse.enums.Salutation;
 import de.hsos.kbse.jobboerse.enums.Title;
@@ -43,6 +44,8 @@ public class CompanyRepository {
     @Inject
     private CompanyProfileFacade companyprofilef;
     @Inject
+    private JobRepository jobRepo;
+    @Inject
     private PictureFacade picturef;    
     @Inject
     private AddressFacade addressf;
@@ -56,13 +59,49 @@ public class CompanyRepository {
         return loginf.findByEmail(email) != null;
     }
     
-    public boolean createCompany(Login toInsert){
-        if (!checkEmailExists(toInsert.getEmail())) {
-            loginf.create(toInsert);
+    public boolean createCompany(CompanyProfile toInsert, String email){
+        Login login = loginf.findByEmail(email);
+        if (login != null) {
+            login.getCompany().setProfile(toInsert);
+            login.getCompany().setCompleted(true);
+            login.getCompany().setLogin(login);
+            
+        return true;
+        }
+        
+        return false;
+    }    
+    
+    public void createLogin(Login login){
+        loginf.create(login);
+    }
+    
+    public List<Job> findJobsByCompany(String email){
+        Login login = loginf.findByEmail(email);
+        if (login != null) {
+            return login.getCompany().getJobs();
+        }
+        return null;
+    }
+    
+    public boolean addJobtoCompany(String email, Job toInsert){
+        Login login = loginf.findByEmail(email);
+        if (login != null) {
+            toInsert.setCompany(login.getCompany());
+            login.getCompany().getJobs().add(toInsert);
             return true;
         }
         return false;
-    }    
+        
+    }
+    
+    public void removeJobFromCompany(String email, Long Id){
+        Login login = loginf.findByEmail(email);
+        if (login != null) {
+            login.getCompany().getJobs().remove(jobRepo.find(Id));
+            loginf.edit(login);
+        }
+    }
     
     //Erster Ansatz; Überarbeitet. Registration Controller übernimmt das Erstellen der Klassen.
     public boolean createLogin(String email, String password) {

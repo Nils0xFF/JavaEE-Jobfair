@@ -52,19 +52,25 @@ public class UserRegisterFace {
     public Graduation[] getGraduationValues() {
         return Graduation.values();
     }
-    
-    public boolean checkEmailAvailability(){
-        return userRegCntrl.checkEmailAvailability(email);
+
+    @Transactional
+    public boolean registerLogin() {
+        if (pw.equals(pw2)) {
+            return userRegCntrl.createLogin(email, pw);
+        }
+        return false;
     }
-    
-    public boolean registerUser(){
-        return userRegCntrl.createLogin(email, pw)
-                .createUserProfile(salutation, titles, firstname, lastname, desc, telefon, birthday)
+
+    @Transactional
+    public boolean registerUser() {
+        return userRegCntrl
+                .createUserProfile(salutation, titles, firstname, lastname, telefon, birthday)
                 .createAddress(street, housenumber, city, postalcode, country)
-                .createQualifications(grades, fullfilledRequirements);
+                .createQualifications(grades, fullfilledRequirements, desc)
+                .setupSearchParameters(wishedBenefits, wishedJobFields)
+                .finishRegistration(context.getCallerPrincipal().getName());
     }
-    
-    
+
     //GETTER / SETTER
 
     public String getEmail() {

@@ -97,10 +97,20 @@ public class UserRegistrationController implements Serializable{
         login.getSeekingUser().setProfile(userProfile);
         userProfile.setGrad(grad);
         userProfile.setFullfiledRequirements(fullfilledRequirements);
-        if(userRepo.createUser(login)){
-            return true;
-        }
-        return false;
+        return this;
+    }
+    
+    public UserRegistrationController setupSearchParameters(List<Benefit> wishedBenefits, List<JobField> jobfields){
+        searchrequest = SearchRequest.builder()
+                .benefits(wishedBenefits)
+                .jobField(jobfields)
+                .build();
+        return this;
+    }
+    
+    public boolean finishRegistration(String email){
+        System.out.println(userProfile.getFirstname());
+        return userRepo.createUser(userProfile,searchrequest, email);
     }
     
 }
