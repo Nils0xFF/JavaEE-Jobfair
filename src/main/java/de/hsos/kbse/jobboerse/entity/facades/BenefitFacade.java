@@ -9,6 +9,7 @@ import de.hsos.kbse.jobboerse.entity.shared.Benefit;
 import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -28,5 +29,14 @@ public class BenefitFacade extends AbstractFacade<Benefit> {
     public BenefitFacade() {
         super(Benefit.class);
     }
+    
+    public Benefit findByName(String name) {
+        String queryString = "SELECT bf FROM Benefit bf "
+                + "WHERE bf.name = :name";
+
+        TypedQuery<Benefit> query = em.createQuery(queryString, Benefit.class);
+        query.setParameter("name", name);
+        return query.getSingleResult();
+    } 
     
 }

@@ -1,6 +1,7 @@
 package de.hsos.kbse.jobboerse.entity.company;
 
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
+import de.hsos.kbse.jobboerse.entity.shared.Login;
 import java.io.Serializable;
 import java.util.List;
 import javax.enterprise.inject.Vetoed;
@@ -9,9 +10,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import org.eclipse.persistence.annotations.CascadeOnDelete;
 
 /**
  *
@@ -23,24 +24,25 @@ public class Company implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToOne
+    private Login login;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
+    @CascadeOnDelete
     private List<Job> jobs;
-    @OneToOne(cascade = CascadeType.ALL)
-    private CompanyProfile profile;
-    @OneToOne(cascade = CascadeType.ALL)
-    private Contact contact;
-    @ManyToMany
-    private List<Benefit> benefits;
-    //LOGIN?!
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval=true)
+    @CascadeOnDelete
+    private CompanyProfile profile; 
+    
+    private boolean completed = false;
+
 
     public static class Builder {
 
         private List<Job> jobs;
         private CompanyProfile profile;
-        private Contact contact;
-        private List<Benefit> benefits;
+        private boolean completed;
 
         private Builder() {
         }
@@ -49,42 +51,42 @@ public class Company implements Serializable {
             this.jobs = value;
             return this;
         }
+        
+        public Builder completed(final boolean value){
+            this.completed = value;
+            return this;
+        }
 
         public Builder profile(final CompanyProfile value) {
             this.profile = value;
             return this;
         }
 
-        public Builder contact(final Contact value) {
-            this.contact = value;
-            return this;
-        }
-
-        public Builder benefits(final List<Benefit> value) {
-            this.benefits = value;
-            return this;
-        }
-
         public Company build() {
-            return new Company(jobs, profile, contact, benefits);
+            return new Company(jobs, profile, completed);
         }
     }
 
-    public Company() {
-    }
+    public Company() { }
 
     public static Company.Builder builder() {
         return new Company.Builder();
     }
 
-    private Company(final List<Job> jobs, final CompanyProfile profile, final Contact contact, final List<Benefit> benefits) {
+    private Company(final List<Job> jobs, final CompanyProfile profile, final boolean completed) {
         this.jobs = jobs;
         this.profile = profile;
-        this.contact = contact;
-        this.benefits = benefits;
+        this.completed = completed;
     }
 
     
+    public Login getLogin() {
+        return login;
+    }
+
+    public void setLogin(Login login) {
+        this.login = login;
+    }
     
     public List<Job> getJobs() {
         return jobs;
@@ -100,25 +102,7 @@ public class Company implements Serializable {
 
     public void setProfile(CompanyProfile profile) {
         this.profile = profile;
-    }
-
-    public Contact getContact() {
-        return contact;
-    }
-
-    public void setContact(Contact contact) {
-        this.contact = contact;
-    }
-
-    public List<Benefit> getBenefits() {
-        return benefits;
-    }
-
-    public void setBenefits(List<Benefit> benefits) {
-        this.benefits = benefits;
-    }
-
-    
+    }   
     
     public Long getId() {
         return id;
@@ -127,6 +111,15 @@ public class Company implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+    
 
     @Override
     public int hashCode() {

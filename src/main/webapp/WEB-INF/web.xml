@@ -30,6 +30,7 @@
         <auth-constraint>
             <role-name>ADMIN</role-name>
             <role-name>USER</role-name>
+            <role-name>COMPANY</role-name>
         </auth-constraint>
     </security-constraint>
     <security-constraint>
@@ -44,6 +45,9 @@
     
     <security-role>
         <role-name>USER</role-name>
+    </security-role>
+    <security-role>
+        <role-name>COMPANY</role-name>
     </security-role>
     <security-role>
         <role-name>ADMIN</role-name>
