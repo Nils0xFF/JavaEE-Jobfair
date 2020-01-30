@@ -18,13 +18,13 @@
         <view-id value="/faces/pages/members/company/jobCreation.xhtml" />
     </url-mapping>
     
-    
+            
     <url-mapping id="profile">
         <pattern value="/profile" />
         <view-id value="/faces/pages/members/profile.xhtml" />
     </url-mapping>
     
-        <url-mapping id="setup">
+    <url-mapping id="setup">
         <pattern value="/setup" />
         <view-id value="/faces/pages/members/setup.xhtml" />
     </url-mapping>

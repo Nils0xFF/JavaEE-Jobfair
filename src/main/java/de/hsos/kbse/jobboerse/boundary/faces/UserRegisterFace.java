@@ -48,6 +48,7 @@ public class UserRegisterFace implements Serializable {
     @NotEmpty
     @Email(message = "Es muss eine gültige Email sein")
     private String email;
+    @NotEmpty
     @Size(min=2, max=24, message = "Passwort muss länger als 5 Zeichen sein.")
     private String pw, pw2;
     @NotEmpty
