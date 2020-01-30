@@ -22,7 +22,7 @@
                                         <f:selectItems value="#{UserRegisterFace.salutationValues}" var="salutation"
                                                        itemValue="#{salutation}" itemLabel="#{salutation.salut}" />
                                     </h:selectOneMenu>
-                                    <h:message for="@previous" class="small text-danger"/>
+                                    <p:message for="@previous"/>
                                 </div>
                                 <div class="col-sm-3">
                                     <p:outputLabel for="@next" value="Title"/>
@@ -38,7 +38,7 @@
                                     <p:inputText class="form-control #{firstName.valid ? '' : 'is-invalid'}" binding="#{firstName}" value="#{UserRegisterFace.firstname}" required="true">
                                         <p:clientValidator event="keyup"/>
                                     </p:inputText>
-                                    <h:message for="@previous" class="small text-danger"/>
+                                    <h:message for="@previous"/>
                                 </div>
                                 <div class="col-sm-6">
                                     <p:outputLabel for="@next" value="Nachname"/>
@@ -104,8 +104,8 @@
                                 </div> 
                             </div>
 
-                            <p:commandButton class="btn btn-light" value="Abbrechen" onclick="PF('wiz').back();"></p:commandButton>
-                            <p:commandButton class="btn btn-primary" value="Weiter" onclick="PF('wiz').next();" validateClient="true"></p:commandButton>
+                            <p:commandButton styleClass="btn btn-light" value="Abbrechen" onclick="PF('wiz').back();"></p:commandButton>
+                            <p:commandButton styleClass="btn btn-primary" value="Weiter" onclick="PF('wiz').next();" validateClient="true"></p:commandButton>
                         </p:tab>
 
                         <p:tab id="company" title="Qualifikationen">
@@ -164,7 +164,7 @@
                                 </p:autoComplete>
                             </div>
 
-                            <p:commandButton class="btn btn-light" value="Zurück" onclick="PF('wiz').back();"></p:commandButton>
+                            <p:commandButton styleClass="btn btn-light" value="Zurück" onclick="PF('wiz').back();"></p:commandButton>
                             <p:commandButton class="btn btn-primary" value="Weiter" onclick="PF('wiz').next();" ></p:commandButton>
                         </p:tab>
 
