@@ -15,8 +15,9 @@
     
     <url-mapping id="createJob">
         <pattern value="/createJob" />
-        <view-id value="/faces/pages/members/jobCreation.xhtml" />
+        <view-id value="/faces/pages/members/company/jobCreation.xhtml" />
     </url-mapping>
+    
     
     <url-mapping id="profile">
         <pattern value="/profile" />

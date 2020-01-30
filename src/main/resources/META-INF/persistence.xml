@@ -2,6 +2,11 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="JobPU" transaction-type="JTA">
     <jta-data-source>java:app/JindiJob</jta-data-source>
+    <class>de.hsos.kbse.jobboerse.entity.requirements</class>
+    <class>de.hsos.kbse.jobboerse.entity.user.User</class>
+    <class>de.hsos.kbse.jobboerse.entity.user.User_Profile</class>
+    <class>de.hsos.kbse.jobboerse.entity.shared.SearchRequest</class>
+    <class>de.hsos.kbse.jobboerse.entity.shared.Login</class>
     <class>de.hsos.kbse.jobboerse.entity.company.Company</class>
     <class>de.hsos.kbse.jobboerse.entity.company.CompanyProfile</class>
     <class>de.hsos.kbse.jobboerse.entity.company.Contact</class>
@@ -9,12 +14,10 @@
     <class>de.hsos.kbse.jobboerse.entity.company.JobField</class>
     <class>de.hsos.kbse.jobboerse.entity.shared.Address</class>
     <class>de.hsos.kbse.jobboerse.entity.shared.Benefit</class>
-    <class>de.hsos.kbse.jobboerse.entity.shared.Login</class>
     <class>de.hsos.kbse.jobboerse.entity.shared.NeededRequirement</class>
+    <class>de.hsos.kbse.jobboerse.entity.shared.Picture</class>
     <class>de.hsos.kbse.jobboerse.entity.shared.Requirement</class>
-    <class>de.hsos.kbse.jobboerse.entity.shared.SearchRequest</class>
     <class>de.hsos.kbse.jobboerse.entity.user.SeekingUser</class>
-    <class>de.hsos.kbse.jobboerse.entity.user.User_Profile</class>
     <class>de.hsos.kbse.jobboerse.entity.user.WeightedJob</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
