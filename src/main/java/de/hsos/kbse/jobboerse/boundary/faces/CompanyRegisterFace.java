@@ -32,6 +32,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -43,7 +44,7 @@ public class CompanyRegisterFace implements Serializable{
     @NotEmpty
     @Email(message = "Es muss eine gültige Email sein")
     private String email;
-    @Min(value = 5, message = "Passwort muss länger als 5 Zeichen sein.")
+    @Size(min=2, max=24, message = "Passwort muss länger als 5 Zeichen sein.")
     private String pw, pw2;
     @NotEmpty
     private String firmname;
@@ -93,6 +94,7 @@ public class CompanyRegisterFace implements Serializable{
             if(companyRegCntrl.createLogin(email, pw)){
                  FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_INFO, "Du kannst dich nun anmelden!", null));
+                 return;
             }
         }
          FacesContext.getCurrentInstance().addMessage(null,
