@@ -22,14 +22,14 @@ public class SessionController implements Serializable {
 
     private boolean isAdmin = false;
 
-    private boolean isCompany = true;
+    private boolean isCompany = false;
 
     public void logout() {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
     }
 
     public boolean userHasSetup() {
-        return false;
+        return true;
     }
 
     public boolean userIsLoggedIn() {
