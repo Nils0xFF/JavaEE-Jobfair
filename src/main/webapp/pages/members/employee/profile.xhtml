@@ -1,28 +1,180 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <div class="container">
         <div class="bg-white mt-4 shadow">
             <div class="card-body">
-                <h3>Hans Dieter Sebastian Busfahrer</h3>
-                <div class="list-group">
-                    <div class="list-group-item">
-                        <h5 class="mb-1">Persönliche Informationen</h5>
-                        <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                        <small>Donec id elit non mi porta.</small>
+                <h3 class="text-center mb-4">Profil Informationen</h3>
+                <h:form onkeypress="return event.keyCode != 13;">
+                    <div class="list-group">
+                        <div class="list-group-item">
+                            <h5 class="mb-3">Persönliche Informationen</h5>
+                            <div class="form-row">
+                                <div class="col-sm-3">
+                                    <p:outputLabel for="@next" value="Email"/>
+                                    <p:inputText class="form-control" value="#{userProfileFace.email}" required="true" readonly="true" disabled="true">
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText>
+                                    <h:message for="@previous"/>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-sm-3">
+                                    <p:outputLabel for="@next" value="Anrede"/>
+                                    <h:selectOneMenu class="custom-select #{component.valid ? '' : 'is-invalid'}" value="#{userProfileFace.salutation}" 
+                                                     readonly="#{!userProfileFace.editMode}" disabled="#{!userProfileFace.editMode}">
+                                        <f:selectItems value="#{userProfileFace.salutationValues}" var="salutation"
+                                                       itemValue="#{salutation}" itemLabel="#{salutation.salut}" />
+                                    </h:selectOneMenu>
+                                    <p:message for="@previous"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <p:outputLabel for="@next" value="Title"/>
+                                    <h:selectOneMenu class="custom-select #{component.valid ? '' : 'is-invalid'}" value="#{userProfileFace.titles}" 
+                                                     readonly="#{!userProfileFace.editMode}" disabled="#{!userProfileFace.editMode}">
+                                        <f:selectItems value="#{userProfileFace.titleValues}" var="GradTitle"
+                                                       itemValue="#{GradTitle}" itemLabel="#{GradTitle.address}" />
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-sm-6 form-group">
+                                    <p:outputLabel for="@next" value="Vorname"/>
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{userProfileFace.firstname}" 
+                                                 readonly="#{!userProfileFace.editMode}" disabled="#{!userProfileFace.editMode}">
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText>
+                                    <h:message for="@previous"/>
+                                </div>
+                                <div class="col-sm-6">
+                                    <p:outputLabel for="@next" value="Nachname"/>
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" id="lastName" value="#{userProfileFace.lastname}" 
+                                                 readonly="#{!userProfileFace.editMode}" disabled="#{!userProfileFace.editMode}" >
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText>  
+                                    <h:message for="@previous" class="small text-danger"/>
+                                </div> 
+                                <div class="col-sm-6">
+                                    <p:outputLabel for="@next" value="Geburtsdatum"/> 
+                                    <p:datePicker class="#{component.valid ? '' : 'is-invalid'}" view="month" value="#{userProfileFace.birthday}" pattern="MM/yyyy" yearNavigator="true" yearRange="1890:2002"
+                                                  readonly="#{!userProfileFace.editMode}" disabled="#{!userProfileFace.editMode}" >
+                                        <p:clientValidator event="keyup"/>
+                                    </p:datePicker>
+                                    <h:message for="@previous" class="small text-danger"/>
+                                </div> 
+                                <div class="col-sm-6">
+                                    <p:outputLabel for="@next" value="Telefonnummer"/>
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{userProfileFace.telefon}" 
+                                                 readonly="#{!userProfileFace.editMode}" disabled="#{!userProfileFace.editMode}" >
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText>  
+                                    <h:message for="@previous" class="small text-danger"/>
+                                </div> 
+                            </div>
+
+                            <div class="form-row">
+                                <div class="col-sm-9 form-group">
+                                    <p:outputLabel for="@next" value="Straße"/>
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{userProfileFace.street}" 
+                                                 readonly="#{!userProfileFace.editMode}" disabled="#{!userProfileFace.editMode}">
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText>
+                                    <h:message for="@previous" class="small text-danger"/>
+                                </div>
+                                <div class="col-sm-3 form-group">
+                                    <p:outputLabel for="@next" value="Hausnummer"/>
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{userProfileFace.housenumber}" 
+                                                 readonly="#{!userProfileFace.editMode}" disabled="#{!userProfileFace.editMode}">
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText> 
+                                    <h:message for="@previous" class="small text-danger"/>
+                                </div> 
+                            </div>
+
+                            <div class="form-row">
+                                <div class="col-sm-4 form-group">
+                                    <p:outputLabel for="@next" value="PLZ"/>
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{userProfileFace.postalcode}" 
+                                                 readonly="#{!userProfileFace.editMode}" disabled="#{!userProfileFace.editMode}">
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText>
+                                    <h:message for="@previous" class="small text-danger"/>
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                    <p:outputLabel for="@next" value="Stadt"/>
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{userProfileFace.city}"
+                                                 readonly="#{!userProfileFace.editMode}" disabled="#{!userProfileFace.editMode}">
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText>  
+                                    <h:message for="@previous" class="small text-danger"/>
+                                </div> 
+                                <div class="col-sm-4 form-group">
+                                    <p:outputLabel for="@next" value="Land"/>
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{userProfileFace.country}"
+                                                 readonly="#{!userProfileFace.editMode}" disabled="#{!userProfileFace.editMode}">
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText> 
+                                    <h:message for="@previous" class="small text-danger"/>
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="list-group-item">
+                            <h5 class="mb-3">Qualifikationen</h5>
+                            <div class="form-group">
+                                <p:outputLabel for="@next" value="Abschluss"/>
+                                <h:selectOneMenu class="custom-select" value="#{userProfileFace.grades}" 
+                                                 readonly="#{!userProfileFace.editMode}" disabled="#{!userProfileFace.editMode}">
+                                    <f:selectItems value="#{userProfileFace.graduationValues}" var="graduation"
+                                                   itemValue="#{graduation}" itemLabel="#{graduation.grad}" />
+                                </h:selectOneMenu>
+
+                            </div>
+
+                            <div class="form-group">
+                                <p:outputLabel value="Fähigkeiten" for="@next" />
+                                <p:autoComplete id="abilities" multiple="true" value="#{userProfileFace.fullfilledRequirements}" completeMethod="#{Autocomplete.completeRequirementData}"
+                                                var="requirement" itemLabel="#{requirement.name}" itemValue="#{requirement}"  forceSelection="true"
+                                                class="form-control h-auto" converter="RequirementConverter" unique="true" panelStyle="position: fixed;" 
+                                                readonly="#{!userProfileFace.editMode}" disabled="#{!userProfileFace.editMode}">
+
+                                    <p:column>
+                                        <h:outputText value="#{requirement.name}" />
+                                    </p:column>
+                                </p:autoComplete>
+                            </div>
+
+                            <div class="form-group">
+                                <p:outputLabel for="@next" value="Beschreibung"/>
+                                <p:inputTextarea class="form-control" id="description" value="#{userProfileFace.desc}" rows="6" cols="33"                                            
+                                                 readonly="#{!userProfileFace.editMode}" disabled="#{!userProfileFace.editMode}">
+                                    <p:clientValidator event="keyup"/>
+                                </p:inputTextarea>
+                            </div>
+                        </div>
+                        <div class="list-group-item">
+
+                            <div class="row" >
+                                <ui:fragment rendered="#{!userProfileFace.editMode}" >
+                                    <div class="col-12">
+                                        <p:commandButton class="btn btn-block bg-primary" ajax="true" update="@form" value="Edit" action="#{userProfileFace.startEdit}"></p:commandButton>    
+                                    </div>
+                                </ui:fragment>
+                                <ui:fragment rendered="#{userProfileFace.editMode}">
+                                    <div class="col-6">
+                                        <p:commandButton class="btn btn-block bg-light text-dark" ajax="true" update="@form" value="Abbrechen" action="#{userProfileFace.cancleEdit}"></p:commandButton>
+                                    </div>
+                                    <div class="col-6">
+                                        <p:commandButton class="btn btn-block bg-dark" ajax="true" update="@form" value="Speichern"></p:commandButton>   
+                                    </div>
+                                </ui:fragment>
+                            </div>
+                        </div>
                     </div>
-                    <div class="list-group-item">
-                        <h5 class="mb-1">Qualifikationen</h5>
-                        <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                        <small>Donec id elit non mi porta.</small>
-                    </div>
-                    <div class="list-group-item">
-                        <h5 class="mb-1">Persönliche Informationen</h5>
-                        <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                        <small>Donec id elit non mi porta.</small>
-                    </div>
-                </div>
+                </h:form>
             </div>
         </div>
     </div>

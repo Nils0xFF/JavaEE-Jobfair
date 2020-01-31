@@ -35,28 +35,28 @@
                             <div class="form-row">
                                 <div class="col-sm-6 form-group">
                                     <p:outputLabel for="@next" value="Vorname"/>
-                                    <p:inputText class="form-control #{firstName.valid ? '' : 'is-invalid'}" binding="#{firstName}" value="#{UserRegisterFace.firstname}" required="true">
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{UserRegisterFace.firstname}" required="true">
                                         <p:clientValidator event="keyup"/>
                                     </p:inputText>
-                                    <h:message for="@previous"/>
+                                    <h:message for="@previous" class="small text-danger"/>
                                 </div>
                                 <div class="col-sm-6">
                                     <p:outputLabel for="@next" value="Nachname"/>
-                                    <p:inputText class="form-control #{lastname.valid ? '' : 'is-invalid'}" id="lastName" value="#{UserRegisterFace.lastname}" binding="#{lastname}" >
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{UserRegisterFace.lastname}" >
                                         <p:clientValidator event="keyup"/>
                                     </p:inputText>  
                                     <h:message for="@previous" class="small text-danger"/>
                                 </div> 
                                 <div class="col-sm-6">
                                     <p:outputLabel for="@next" value="Geburtsdatum"/> 
-                                    <p:datePicker class="#{birthdate.valid ? '' : 'is-invalid'}" binding="#{birthdate}" id="birthdate" view="month" value="#{UserRegisterFace.birthday}" pattern="MM/yyyy" yearNavigator="true" yearRange="1890:2002">
+                                    <p:datePicker class="#{component.valid ? '' : 'is-invalid'}" view="month" value="#{UserRegisterFace.birthday}" pattern="MM/yyyy" yearNavigator="true" yearRange="1890:2002">
                                         <p:clientValidator event="keyup"/>
                                     </p:datePicker>
                                     <h:message for="@previous" class="small text-danger"/>
                                 </div> 
                                 <div class="col-sm-6">
                                     <p:outputLabel for="@next" value="Telefonnummer"/>
-                                    <p:inputText class="form-control #{telNr.valid ? '' : 'is-invalid'}" id="telNr" binding="#{telNr}" value="#{UserRegisterFace.telefon}" >
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{UserRegisterFace.telefon}" >
                                         <p:clientValidator event="keyup"/>
                                     </p:inputText>  
                                     <h:message for="@previous" class="small text-danger"/>
