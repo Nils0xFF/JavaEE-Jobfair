@@ -51,21 +51,22 @@
 
 
                         <div class="accordion" id="jobAccordion">
+                            <p:repeat value="#{UserDashboardFace.availableJobs}" var="job">
                             <div class="card jobCard">
-                                <a data-toggle="collapse" data-target="#job1" aria-expanded="true" aria-controls="job1" style="cursor: pointer">
+                                <a data-toggle="collapse" data-target="#job#{job.job.id}" aria-expanded="true" aria-controls="job#{job.job.id}" style="cursor: pointer">
                                     <div class="card-header">
                                         <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-0">Branche - Job Bezeichnung</h5>
+                                            <h5 class="mb-0">#{job.job.jobfield.name} - #{job.job.name}</h5>
                                             <small class="align-self-center">Click for Details</small>
 
                                         </div>
                                         <div class="row mt-3">
                                             <div class="col-1  text-center"><span class="oi oi-briefcase"></span></div>
-                                            <div class="col-11 "><span>Crazy Company INC</span></div>
+                                            <div class="col-11 "><span>#{job.job.company.profile.name}</span></div>
                                         </div>
                                         <div class="row mt-2">
                                             <div class="col-1 align-self-center text-center"><span class="oi oi-map-marker"></span></div>
-                                            <div class="col-11">Crazy Street 7a, 79080 Crazy, Deutschland</div>
+                                            <div class="col-11">#{job.job.address.street} #{job.job.address.housenumber}, #{job.job.address.postalcode} #{job.job.address.city}, #{job.job.address.country}</div>
                                         </div>
                                     </div>
 
@@ -75,26 +76,26 @@
                                     </div>
                                 </a>
 
-                                <div id="job1" class="collapse" aria-labelledby="headingOne" data-parent="#jobAccordion">
+                                <div id="job#{job.job.id}" class="collapse" aria-labelledby="headingOne" data-parent="#jobAccordion">
                                     <div class="card-body">
                                         <h5>Informationen</h5>
                                         <div class="row mt-3">
                                             <div class="col-1 align-self-center text-center"><span class="oi oi-heart"></span></div>
-                                            <div class="col-11">Kinderfreundlich, locker, toll, schön</div>
+                                            <div class="col-11">#{UserDashboardFace.benefitsToString(job)}</div>
                                         </div>
                                         <div class="row mt-3">
                                             <div class="col-1 align-self-center text-center"><span class="oi oi-info"></span></div>
-                                            <div class="col-11">Java EE, Java SE, JSF, Web Entwicklung</div>
+                                            <div class="col-11">#{UserDashboardFace.requirementToString(job)}</div>
                                         </div>
                                         <div class="row mt-3">
                                             <div class="col-1 align-self-center text-center"><span class="oi oi-pencil"></span></div>
                                             <div class="col-11">
-                                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                                                 #{job.job.description}
                                             </div>
                                         </div>
                                         <div class="row mt-3">
                                             <div class="col-1 align-self-center text-center"><span class="oi oi-dollar"></span></div>
-                                            <div class="col-11">10,000</div>
+                                            <div class="col-11">#{job.job.relation.desc} #{job.job.salary}€</div>
                                         </div>
 
                                         <div class="row mt-5">
@@ -102,15 +103,15 @@
                                                 <h5>Kontakt</h5>
                                             </div>
                                             <div class="col-1 align-self-center text-center"><span class="oi oi-person"></span></div>
-                                            <div class="col-11">Hans Dieter Peter Müller</div>
+                                            <div class="col-11">#{job.job.company.profile.contact.salutation.salut} #{job.job.company.profile.contact.title.address} #{job.job.company.profile.contact.firstname} #{job.job.company.profile.contact.lastname}</div>
                                         </div>
                                         <div class="row mt-3">
                                             <div class="col-1 align-self-center text-center"><span class="oi oi-phone"></span></div>
-                                            <div class="col-11">+491961989477</div>
+                                            <div class="col-11">#{job.job.company.profile.contact.phone}</div>
                                         </div>
                                         <div class="row mt-3">
                                             <div class="col-1 align-self-center text-center"><span class="oi oi-envelope-closed"></span></div>
-                                            <div class="col-11">mail@müller.com</div>
+                                            <div class="col-11">#{job.job.company.profile.contact.email}</div>
                                         </div>
 
                                     </div>
@@ -119,8 +120,8 @@
                                     <div class="row mt-2">
                                         <div class="col-12">                                
                                             <div class="progress" style="height: 20px;">
-                                                <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-                                                    Qualifikation: 40%
+                                                <div class="progress-bar bg-info" role="progressbar" style="width: #{job.requirementPercentage}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                                    Qualifikation: #{UserDashboardFace.df.format(job.requirementPercentage)}%
                                                 </div>
                                             </div>
                                         </div>
@@ -128,8 +129,8 @@
                                     <div class="row mt-2">
                                         <div class="col-12">
                                             <div class="progress" style="height: 20px;">
-                                                <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-                                                    Benefits: 40%
+                                                <div class="progress-bar bg-info" role="progressbar" style="width: #{job.benefitPercentage}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                                    Benefits: #{UserDashboardFace.df.format(job.benefitPercentage)}%
                                                 </div>
                                             </div>
                                         </div>
@@ -137,15 +138,15 @@
                                     <div class="row mt-2">
                                         <div class="col-12">                                
                                             <div class="progress" style="height: 20px;">
-                                                <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-                                                    Total: 40%
+                                                <div class="progress-bar bg-info" role="progressbar" style="width: #{job.totalPercentage}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                                    Total: #{UserDashboardFace.df.format(job.totalPercentage)}%
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
+                            </p:repeat>
 
                             <div class="card jobCard">
                                 <a data-toggle="collapse" data-target="#job2" aria-expanded="true" aria-controls="job2" style="cursor: pointer">

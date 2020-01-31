@@ -145,10 +145,14 @@
                             <p:separator/>
                             <div class="form-group">
                                 <p:outputLabel for="@next" value="Branche in der Sie unterwegs sein möchten:"/>
-                                <h:selectOneMenu id="jobField" class="custom-select" value="#{UserRegisterFace.wishedJobField}" >
-                                    <f:selectItems value="#{UserRegisterFace.jobfields}" var="jobField"
-                                                   itemValue="#{jobField}" itemLabel="#{jobField.name}" />
-                                </h:selectOneMenu>
+                                <p:autoComplete id="jobfields" multiple="true" value="#{UserRegisterFace.wishedJobField}" completeMethod="#{Autocomplete.completeJobFieldData}"
+                                                    var="jobField" itemLabel="#{jobField.name}" itemValue="#{jobField}"  forceSelection="true"
+                                                    class="form-control h-auto" converter="JobFieldConverter" unique="true">
+
+                                        <p:column>
+                                            <h:outputText value="#{jobField.name}" />
+                                        </p:column>
+                                    </p:autoComplete>
 
                             </div>
 

@@ -103,7 +103,7 @@ public class CompanyRegisterFace implements Serializable{
     
     @Transactional
     public void registerUser() {
-        if(companyRegCntrl.createProfile(email, desc, workercount)
+        if(companyRegCntrl.createProfile(firmname, desc, workercount)
                 .createAddress(street, housenumber, city, postalcode, country)
                 .createContact(salutation, titles,firstname, lastname, telefon)
                 .finishRegistration(fullfilledBenefits, context.getCallerPrincipal().getName())){
