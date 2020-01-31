@@ -92,7 +92,7 @@
                                     </p:inputText>  
                                     <h:message for="@previous" class="small text-danger"/>
                                 </div> 
-                                 <div class="col-sm-4 form-group">
+                                <div class="col-sm-4 form-group">
                                     <p:outputLabel for="@next" value="Land"/>
                                     <p:inputText class="form-control #{country.valid ? '' : 'is-invalid'}" binding="#{country}" value="#{CompanyRegisterFace.country}">
                                         <p:clientValidator event="keyup"/>
