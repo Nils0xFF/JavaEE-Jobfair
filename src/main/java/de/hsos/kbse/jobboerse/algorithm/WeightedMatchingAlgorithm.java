@@ -5,18 +5,17 @@
  */
 package de.hsos.kbse.jobboerse.algorithm;
 
-import de.hsos.kbse.jobboerse.algorithm.qualifiers.Basic;
+import de.hsos.kbse.jobboerse.algorithm.qualifiers.Weighted;
 import de.hsos.kbse.jobboerse.entity.company.Job;
-import de.hsos.kbse.jobboerse.entity.company.JobField;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
 import de.hsos.kbse.jobboerse.entity.shared.NeededRequirement;
 import de.hsos.kbse.jobboerse.entity.shared.Requirement;
-import de.hsos.kbse.jobboerse.entity.user.WeightedJob;
-import de.hsos.kbse.jobboerse.repositories.SearchRepository;
 import de.hsos.kbse.jobboerse.entity.shared.SearchRequest;
 import de.hsos.kbse.jobboerse.entity.user.SeekingUser;
-import de.hsos.kbse.jobboerse.repositories.JobRepository;
+import de.hsos.kbse.jobboerse.entity.user.WeightedJob;
 import de.hsos.kbse.jobboerse.repositories.GeneralUserRepository;
+import de.hsos.kbse.jobboerse.repositories.JobRepository;
+import de.hsos.kbse.jobboerse.repositories.SearchRepository;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,9 +29,8 @@ import javax.transaction.Transactional;
  *
  * @author lennartwoltering
  */
-@Basic
-public class BasicMatchingAlgorithm implements MatchingAlgorithm, Serializable {
-
+@Weighted
+public class WeightedMatchingAlgorithm implements MatchingAlgorithm, Serializable{
     @Inject
     private SearchRepository searchRepo;
     @Inject
@@ -43,7 +41,6 @@ public class BasicMatchingAlgorithm implements MatchingAlgorithm, Serializable {
     @Override
     @Transactional
     public List<WeightedJob> findSuitableJobs(String email) {
-        System.out.println(email);
         SeekingUser user = userRepo.getUserByEmail(email);
         System.out.println(user.getProfile().getFirstname());
         SearchRequest userRequest = user.getSearchrequest();
@@ -81,7 +78,7 @@ public class BasicMatchingAlgorithm implements MatchingAlgorithm, Serializable {
                         break; 
                     }
                 }
-                if(!foundRequirement) percentageRequirements -=   initPercentageRequirements / available.getNeeded().size();
+                if(!foundRequirement) percentageRequirements -= initPercentageRequirements / (available.getNeeded().size() * cmpyRequirement.getWeight());
                 
             }
             foundJob.setJob(available);
@@ -97,5 +94,4 @@ public class BasicMatchingAlgorithm implements MatchingAlgorithm, Serializable {
         return suitableJobs;
 
     }
-
 }

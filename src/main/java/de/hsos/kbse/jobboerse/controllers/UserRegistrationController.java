@@ -115,4 +115,8 @@ public class UserRegistrationController implements Serializable{
         return userRepo.createUser(userProfile,searchrequest, email);
     }
     
+    public boolean finishUpdating(String email){
+        return userRepo.updateUser(userProfile, email);
+    }
+    
 }

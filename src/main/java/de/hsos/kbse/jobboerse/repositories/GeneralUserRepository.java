@@ -66,6 +66,18 @@ public class GeneralUserRepository {
         return false;
     }
     
+    public boolean updateUser(User_Profile toInsert, String email){
+        Login login = logins.findByEmail(email);
+        if (login != null) {
+            login.getSeekingUser().setProfile(toInsert);
+            logins.edit(login);
+            return true;
+        }
+        return false;
+    }
+    
+    
+    
     public void createLogin(Login login){
         logins.create(login);
     }

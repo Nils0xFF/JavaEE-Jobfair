@@ -105,4 +105,9 @@ public class CompanyRegistrationController {
         return companyRepo.createCompany(profile, email);
         
     }
+    
+    public boolean finishUpdating(List<Benefit> benefits, String email){
+        profile.setBenefits(benefits);
+        return companyRepo.updateCompany(profile, email);
+    }
 }

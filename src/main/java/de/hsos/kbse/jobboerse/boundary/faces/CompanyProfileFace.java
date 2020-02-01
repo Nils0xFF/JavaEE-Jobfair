@@ -5,6 +5,7 @@
  */
 package de.hsos.kbse.jobboerse.boundary.faces;
 
+import de.hsos.kbse.jobboerse.controllers.CompanyRegistrationController;
 import de.hsos.kbse.jobboerse.entity.company.Company;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
 import de.hsos.kbse.jobboerse.enums.Graduation;
@@ -21,6 +22,7 @@ import javax.inject.Named;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.security.enterprise.SecurityContext;
+import javax.transaction.Transactional;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
@@ -38,6 +40,9 @@ public class CompanyProfileFace implements Serializable {
 
     @Inject
     private CompanyRepository compRepository;
+    
+    @Inject
+    private CompanyRegistrationController companyCntrl;
 
     private boolean editMode = false;
 
@@ -96,6 +101,8 @@ public class CompanyProfileFace implements Serializable {
         city = companyDetails.getProfile().getAddress().getCity();
         postalcode = companyDetails.getProfile().getAddress().getPostalcode();
         country = companyDetails.getProfile().getAddress().getCountry();
+        
+        fullfilledBenefits = companyDetails.getProfile().getBenefits();
 
         salutation = companyDetails.getProfile().getContact().getSalutation();
         titles = companyDetails.getProfile().getContact().getTitle();
@@ -104,6 +111,16 @@ public class CompanyProfileFace implements Serializable {
         telefon = companyDetails.getProfile().getContact().getPhone();
         contactEmail = companyDetails.getProfile().getContact().getEmail();
 
+    }
+    
+    @Transactional
+    public void updateProfile(){
+        companyCntrl.createProfile(firmname, desc, workercount)
+                .createAddress(street, housenumber, city, postalcode, country)
+                .createContact(salutation, titles, firstname, lastname, email)
+                .finishUpdating(fullfilledBenefits, context.getCallerPrincipal().getName());
+                
+        
     }
 
     public void startEdit() {

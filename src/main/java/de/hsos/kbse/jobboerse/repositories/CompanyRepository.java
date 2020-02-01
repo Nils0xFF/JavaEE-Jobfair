@@ -65,12 +65,23 @@ public class CompanyRepository {
             login.getCompany().setProfile(toInsert);
             login.getCompany().setCompleted(true);
             login.getCompany().setLogin(login);
-            
+            loginf.edit(login);
         return true;
         }
         
         return false;
     }    
+    
+    public boolean updateCompany(CompanyProfile toInsert, String email){
+        Login login = loginf.findByEmail(email);
+        if (login != null) {
+            login.getCompany().setProfile(toInsert);
+            loginf.edit(login);
+        return true;
+        }
+        
+        return false;
+    }  
     
     public void createLogin(Login login){
         loginf.create(login);

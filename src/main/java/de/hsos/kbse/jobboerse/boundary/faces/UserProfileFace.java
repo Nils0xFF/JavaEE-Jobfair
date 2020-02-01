@@ -5,6 +5,7 @@
  */
 package de.hsos.kbse.jobboerse.boundary.faces;
 
+import de.hsos.kbse.jobboerse.controllers.UserRegistrationController;
 import de.hsos.kbse.jobboerse.entity.company.JobField;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
 import de.hsos.kbse.jobboerse.entity.shared.Requirement;
@@ -24,6 +25,7 @@ import javax.inject.Named;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.security.enterprise.SecurityContext;
+import javax.transaction.Transactional;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -44,6 +46,9 @@ public class UserProfileFace implements Serializable{
 
     @Inject
     private GeneralUserRepository userRepository;
+    
+    @Inject
+    private UserRegistrationController userCntrl;
 
     
     private boolean editMode = false;
@@ -103,6 +108,14 @@ public class UserProfileFace implements Serializable{
 
         grades = userDetails.getProfile().getGrad();
         fullfilledRequirements = userDetails.getProfile().getFullfiledRequirements();
+    }
+    
+    @Transactional
+    public void updateProfile(){
+        userCntrl.createUserProfile(salutation, titles, firstname, lastname, telefon, birthday)
+                .createAddress(street, housenumber, city, postalcode, country)
+                .createQualifications(grades, fullfilledRequirements, desc)
+                .finishUpdating(context.getCallerPrincipal().getName());
     }
     
     

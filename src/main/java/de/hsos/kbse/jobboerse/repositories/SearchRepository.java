@@ -77,6 +77,15 @@ public class SearchRepository {
         }
     }
     
+    public void updateRequest(String email, List<Benefit> wishedBenefits, List<JobField> wishedJobfield){
+        SearchRequest request = getSearchRequest(email);
+        if(request != null){
+            request.setJobfield(wishedJobfield);
+            request.setWishedBenefits(wishedBenefits);
+            searchrequests.edit(request);
+        }
+    }
+    
     public List<WeightedJob> getFoundJobs(String email){
         SeekingUser foundUser = users.getUserByEmail(email);
         if(foundUser != null){
