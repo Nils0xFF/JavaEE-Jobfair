@@ -13,7 +13,7 @@
         <ui:define name="content">
             <div class="container mt-5">
                 <div class="card">
-                    <h5 class="card-header">Erstmalige Einrichtung</h5>
+                    <h5 class="card-header">Neue Stelle einrichten</h5>
                     <div class="card-body">
                         <h:form>
                             <p:wizard showNavBar="false" showStepStatus="true" widgetVar="wiz">
@@ -135,6 +135,8 @@
                                 <p:tab id="overview" title="Übersicht">
                                     <p:separator/>
 
+                                    
+                                    
                                     <p:commandButton class="btn btn-light" value="Zurück" onclick="PF('wiz').back();"></p:commandButton>
                                     <p:commandButton class="btn btn-primary" value="Weiter" action="#{JobCreation.createJob()}" ajax="true" validateClient="true"></p:commandButton>
                                     <h:messages globalOnly="true" />

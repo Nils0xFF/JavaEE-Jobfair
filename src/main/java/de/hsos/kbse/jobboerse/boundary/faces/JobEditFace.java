@@ -13,12 +13,16 @@ import de.hsos.kbse.jobboerse.enums.Sal_Relation;
 import de.hsos.kbse.jobboerse.repositories.JobFieldRepository;
 import de.hsos.kbse.jobboerse.repositories.JobRepository;
 import de.hsos.kbse.jobboerse.repositories.RequirementRepository;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.faces.annotation.ManagedProperty;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -75,8 +79,17 @@ public class JobEditFace implements Serializable {
     private JobField jobfield;
 
     private void init() {
-        System.out.println(id);
         jobDetails = jobRepository.find(id);
+
+        if(!jobDetails.getCompany().getLogin().getEmail().equals(context.getCallerPrincipal().getName())){
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().responseSendError(403, "Not your Job!");
+                return;
+            } catch (IOException ex) {
+                Logger.getLogger(JobEditFace.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
         jobname = jobDetails.getName();
         desc = jobDetails.getDescription();
 
