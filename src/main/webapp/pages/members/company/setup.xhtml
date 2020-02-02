@@ -135,6 +135,13 @@
                                         <p:clientValidator event="keyup"/>
                                     </p:inputText>  
                                     <h:message for="@previous" class="small text-danger"/>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <p:outputLabel for="@next" value="Email"/>
+                                    <p:inputText class="form-control" value="#{CompanyRegisterFace.telefon}" >
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText>  
+                                    <h:message for="@previous" class="small text-danger"/>
                                 </div> 
                             </div>
 
@@ -143,7 +150,149 @@
                         </p:tab>
 
                         <p:tab id="overview" title="Übersicht">
-                            <p:separator/>
+                            <div class="list-group">
+                                <div class="list-group-item">
+                                    <h5 class="mb-3">Generelle Informationen</h5>
+                                    <div class="form-row">
+                                        <div class="col-sm-8 form-group">
+                                            <p:outputLabel for="@next" value="Name der Firma"/>
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{CompanyRegisterFace.firmname}"
+                                                         readonly="true" disabled="true">
+                                                <p:clientValidator event="keyup"/>
+                                            </p:inputText>
+                                            <h:message for="@previous" class="small text-danger"/>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <p:outputLabel for="@next" value="Größe"/>
+                                            <h:selectOneMenu class="custom-select  #{component.valid ? '' : 'is-invalid'}" value="#{CompanyRegisterFace.workercount}" 
+                                                             readonly="true" disabled="true">
+                                                <f:selectItems value="#{CompanyRegisterFace.workerValues}" var="workercount"
+                                                               itemValue="#{workercount}" itemLabel="#{workercount.count}" />
+                                            </h:selectOneMenu>
+                                            <h:message for="@previous" class="small text-danger"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <p:outputLabel for="@next" value="Beschreibung"/>
+                                        <p:inputTextarea class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{CompanyRegisterFace.desc}" rows="6" cols="33"
+                                                         readonly="true" disabled="true">
+                                            <p:clientValidator event="keyup"/>
+                                        </p:inputTextarea>
+                                        <h:message for="@previous" class="small text-danger"/>
+                                    </div>
+                                    <p:outputLabel value="Vorteile, die ihre Firma bietet: " for="@next" />
+                                    <p:autoComplete multiple="true" value="#{CompanyRegisterFace.fullfilledBenefits}" completeMethod="#{Autocomplete.completeBenefitData}"
+                                                    var="benefit" itemLabel="#{benefit.name}" itemValue="#{benefit}"  forceSelection="true"
+                                                    class="form-control h-auto" converter="BenefitConverter" unique="true"
+                                                    readonly="true" disabled="true">
+
+                                        <p:column>
+                                            <h:outputText value="#{benefit.name}" />
+                                        </p:column>
+                                    </p:autoComplete>
+
+                                    <div class="form-row">
+                                        <div class="col-sm-9 form-group">
+                                            <p:outputLabel for="@next" value="Straße"/>
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{CompanyRegisterFace.street}"
+                                                         readonly="true" disabled="true">
+                                                <p:clientValidator event="keyup"/>
+                                            </p:inputText>
+                                            <h:message for="@previous" class="small text-danger"/>
+                                        </div>
+                                        <div class="col-sm-3 form-group">
+                                            <p:outputLabel for="@next" value="Hausnummer"/>
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{CompanyRegisterFace.housenumber}"
+                                                         readonly="true" disabled="true">
+                                                <p:clientValidator event="keyup"/>
+                                            </p:inputText> 
+                                            <h:message for="@previous" class="small text-danger"/>
+                                        </div> 
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="col-sm-4 form-group">
+                                            <p:outputLabel for="@next" value="PLZ"/>
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{CompanyRegisterFace.postalcode}"
+                                                         readonly="true" disabled="true">
+                                                <p:clientValidator event="keyup"/>
+                                            </p:inputText>
+                                            <h:message for="@previous" class="small text-danger"/>
+                                        </div>
+                                        <div class="col-sm-4 form-group">
+                                            <p:outputLabel for="@next" value="Stadt"/>
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{CompanyRegisterFace.city}"
+                                                         readonly="true" disabled="true">
+                                                <p:clientValidator event="keyup"/>
+                                            </p:inputText>  
+                                            <h:message for="@previous" class="small text-danger"/>
+                                        </div> 
+                                        <div class="col-sm-4 form-group">
+                                            <p:outputLabel for="@next" value="Land"/>
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{CompanyRegisterFace.country}"
+                                                         readonly="true" disabled="true">
+                                                <p:clientValidator event="keyup"/>
+                                            </p:inputText>  
+                                            <h:message for="@previous" class="small text-danger"/>
+                                        </div> 
+                                    </div>
+                                </div>
+                                <div class="list-group-item">
+                                    <h5 class="mb-3">Kontaktperson</h5>
+                                    <div class="form-row">
+                                        <div class="col-sm-3">
+                                            <p:outputLabel for="@next" value="Anrede"/>
+                                            <h:selectOneMenu class="custom-select" value="#{CompanyRegisterFace.salutation}" 
+                                                             readonly="true" disabled="true">
+                                                <f:selectItems value="#{CompanyRegisterFace.salutationValues}" var="salutation"
+                                                               itemValue="#{salutation}" itemLabel="#{salutation.salut}" />
+                                            </h:selectOneMenu>
+                                            <h:message for="@previous" class="small text-danger"/>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <p:outputLabel for="@next" value="Title"/>
+                                            <h:selectOneMenu class="custom-select" value="#{CompanyRegisterFace.titles}" readonly="true" disabled="true" >
+                                                <f:selectItems value="#{CompanyRegisterFace.titleValues}" var="GradTitle"
+                                                               itemValue="#{GradTitle}" itemLabel="#{GradTitle.address}" />
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-sm-6 form-group">
+                                            <p:outputLabel for="@next" value="Vorname"/>
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{CompanyRegisterFace.firstname}" required="true"
+                                                         readonly="true" disabled="true">
+                                                <p:clientValidator event="keyup"/>
+                                            </p:inputText>
+                                            <h:message for="@previous" class="small text-danger"/>
+                                        </div>
+                                        <div class="col-sm-6 form-group">
+                                            <p:outputLabel for="@next" value="Nachname"/>
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{CompanyRegisterFace.lastname}" 
+                                                         readonly="true" disabled="true">
+                                                <p:clientValidator event="keyup"/>
+                                            </p:inputText>  
+                                            <h:message for="@previous" class="small text-danger"/>
+                                        </div> 
+                                        <div class="col-sm-6 form-group">
+                                            <p:outputLabel for="@next" value="Telefonnummer"/>
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{CompanyRegisterFace.telefon}" 
+                                                         readonly="true" disabled="true">
+                                                <p:clientValidator event="keyup"/>
+                                            </p:inputText>  
+                                            <h:message for="@previous" class="small text-danger"/>
+                                        </div>
+                                        <div class="col-sm-6 form-group">
+                                            <p:outputLabel for="@next" value="Email"/>
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{CompanyRegisterFace.email}" 
+                                                         readonly="true" disabled="true">
+                                                <p:clientValidator event="keyup"/>
+                                            </p:inputText>  
+                                            <h:message for="@previous" class="small text-danger"/>
+                                        </div> 
+                                    </div>
+                                </div></div>
 
                             <p:commandButton class="btn btn-light" value="Zurück" onclick="PF('wiz').back();"></p:commandButton>
                             <p:commandButton class="btn btn-primary" value="Weiter" action="#{CompanyRegisterFace.registerUser()}" ajax="true" validateClient="true"></p:commandButton>
