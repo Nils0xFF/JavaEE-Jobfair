@@ -5,6 +5,7 @@
  */
 package de.hsos.kbse.jobboerse.boundary.faces;
 
+import de.hsos.kbse.jobboerse.controllers.JobCreationController;
 import de.hsos.kbse.jobboerse.entity.company.Job;
 import de.hsos.kbse.jobboerse.entity.company.JobField;
 import de.hsos.kbse.jobboerse.entity.shared.NeededRequirement;
@@ -29,6 +30,8 @@ import javax.inject.Named;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.security.enterprise.SecurityContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
@@ -75,13 +78,21 @@ public class JobEditFace implements Serializable {
     @Enumerated(EnumType.STRING)
     private Sal_Relation relation;
     private List<Requirement> wishedRequirement;
-    private List<NeededRequirement> weightedRequirements;
+    private List<NeededRequirement> oldWeightedRequirements;
+    private List<NeededRequirement> newWeightedRequirements;
     private JobField jobfield;
+    
+    @Inject
+    JobCreationController jobCntrl;
 
+    @PostConstruct
     private void init() {
-        jobDetails = jobRepository.find(id);
 
-        if(!jobDetails.getCompany().getLogin().getEmail().equals(context.getCallerPrincipal().getName())){
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        
+        jobDetails = jobRepository.find(Long.parseLong(request.getParameter("id")));
+
+        if (!jobDetails.getCompany().getLogin().getEmail().equals(context.getCallerPrincipal().getName())) {
             try {
                 FacesContext.getCurrentInstance().getExternalContext().responseSendError(403, "Not your Job!");
                 return;
@@ -89,7 +100,7 @@ public class JobEditFace implements Serializable {
                 Logger.getLogger(JobEditFace.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         jobname = jobDetails.getName();
         desc = jobDetails.getDescription();
 
@@ -104,8 +115,15 @@ public class JobEditFace implements Serializable {
 
         // Get list of wished requirements using the wished requirements
         wishedRequirement = jobDetails.getNeeded().stream().map(NeededRequirement::getRequirement).collect(Collectors.toList());
-        weightedRequirements = jobDetails.getNeeded();
+        oldWeightedRequirements = jobDetails.getNeeded();
         jobfield = jobDetails.getJobfield();
+    }
+    
+    @Transactional
+    public void updateJob(){
+        jobCntrl.createInfo(jobname, desc, jobfield, oldWeightedRequirements, salary, relation)
+                .createAddress(street, housenumber, city, postalcode, country)
+                .finishUpdating(id);
     }
 
     public String getDesc() {
@@ -209,19 +227,29 @@ public class JobEditFace implements Serializable {
     }
 
     public List<NeededRequirement> getWeightedRequirements() {
-        weightedRequirements = new ArrayList<>();
+        newWeightedRequirements = new ArrayList<>();
         for (Requirement req : this.wishedRequirement) {
-            NeededRequirement toInsert = NeededRequirement.builder()
-                    .requirement(req)
-                    .weight(1)
-                    .build();
-            weightedRequirements.add(toInsert);
+            boolean found = false;
+            for (NeededRequirement old : this.oldWeightedRequirements) {
+                if (req.equals(old.getRequirement())) {
+                    newWeightedRequirements.add(old);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                NeededRequirement toInsert = NeededRequirement.builder()
+                        .requirement(req)
+                        .weight(1)
+                        .build();
+                newWeightedRequirements.add(toInsert);
+            }
         }
-        return weightedRequirements;
+        return newWeightedRequirements;
     }
 
     public void setWeightedRequirements(List<NeededRequirement> weightedRequirements) {
-        this.weightedRequirements = weightedRequirements;
+        this.oldWeightedRequirements = weightedRequirements;
     }
 
     public Long getId() {
@@ -230,8 +258,9 @@ public class JobEditFace implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-        init();
+      //  init();
     }
+    
     
 
 }

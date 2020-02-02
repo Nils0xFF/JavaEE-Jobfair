@@ -80,11 +80,12 @@ public class CompanyRegistrationController {
             return this;
     }
     
-    public CompanyRegistrationController createContact(Salutation salutation, Title title, String firstname, String lastname, String phone){
+    public CompanyRegistrationController createContact(Salutation salutation, Title title, String firstname, String lastname, String phone, String contactEmail){
         contact = Contact.builder().salutation(salutation)
                 .title(title)
                 .firstname(firstname)
                 .lastname(lastname)
+                .email(contactEmail)
                 .phone(phone)
                 .build();
         profile.setContact(contact);

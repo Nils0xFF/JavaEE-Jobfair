@@ -117,7 +117,7 @@ public class CompanyProfileFace implements Serializable {
     public void updateProfile(){
         companyCntrl.createProfile(firmname, desc, workercount)
                 .createAddress(street, housenumber, city, postalcode, country)
-                .createContact(salutation, titles, firstname, lastname, email)
+                .createContact(salutation, titles, firstname, lastname, email, contactEmail)
                 .finishUpdating(fullfilledBenefits, context.getCallerPrincipal().getName());
                 
         

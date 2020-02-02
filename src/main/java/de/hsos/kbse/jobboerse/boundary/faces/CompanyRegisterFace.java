@@ -106,7 +106,7 @@ public class CompanyRegisterFace implements Serializable {
     public void registerUser() {
         if (companyRegCntrl.createProfile(firmname, desc, workercount)
                 .createAddress(street, housenumber, city, postalcode, country)
-                .createContact(salutation, titles, firstname, lastname, telefon)
+                .createContact(salutation, titles, firstname, lastname, telefon, contactEmail)
                 .finishRegistration(fullfilledBenefits, context.getCallerPrincipal().getName())) {
             try {
                 FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/dashboard");

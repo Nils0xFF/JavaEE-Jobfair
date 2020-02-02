@@ -11,6 +11,7 @@ import de.hsos.kbse.jobboerse.entity.company.JobField;
 import de.hsos.kbse.jobboerse.entity.shared.Address;
 import de.hsos.kbse.jobboerse.entity.shared.NeededRequirement;
 import de.hsos.kbse.jobboerse.enums.Sal_Relation;
+import de.hsos.kbse.jobboerse.repositories.JobRepository;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -24,6 +25,9 @@ public class JobCreationController {
 
     @Inject
     private CompanyRepository companyRepo;
+    
+    @Inject
+    private JobRepository jobRepo;
 
     private Job job;
     private Address address;
@@ -56,6 +60,11 @@ public class JobCreationController {
     public void finishCreation(String email){
         job.setAddress(address);
         companyRepo.addJobtoCompany(email, job);
+    }
+    
+    public void finishUpdating(Long id){
+        job.setAddress(address);
+        jobRepo.update(id, job);
     }
 
 }

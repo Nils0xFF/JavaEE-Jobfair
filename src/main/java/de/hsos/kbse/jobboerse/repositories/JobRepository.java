@@ -28,12 +28,27 @@ public class JobRepository {
     public JobRepository() { }
     
     public void create(String name, Sal_Relation relation, Double salary, String description, Address address, Company company, List<NeededRequirement> needed) {
-        Job job = Job.builder().name(name).relation(relation).salary(salary).description(description).address(address).company(company).needed(needed).build();
+        Job job = Job.builder()
+                .name(name)
+                .relation(relation)
+                .salary(salary)
+                .description(description)
+                .address(address)
+                .company(company)
+                .needed(needed)
+                .build();
         jf.create(job);
     }
     
     public List<Job> findAll() {
         return jf.findAll();
+    }
+    
+    public void update(Long id, Job job){
+        Job old = jf.find(id);
+        job.setId(old.getId());
+        job.setCompany(old.getCompany());
+        jf.edit(job);
     }
     
     public void update(Long id, String name, Sal_Relation relation, Double salary, String description, Address address, Company company, List<NeededRequirement> needed) {
