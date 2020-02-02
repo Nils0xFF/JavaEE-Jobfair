@@ -36,15 +36,16 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author lennartwoltering
+ * @author lennartwoltering, nilsgeschwinde
  */
 @Named("CompanyRegisterFace")
 @ViewScoped
-public class CompanyRegisterFace implements Serializable{
+public class CompanyRegisterFace implements Serializable {
+
     @NotEmpty
     @Email(message = "Es muss eine gültige Email sein")
     private String email;
-    @Size(min=2, max=24, message = "Passwort muss länger als 5 Zeichen sein.")
+    @Size(min = 2, max = 24, message = "Passwort muss länger als 5 Zeichen sein.")
     private String pw, pw2;
     @NotEmpty
     private String firmname;
@@ -53,80 +54,74 @@ public class CompanyRegisterFace implements Serializable{
     @NotEmpty
     private String lastname;
     @NotEmpty
-    @Pattern(regexp= "^[^a-zA-Z]+$")
+    @Pattern(regexp = "^[^a-zA-Z]+$")
     private String telefon;
     @NotEmpty
+    @Email(message = "Es muss eine gültige Email sein")
+    private String contactEmail;
+    @NotEmpty
     private String desc;
-    @Pattern(regexp= "^[^0-9]+$")
+    @Pattern(regexp = "^[^0-9]+$")
     @NotEmpty
     private String street;
     @NotEmpty
     private String housenumber;
     @NotEmpty
-    @Pattern(regexp= "^[^0-9]+$")
+    @Pattern(regexp = "^[^0-9]+$")
     private String city;
     @NotEmpty
     private String postalcode, country;
     private List<Benefit> fullfilledBenefits;
-    
+
     @Enumerated(EnumType.STRING)
     private Salutation salutation;
     @Enumerated(EnumType.STRING)
     private Title titles;
     @Enumerated(EnumType.STRING)
     private WorkerCount workercount;
-    
-    
+
     @Inject
     BenefitRepository benefitRepo;
-    
+
     @Inject
     CompanyRegistrationController companyRegCntrl;
-    
+
     @Inject
     SecurityContext context;
-   
 
-            
     @Transactional
     public void registerLogin() {
         if (pw.equals(pw2)) {
-            if(companyRegCntrl.createLogin(email, pw)){
-                 FacesContext.getCurrentInstance().addMessage(null,
+            if (companyRegCntrl.createLogin(email, pw)) {
+                FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_INFO, "Du kannst dich nun anmelden!", null));
-                 return;
+                return;
             }
         }
-         FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Registrierung fehlgeschlagen, überprüfe deine Eingaben", null));
+        FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Registrierung fehlgeschlagen, überprüfe deine Eingaben", null));
     }
-    
+
     @Transactional
     public void registerUser() {
-        if(companyRegCntrl.createProfile(firmname, desc, workercount)
+        if (companyRegCntrl.createProfile(firmname, desc, workercount)
                 .createAddress(street, housenumber, city, postalcode, country)
-                .createContact(salutation, titles,firstname, lastname, telefon)
-                .finishRegistration(fullfilledBenefits, context.getCallerPrincipal().getName())){
-            try{
+                .createContact(salutation, titles, firstname, lastname, telefon)
+                .finishRegistration(fullfilledBenefits, context.getCallerPrincipal().getName())) {
+            try {
                 FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/dashboard");
             } catch (IOException ex) {
                 FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, "Register failed", null));
                 Logger.getLogger(CompanyRegisterFace.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }else{
+        } else {
             FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Register failed", null));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Register failed", null));
         }
     }
-    
-    
-    
-    
-    
-    
-    //-------------------
 
+    //-------------------
     public String getEmail() {
         return email;
     }
@@ -262,6 +257,14 @@ public class CompanyRegisterFace implements Serializable{
     public void setWorkercount(WorkerCount workercount) {
         this.workercount = workercount;
     }
+
+    public String getContactEmail() {
+        return contactEmail;
+    }
+
+    public void setContactEmail(String contactEmail) {
+        this.contactEmail = contactEmail;
+    }
     
     public Title[] getTitleValues() {
         return Title.values();
@@ -270,15 +273,9 @@ public class CompanyRegisterFace implements Serializable{
     public Salutation[] getSalutationValues() {
         return Salutation.values();
     }
-    
-    public WorkerCount[] getWorkerValues(){
+
+    public WorkerCount[] getWorkerValues() {
         return WorkerCount.values();
     }
-    
-    
-    
-    
-    
-    
-    
+
 }

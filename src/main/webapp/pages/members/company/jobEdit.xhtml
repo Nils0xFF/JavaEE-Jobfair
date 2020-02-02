@@ -22,7 +22,7 @@
                                     <div class="form-row">
                                         <div class="col-sm-8 form-group">
                                             <p:outputLabel for="@next" value="Name des Jobs"/>
-                                            <p:inputText class="form-control #{jobname.valid ? '' : 'is-invalid'}" binding="#{jobname}" value="#{jobEditFace.jobname}" required="true">
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{jobEditFace.jobname}" required="true">
                                                 <p:clientValidator event="keyup"/>
                                             </p:inputText>
                                             <h:message for="@previous" class="small text-danger"/>
@@ -31,7 +31,7 @@
 
                                     <div class="form-group">
                                         <p:outputLabel for="@next" value="Beschreibung"/>
-                                        <p:inputTextarea class="form-control #{desc.valid ? '' : 'is-invalid'}" binding="#{desc}" id="description" value="#{jobEditFace.desc}" rows="6" cols="33" >
+                                        <p:inputTextarea class="form-control #{component.valid ? '' : 'is-invalid'}" id="description" value="#{jobEditFace.desc}" rows="6" cols="33" >
                                             <p:clientValidator event="keyup"/>
                                         </p:inputTextarea>
                                         <h:message for="@previous" class="small text-danger"/>
@@ -40,14 +40,14 @@
                                     <div class="form-row">
                                         <div class="col-sm-9 form-group">
                                             <p:outputLabel for="@next" value="Straße"/>
-                                            <p:inputText class="form-control #{streetName.valid ? '' : 'is-invalid'}" binding="#{streetName}" value="#{jobEditFace.street}" required="true">
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{jobEditFace.street}" required="true">
                                                 <p:clientValidator event="keyup"/>
                                             </p:inputText>
                                             <h:message for="@previous" class="small text-danger"/>
                                         </div>
                                         <div class="col-sm-3 form-group">
                                             <p:outputLabel for="@next" value="Hausnummer"/>
-                                            <p:inputText class="form-control #{streetNumber.valid ? '' : 'is-invalid'}" binding="#{streetNumber}" value="#{jobEditFace.housenumber}">
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{jobEditFace.housenumber}">
                                                 <p:clientValidator event="keyup"/>
                                             </p:inputText> 
                                             <h:message for="@previous" class="small text-danger"/>
@@ -57,21 +57,21 @@
                                     <div class="form-row">
                                         <div class="col-sm-4 form-group">
                                             <p:outputLabel for="@next" value="PLZ"/>
-                                            <p:inputText class="form-control #{postalCode.valid ? '' : 'is-invalid'}" binding="#{postalCode}" value="#{jobEditFace.postalcode}" required="true">
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{jobEditFace.postalcode}" required="true">
                                                 <p:clientValidator event="keyup"/>
                                             </p:inputText>
                                             <h:message for="@previous" class="small text-danger"/>
                                         </div>
                                         <div class="col-sm-4 form-group">
                                             <p:outputLabel for="@next" value="Stadt"/>
-                                            <p:inputText class="form-control #{cityName.valid ? '' : 'is-invalid'}" binding="#{cityName}" value="#{jobEditFace.city}">
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{jobEditFace.city}">
                                                 <p:clientValidator event="keyup"/>
                                             </p:inputText>  
                                             <h:message for="@previous" class="small text-danger"/>
                                         </div> 
                                         <div class="col-sm-4 form-group">
                                             <p:outputLabel for="@next" value="Land"/>
-                                            <p:inputText class="form-control #{country.valid ? '' : 'is-invalid'}" binding="#{country}" value="#{jobEditFace.country}">
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{jobEditFace.country}">
                                                 <p:clientValidator event="keyup"/>
                                             </p:inputText>  
                                             <h:message for="@previous" class="small text-danger"/>
