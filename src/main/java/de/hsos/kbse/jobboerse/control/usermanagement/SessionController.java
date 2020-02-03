@@ -3,8 +3,7 @@ package de.hsos.kbse.jobboerse.control.usermanagement;
 import de.hsos.kbse.jobboerse.repositories.CompanyRepository;
 import de.hsos.kbse.jobboerse.repositories.GeneralUserRepository;
 import java.io.IOException;
-import java.io.Serializable;
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -17,8 +16,8 @@ import javax.servlet.http.HttpServletRequest;
  * @author nilsgeschwinde
  */
 @Named("sessionController")
-@SessionScoped
-public class SessionController implements Serializable {
+@RequestScoped
+public class SessionController {
 
     @Inject
     private SecurityContext context;
