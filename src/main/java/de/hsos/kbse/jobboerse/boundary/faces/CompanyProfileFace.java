@@ -120,7 +120,7 @@ public class CompanyProfileFace implements Serializable {
                 .createContact(salutation, titles, firstname, lastname, email, contactEmail)
                 .finishUpdating(fullfilledBenefits, context.getCallerPrincipal().getName());
                 
-        
+        editMode = false;
     }
 
     public void startEdit() {

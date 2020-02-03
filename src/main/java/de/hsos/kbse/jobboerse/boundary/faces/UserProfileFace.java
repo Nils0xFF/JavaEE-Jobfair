@@ -116,6 +116,8 @@ public class UserProfileFace implements Serializable{
                 .createAddress(street, housenumber, city, postalcode, country)
                 .createQualifications(grades, fullfilledRequirements, desc)
                 .finishUpdating(context.getCallerPrincipal().getName());
+        
+        editMode = false;
     }
     
     
