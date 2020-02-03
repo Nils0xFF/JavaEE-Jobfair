@@ -121,7 +121,8 @@
                                 </div>
                                 <div class="col-sm-3">
                                     <p:outputLabel for="@next" value="Title"/>
-                                    <h:selectOneMenu id="title" class="custom-select" value="#{companyProfileFace.titles}" >
+                                    <h:selectOneMenu id="title" class="custom-select" value="#{companyProfileFace.titles}" 
+                                                     readonly="#{!companyProfileFace.editMode}" disabled="#{!companyProfileFace.editMode}">
                                         <f:selectItems value="#{companyProfileFace.titleValues}" var="GradTitle"
                                                        itemValue="#{GradTitle}" itemLabel="#{GradTitle.address}" />
                                     </h:selectOneMenu>

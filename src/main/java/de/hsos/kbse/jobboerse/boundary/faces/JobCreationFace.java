@@ -54,30 +54,30 @@ public class JobCreationFace implements Serializable {
     @Enumerated(EnumType.STRING)
     private Sal_Relation relation;
     private List<Requirement> wishedRequirement;
-    private List<NeededRequirement> weightedRequirements;
+    private List<NeededRequirement> oldWeightedRequirements = new ArrayList<>();
+    private List<NeededRequirement> newWeightedRequirements = new ArrayList<>();
+    ;
     private JobField jobfield;
-    
 
     @Inject
     JobFieldRepository jobFieldRepo;
 
     @Inject
     RequirementRepository requirementRepo;
-    
+
     @Inject
     JobCreationController jobCntrl;
-    
+
     @Inject
     SecurityContext context;
 
     @Transactional
-    public void createJob(){
-        jobCntrl.createInfo(jobname, desc, jobfield, weightedRequirements, salary, relation)
+    public void createJob() {
+        jobCntrl.createInfo(jobname, desc, jobfield, oldWeightedRequirements, salary, relation)
                 .createAddress(street, housenumber, city, postalcode, country)
                 .finishCreation(context.getCallerPrincipal().getName());
     }
-    
-    
+
     public String getDesc() {
         return desc;
     }
@@ -173,25 +173,37 @@ public class JobCreationFace implements Serializable {
     public void setRelation(Sal_Relation relation) {
         this.relation = relation;
     }
-    
-    public Sal_Relation[] getRelations(){
+
+    public Sal_Relation[] getRelations() {
         return Sal_Relation.values();
     }
 
     public List<NeededRequirement> getWeightedRequirements() {
-        weightedRequirements = new ArrayList<>();
-        for (Requirement req : this.wishedRequirement) {
-            NeededRequirement toInsert = NeededRequirement.builder()
-                    .requirement(req)
-                    .weight(1)
-                    .build();
-            weightedRequirements.add(toInsert);
+        newWeightedRequirements = new ArrayList<>();
+        if (this.wishedRequirement != null) {
+            for (Requirement req : this.wishedRequirement) {
+                boolean found = false;
+                for (NeededRequirement old : this.oldWeightedRequirements) {
+                    if (req.equals(old.getRequirement())) {
+                        newWeightedRequirements.add(old);
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    NeededRequirement toInsert = NeededRequirement.builder()
+                            .requirement(req)
+                            .weight(1)
+                            .build();
+                    newWeightedRequirements.add(toInsert);
+                }
+            }
         }
-        return weightedRequirements;
+        return newWeightedRequirements;
     }
 
     public void setWeightedRequirements(List<NeededRequirement> weightedRequirements) {
-        this.weightedRequirements = weightedRequirements;
+        this.oldWeightedRequirements = weightedRequirements;
     }
 
 }

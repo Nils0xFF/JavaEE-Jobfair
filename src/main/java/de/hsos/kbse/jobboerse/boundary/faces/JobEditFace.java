@@ -81,7 +81,7 @@ public class JobEditFace implements Serializable {
     private List<NeededRequirement> oldWeightedRequirements;
     private List<NeededRequirement> newWeightedRequirements;
     private JobField jobfield;
-    
+
     @Inject
     JobCreationController jobCntrl;
 
@@ -89,7 +89,7 @@ public class JobEditFace implements Serializable {
     private void init() {
 
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        
+
         jobDetails = jobRepository.find(Long.parseLong(request.getParameter("id")));
 
         if (!jobDetails.getCompany().getLogin().getEmail().equals(context.getCallerPrincipal().getName())) {
@@ -118,9 +118,9 @@ public class JobEditFace implements Serializable {
         oldWeightedRequirements = jobDetails.getNeeded();
         jobfield = jobDetails.getJobfield();
     }
-    
+
     @Transactional
-    public void updateJob(){
+    public void updateJob() {
         jobCntrl.createInfo(jobname, desc, jobfield, oldWeightedRequirements, salary, relation)
                 .createAddress(street, housenumber, city, postalcode, country)
                 .finishUpdating(id);
@@ -228,21 +228,23 @@ public class JobEditFace implements Serializable {
 
     public List<NeededRequirement> getWeightedRequirements() {
         newWeightedRequirements = new ArrayList<>();
-        for (Requirement req : this.wishedRequirement) {
-            boolean found = false;
-            for (NeededRequirement old : this.oldWeightedRequirements) {
-                if (req.equals(old.getRequirement())) {
-                    newWeightedRequirements.add(old);
-                    found = true;
-                    break;
+        if (this.wishedRequirement != null) {
+            for (Requirement req : this.wishedRequirement) {
+                boolean found = false;
+                for (NeededRequirement old : this.oldWeightedRequirements) {
+                    if (req.equals(old.getRequirement())) {
+                        newWeightedRequirements.add(old);
+                        found = true;
+                        break;
+                    }
                 }
-            }
-            if (!found) {
-                NeededRequirement toInsert = NeededRequirement.builder()
-                        .requirement(req)
-                        .weight(1)
-                        .build();
-                newWeightedRequirements.add(toInsert);
+                if (!found) {
+                    NeededRequirement toInsert = NeededRequirement.builder()
+                            .requirement(req)
+                            .weight(1)
+                            .build();
+                    newWeightedRequirements.add(toInsert);
+                }
             }
         }
         return newWeightedRequirements;
@@ -258,9 +260,7 @@ public class JobEditFace implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-      //  init();
+        //  init();
     }
-    
-    
 
 }
