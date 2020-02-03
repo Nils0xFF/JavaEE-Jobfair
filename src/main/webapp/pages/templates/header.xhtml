@@ -61,22 +61,27 @@
                     </div>
                     <h:form>
                         <div class="modal-body">
+                            <p:messages id="loginStatus" showIcon="false" globalOnly="true" closable="true" >
+                                <p:autoUpdate></p:autoUpdate>
+                            </p:messages>
                             <div class="form-group">
                                 <p:outputLabel for="@next" value="E-Mail"/>
                                 <p:inputText class="form-control" id="accountEmail" value="#{loginBacking.email}" >
                                     <p:clientValidator event="keyup"/>
-                                </p:inputText>                                    
+                                </p:inputText>
+                                <h:message for="@previous" class="small text-danger"/>
                             </div>
                             <div class="form-group">
                                 <p:outputLabel for="@next" value="Password"/>
                                 <p:password class="form-control" id="password" value="#{loginBacking.password}">
                                     <p:clientValidator event="keyup"/>
                                 </p:password>
+                                <h:message for="@previous" class="small text-danger"/>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <p:commandButton styleClass="btn btn-primary" value="Login" action="#{loginBacking.submit}" ajax="true" ></p:commandButton>
+                            <p:commandButton styleClass="btn btn-primary" value="Login" action="#{loginBacking.submit}" ajax="true" update="@form"></p:commandButton>
                         </div>
                     </h:form>
                 </div>

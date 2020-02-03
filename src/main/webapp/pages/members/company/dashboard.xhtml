@@ -7,72 +7,77 @@
     <div class="container">
         <div class="bg-white mt-4 shadow">
             <div class="card-body">
-    
-                    <h2 class="card-title text-center my-3">Deine Stellenanzeigen</h2>
-                    <div class="row">
+
+                <h2 class="card-title text-center my-3">Deine Stellenanzeigen</h2>
+                <div class="row">
+                    <div class="col-md-6 py-2">
+                        <div class="card h-100">
+                            <h5 class="card-header">Neuer Job</h5>
+                            <div class="card-body align-items-center d-flex justify-content-center">
+                                <h:form>
+                                    <p:commandLink styleClass="btn btn-success px-5 py-4" action="#{CompanyDashboard.createJob()}"><span class="my-auto oi oi-plus"></span></p:commandLink>  
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+                    <p:repeat value="#{CompanyDashboard.allJobs}" var="job">
                         <div class="col-md-6 py-2">
                             <div class="card h-100">
-                                <h5 class="card-header">Neuer Job</h5>
-                                <div class="card-body align-items-center d-flex justify-content-center">
-                                    <p:commandLink styleClass="btn btn-success px-5 py-4" action="#{CompanyDashboard.createJob()}"><span class="my-auto oi oi-plus"></span></p:commandLink>  
+                                <h5 class="card-header">#{job.name}</h5>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-sm-1 align-self-center text-center"><span class="oi oi-briefcase"></span></div>
+                                        <div class="col-sm-11">#{job.jobfield.name}</div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-sm-1 align-self-center text-center"><span class="oi oi-map-marker"></span></div>
+                                        <div class="col-sm-11">#{job.address.street} #{job.address.housenumber}, #{job.address.postalcode} #{job.address.city}, #{job.address.country}</div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-sm-1 align-self-center text-center"><span class="oi oi-pencil"></span></div>
+                                        <div class="col-sm-11">#{job.description}</div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-sm-1 align-self-center text-center"><span class="oi oi-info"></span></div>
+                                        <div class="col-sm-11">#{CompanyDashboard.requirementToString(job)}</div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-sm-1 align-self-center text-center"><span class="oi oi-dollar"></span></div>
+                                        <div class="col-sm-11">#{job.relation.desc} #{job.salary}€</div>
+                                    </div>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    <h:form>
+
+                                    </h:form>
+                                    <div class="row">
+
+                                        <div class="col-sm-6 align-self-center text-center">
+                                            <h:form>
+                                                <p:commandButton styleClass="btn btn-block btn-danger"  value="Löschen" action="#{CompanyDashboard.deleteJob(job.id)}">
+                                                    <p:confirm header="Löschen" message="Wollen sie den Job wirklich löschen?" icon="pi pi-exclamation-triangle" />
+                                                </p:commandButton> 
+                                            </h:form>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <a class="btn btn-block btn-info h-100" href="#{request.contextPath}/editJob/#{job.id}">Bearbeiten</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <p:repeat value="#{CompanyDashboard.allJobs}" var="job">
-                            <div class="col-md-6 py-2">
-                                <div class="card h-100">
-                                    <h5 class="card-header">#{job.name}</h5>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-sm-1 align-self-center text-center"><span class="oi oi-briefcase"></span></div>
-                                            <div class="col-sm-11">#{job.jobfield.name}</div>
-                                        </div>
-                                        <div class="row mt-3">
-                                            <div class="col-sm-1 align-self-center text-center"><span class="oi oi-map-marker"></span></div>
-                                            <div class="col-sm-11">#{job.address.street} #{job.address.housenumber}, #{job.address.postalcode} #{job.address.city}, #{job.address.country}</div>
-                                        </div>
-                                        <div class="row mt-3">
-                                            <div class="col-sm-1 align-self-center text-center"><span class="oi oi-pencil"></span></div>
-                                            <div class="col-sm-11">#{job.description}</div>
-                                        </div>
-                                        <div class="row mt-3">
-                                            <div class="col-sm-1 align-self-center text-center"><span class="oi oi-info"></span></div>
-                                            <div class="col-sm-11">#{CompanyDashboard.requirementToString(job)}</div>
-                                        </div>
-                                        <div class="row mt-3">
-                                            <div class="col-sm-1 align-self-center text-center"><span class="oi oi-dollar"></span></div>
-                                            <div class="col-sm-11">#{job.relation.desc} #{job.salary}€</div>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer text-muted">
-                                        <h:form>
-                                            
-                                        </h:form>
-                                        <div class="row">
-                                            <div class="col-sm-6 align-self-center text-center">
-                                                <p:commandButton styleClass="btn btn-block btn-danger"  value="Löschen" action="#{CompanyDashboard.deleteJob(job.id)}">
-                                                    <p:confirm header="Löschen" message="Wollen sie den Job wirklich löschen?" icon="pi pi-exclamation-triangle" />
-                                                </p:commandButton>  
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <a class="btn btn-block btn-info h-100" href="#{request.contextPath}/editJob/#{job.id}">Bearbeiten</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                        </p:repeat>
-                 
-            </div> 
+
+                    </p:repeat>
+
+                </div> 
+            </div>
         </div>
     </div>
-</div>
-<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-    <p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
-    <p:commandButton value="Abbruch" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
-</p:confirmDialog> 
-<p:dialog header="Job Erstellen" widgetVar="dlg2" modal="true" height="100">
-    <h:outputText value="This is a Modal Dialog." />
-</p:dialog>
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        <p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+        <p:commandButton value="Abbruch" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+    </p:confirmDialog> 
+    <p:dialog header="Job Erstellen" widgetVar="dlg2" modal="true" height="100">
+        <h:outputText value="This is a Modal Dialog." />
+    </p:dialog>
 </html>

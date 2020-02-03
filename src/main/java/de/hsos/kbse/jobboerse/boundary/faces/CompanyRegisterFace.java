@@ -19,8 +19,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -42,11 +45,6 @@ import javax.validation.constraints.Size;
 @ViewScoped
 public class CompanyRegisterFace implements Serializable {
 
-    @NotEmpty
-    @Email(message = "Es muss eine gültige Email sein")
-    private String email;
-    @Size(min = 2, max = 24, message = "Passwort muss länger als 5 Zeichen sein.")
-    private String pw, pw2;
     @NotEmpty
     private String firmname;
     @NotEmpty
@@ -90,19 +88,6 @@ public class CompanyRegisterFace implements Serializable {
     SecurityContext context;
 
     @Transactional
-    public void registerLogin() {
-        if (pw.equals(pw2)) {
-            if (companyRegCntrl.createLogin(email, pw)) {
-                FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, "Du kannst dich nun anmelden!", null));
-                return;
-            }
-        }
-        FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Registrierung fehlgeschlagen, überprüfe deine Eingaben", null));
-    }
-
-    @Transactional
     public void registerUser() {
         if (companyRegCntrl.createProfile(firmname, desc, workercount)
                 .createAddress(street, housenumber, city, postalcode, country)
@@ -121,31 +106,23 @@ public class CompanyRegisterFace implements Serializable {
         }
     }
 
+    public void validatePasswordRepeat(FacesContext context, UIComponent component, Object value) {
+        
+        // Get Password Conformation
+        String confirmPassword = (String) value;
+        
+        // Get Value of Input Field
+        UIInput passwordInput = (UIInput) component.findComponent("password");
+        String password = (String) passwordInput.getLocalValue();
+        
+        if (password == null ||confirmPassword == null || !password.equals(confirmPassword)) {
+            String message = context.getApplication().evaluateExpressionGet(context, "Passwort muss übereinstimmen", String.class);
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message);
+            throw new ValidatorException(msg);
+        }
+    }
+
     //-------------------
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPw() {
-        return pw;
-    }
-
-    public void setPw(String pw) {
-        this.pw = pw;
-    }
-
-    public String getPw2() {
-        return pw2;
-    }
-
-    public void setPw2(String pw2) {
-        this.pw2 = pw2;
-    }
-
     public String getFirstname() {
         return firstname;
     }
@@ -265,7 +242,7 @@ public class CompanyRegisterFace implements Serializable {
     public void setContactEmail(String contactEmail) {
         this.contactEmail = contactEmail;
     }
-    
+
     public Title[] getTitleValues() {
         return Title.values();
     }

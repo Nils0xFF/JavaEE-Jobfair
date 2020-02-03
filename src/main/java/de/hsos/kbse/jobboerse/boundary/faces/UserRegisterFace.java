@@ -39,37 +39,31 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author lennartwoltering
+ * @author lennartwoltering, nilsgeschwinde
  */
 @Named("UserRegisterFace")
 @ViewScoped
 public class UserRegisterFace implements Serializable {
 
     @NotEmpty
-    @Email(message = "Es muss eine gültige Email sein")
-    private String email;
-    @NotEmpty
-    @Size(min=2, max=24, message = "Passwort muss länger als 5 Zeichen sein.")
-    private String pw, pw2;
-    @NotEmpty
     private String firstname;
     @NotEmpty
     private String lastname;
     @NotEmpty
-    @Pattern(regexp= "^[^a-zA-Z]+$")
+    @Pattern(regexp = "^[^a-zA-Z]+$")
     private String telefon;
     @NotEmpty
     private String desc;
     @NotNull
     @Past
     private Date birthday;
-    @Pattern(regexp= "^[^0-9]+$")
+    @Pattern(regexp = "^[^0-9]+$")
     @NotEmpty
     private String street;
     @NotEmpty
     private String housenumber;
     @NotEmpty
-    @Pattern(regexp= "^[^0-9]+$")
+    @Pattern(regexp = "^[^0-9]+$")
     private String city;
     @NotEmpty
     private String postalcode, country;
@@ -82,7 +76,7 @@ public class UserRegisterFace implements Serializable {
     private Title titles;
     @Enumerated(EnumType.STRING)
     private Graduation grades;
-    
+
     private final SimpleDateFormat sdf = new SimpleDateFormat("MM/yy");
 
     @Inject
@@ -100,16 +94,6 @@ public class UserRegisterFace implements Serializable {
     @Inject
     SecurityContext context;
 
-   
-
-    @Transactional
-    public boolean registerLogin() {
-        if (pw.equals(pw2)) {
-            return userRegCntrl.createLogin(email, pw);
-        }
-        return false;
-    }
-
     @Transactional
     public boolean registerUser() {
         return userRegCntrl
@@ -121,24 +105,6 @@ public class UserRegisterFace implements Serializable {
     }
 
     //GETTER / SETTER
-
-    //GETTER / SETTER
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPw() {
-        return pw;
-    }
-
-    public void setPw(String pw) {
-        this.pw = pw;
-    }
-
     public String getFirstname() {
         return firstname;
     }
@@ -241,14 +207,6 @@ public class UserRegisterFace implements Serializable {
 
     public void setGrades(Graduation grades) {
         this.grades = grades;
-    }
-
-    public String getPw2() {
-        return pw2;
-    }
-
-    public void setPw2(String pw2) {
-        this.pw2 = pw2;
     }
 
     public List<Requirement> getFullfilledRequirements() {

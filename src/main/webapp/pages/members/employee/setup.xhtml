@@ -133,7 +133,7 @@
 
                             <div class="form-group">
                                 <p:outputLabel for="@next" value="Beschreibung"/>
-                                <p:inputTextarea class="form-control" id="description" value="#{UserRegisterFace.desc}" rows="6" cols="33" >
+                                <p:inputTextarea class="form-control" value="#{UserRegisterFace.desc}" rows="6" cols="33" >
                                     <p:clientValidator event="keyup"/>
                                 </p:inputTextarea>
                             </div>
@@ -177,15 +177,6 @@
                             <div class="list-group">
                                 <div class="list-group-item">
                                     <h5 class="mb-3">Persönliche Informationen</h5>
-                                    <div class="form-row">
-                                        <div class="col-sm-3">
-                                            <p:outputLabel for="@next" value="Email"/>
-                                            <p:inputText class="form-control" value="#{UserRegisterFace.email}" required="true" readonly="true" disabled="true">
-                                                <p:clientValidator event="keyup"/>
-                                            </p:inputText>
-                                            <h:message for="@previous"/>
-                                        </div>
-                                    </div>
                                     <div class="form-row">
                                         <div class="col-sm-3">
                                             <p:outputLabel for="@next" value="Anrede"/>
@@ -313,7 +304,7 @@
 
                                     <div class="form-group">
                                         <p:outputLabel for="@next" value="Beschreibung"/>
-                                        <p:inputTextarea class="form-control" id="description" value="#{UserRegisterFace.desc}" rows="6" cols="33"                                            
+                                        <p:inputTextarea class="form-control" value="#{UserRegisterFace.desc}" rows="6" cols="33"                                            
                                                          readonly="true" disabled="true">
                                             <p:clientValidator event="keyup"/>
                                         </p:inputTextarea>

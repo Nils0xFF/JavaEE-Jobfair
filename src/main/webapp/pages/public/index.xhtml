@@ -19,107 +19,86 @@
         <ui:param name="stylesheet" value="home.css"/>
         <ui:param name="transparentNav" value="true" />
         <ui:param name="title" value="Home" />
-        <ui:define name="content"> 
-            <p:growl id="growl" showDetail="false" sticky="true" />  
+        <ui:define name="content">
+            <p:growl for="registerGrowl">
+                <p:autoUpdate></p:autoUpdate>
+            </p:growl>
             <div class="container-fluid">
-                <div class="row">
-                    <div class="jumbotron jumbotron-big col-md-6 text-white d-flex" id="jumbotron-employee">
-                        <div class="justify-content-center align-self-center text-center w-100">
-                            <h1>Finde deinen Traumjob!</h1>
-                            <h5>Nicht länger suchen, jetzt finden!</h5>
-                            <a class="btn btn-success btn-lg" data-toggle="modal" data-target="#registerModalEmployee" role="button" data-type="employee">Jetzt Regisrieren</a> 
-                        </div>
-                    </div>
-
-                    <div class="jumbotron jumbotron-big text-center col-md-6 text-white d-flex" id="jumbotron-company">
-                        <div class="justify-content-center align-self-center text-center w-100">
-                            <h1>Verstärkung gesucht?!</h1>
-                            <h5>Nicht länger suchen, jetzt finden!</h5>
-                            <a class="btn btn-success btn-lg" data-toggle="modal" data-target="#registerModalComp" role="button" data-type="company">Jetzt Regisrieren</a>      
+                <h:form>
+                    <div class="row">
+                        <div class="jumbotron jumbotron-big col-md-6 text-white d-flex" id="jumbotron-employee">
+                            <div class="justify-content-center align-self-center text-center w-100">
+                                <h1>Finde deinen Traumjob!</h1>
+                                <h5>Nicht länger suchen, jetzt finden!</h5>
+                                <p:commandButton action="#{ loginRegisterFace.userRegistration() }" value="Jetzt Registrieren!"
+                                                 styleClass="btn bg-success" oncomplete="$('#registerModal').modal('show');"
+                                                 update="registerModalHead" ajax="true"
+                                                 />
+                            </div>
                         </div>
 
+                        <div class="jumbotron jumbotron-big text-center col-md-6 text-white d-flex" id="jumbotron-company">
+                            <div class="justify-content-center align-self-center text-center w-100">
+                                <h1>Verstärkung gesucht?!</h1>
+                                <h5>Nicht länger suchen, jetzt finden!</h5>
+                                <p:commandButton action="#{ loginRegisterFace.companyRegistration()}" value="Jetzt Registrieren!"
+                                                 styleClass="btn bg-success" oncomplete="$('#registerModal').modal('show');"
+                                                 update="registerModalHead" ajax="true"
+                                                 />
+                            </div>
+
+                        </div>
                     </div>
-                </div>
+                </h:form>
             </div>
 
-            <div class="modal fade" id="registerModalComp" tabindex="-1" role="dialog" aria-labelledby="registerModalComp" aria-hidden="true">
+            <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalComp" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="registerModalHead">Registrieren - Unternehmen</h5>
+                            <h5 class="modal-title" jsf:id="registerModalHead">
+                                <ui:fragment rendered="#{ loginRegisterFace.company }" >
+                                    Registrieren - Unternehmen
+                                </ui:fragment>
+                                <ui:fragment rendered="#{ loginRegisterFace.seekingUser }" >
+                                    Registrieren - Arbeitnehmer
+                                </ui:fragment>
+                            </h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <h:form>
+                        <h:form id="registerForm">
                             <div class="modal-body">
+                                <p:messages for="registerError" showIcon="false" closable="true">
+                                    <p:autoUpdate></p:autoUpdate>
+                                </p:messages>
                                 <div class="form-group">
                                     <p:outputLabel for="@next" value="E-Mail"/>
-                                    <p:inputText class="form-control" id="accountEmail" value="#{CompanyRegisterFace.email}" >
+                                    <p:inputText class="form-control" id="accountEmail" value="#{loginRegisterFace.email}" >
                                         <p:clientValidator event="keyup"/>
                                     </p:inputText>    
                                     <h:message for="@previous" class="small text-danger"/>
                                 </div>
                                 <div class="form-group">
                                     <p:outputLabel for="@next" value="Password"/>
-                                    <p:password class="form-control" id="password" value="#{CompanyRegisterFace.pw}" feedback="true" inline="false">
+                                    <p:password class="form-control" id="password" value="#{loginRegisterFace.pw}" feedback="true" inline="true" match="passwordRepeat">
                                         <p:clientValidator event="keyup"/>
                                     </p:password>
                                     <h:message for="@previous" class="small text-danger"/>
                                 </div>
                                 <div class="form-group">
                                     <p:outputLabel for="@next" value="Confirm Password"/>
-                                    <p:password class="form-control" id="passwordRepeat" value="#{CompanyRegisterFace.pw2}" feedback="true" inline="false">
+                                    <p:password class="form-control" id="passwordRepeat" value="#{loginRegisterFace.pw2}">
                                         <p:clientValidator event="keyup"/>
                                     </p:password>
+                                    <h:message for="@previous" class="small text-danger"/>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
-                                <p:commandButton class="btn btn-primary" value="Registrieren" action="#{CompanyRegisterFace.registerLogin() }" ajax="true" update="@form" ></p:commandButton>
-                                <h:messages globalOnly="true" />
-                            </div>
-                        </h:form>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal fade" id="registerModalEmployee" tabindex="-1" role="dialog" aria-labelledby="registerModalComp" aria-hidden="true" >
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="registerModalEmployeeHead">Registrieren - Arbeitnehmer</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <h:form>
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <p:outputLabel for="@next" value="E-Mail"/>
-                                    <p:inputText class="form-control" id="accountEmail" value="#{UserRegisterFace.email}" >
-                                        <p:clientValidator event="keyup"/>
-                                    </p:inputText>
-                                    <h:message for="@previous" class="small text-danger"/>                                    
-                                </div>
-                                <div class="form-group">
-                                    <p:outputLabel for="@next" value="Password"/>
-                                    <p:password class="form-control" id="password" value="#{UserRegisterFace.pw}" feedback="true" inline="false">
-                                        <p:clientValidator event="keyup"/>
-                                    </p:password>
-                                    <h:message for="@previous" class="small text-danger"/>  
-                                </div>
-                                <div class="form-group">
-                                    <p:outputLabel for="@next" value="Confirm Password"/>
-                                    <p:password class="form-control" id="passwordRepeat" value="#{UserRegisterFace.pw2}" feedback="true" inline="false">
-                                        <p:clientValidator event="keyup"/>
-                                    </p:password>
-                                    <h:message for="@previous" class="small text-danger"/>  
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
-                                <p:commandButton class="btn btn-primary" value="Registrieren" action="#{UserRegisterFace.registerLogin()}" ajax="true" update="@form" ></p:commandButton>
+                                <p:commandButton class="btn btn-primary" value="Registrieren" action="#{loginRegisterFace.registerLogin() }" ajax="true" 
+                                                 update="@form"></p:commandButton>
                             </div>
                         </h:form>
                     </div>
