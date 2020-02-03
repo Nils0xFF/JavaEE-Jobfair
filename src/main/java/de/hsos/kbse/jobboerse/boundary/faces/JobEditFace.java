@@ -121,7 +121,7 @@ public class JobEditFace implements Serializable {
 
     @Transactional
     public void updateJob() {
-        jobCntrl.createInfo(jobname, desc, jobfield, oldWeightedRequirements, salary, relation)
+        jobCntrl.createInfo(jobname, desc, jobfield, newWeightedRequirements, salary, relation)
                 .createAddress(street, housenumber, city, postalcode, country)
                 .finishUpdating(id);
     }
@@ -247,6 +247,7 @@ public class JobEditFace implements Serializable {
                 }
             }
         }
+        this.oldWeightedRequirements = newWeightedRequirements;
         return newWeightedRequirements;
     }
 

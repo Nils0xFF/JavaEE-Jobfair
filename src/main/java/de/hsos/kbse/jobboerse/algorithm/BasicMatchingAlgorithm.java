@@ -93,7 +93,7 @@ public class BasicMatchingAlgorithm implements MatchingAlgorithm, Serializable {
         System.out.println(suitableJobs.size());
         //searchRepo.updateFoundJobs(email, suitableJobs);
         System.out.println("MATCHING!");
-        if(suitableJobs.size() > 0) Collections.sort(suitableJobs);
+        if(suitableJobs.size() > 0) Collections.sort(suitableJobs, Collections.reverseOrder());
         return suitableJobs;
 
     }

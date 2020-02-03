@@ -54,7 +54,7 @@ public class JobCreationFace implements Serializable {
     @Enumerated(EnumType.STRING)
     private Sal_Relation relation;
     private List<Requirement> wishedRequirement;
-    private List<NeededRequirement> oldWeightedRequirements = new ArrayList<>();
+    private List<NeededRequirement> finishedWeightedRequirements = new ArrayList<>();
     private List<NeededRequirement> newWeightedRequirements = new ArrayList<>();
     ;
     private JobField jobfield;
@@ -73,7 +73,7 @@ public class JobCreationFace implements Serializable {
 
     @Transactional
     public void createJob() {
-        jobCntrl.createInfo(jobname, desc, jobfield, oldWeightedRequirements, salary, relation)
+        jobCntrl.createInfo(jobname, desc, jobfield, finishedWeightedRequirements, salary, relation)
                 .createAddress(street, housenumber, city, postalcode, country)
                 .finishCreation(context.getCallerPrincipal().getName());
     }
@@ -183,7 +183,7 @@ public class JobCreationFace implements Serializable {
         if (this.wishedRequirement != null) {
             for (Requirement req : this.wishedRequirement) {
                 boolean found = false;
-                for (NeededRequirement old : this.oldWeightedRequirements) {
+                for (NeededRequirement old : this.finishedWeightedRequirements) {
                     if (req.equals(old.getRequirement())) {
                         newWeightedRequirements.add(old);
                         found = true;
@@ -199,11 +199,16 @@ public class JobCreationFace implements Serializable {
                 }
             }
         }
+        finishedWeightedRequirements = newWeightedRequirements;
         return newWeightedRequirements;
     }
 
     public void setWeightedRequirements(List<NeededRequirement> weightedRequirements) {
-        this.oldWeightedRequirements = weightedRequirements;
+        this.newWeightedRequirements = weightedRequirements;
+    }
+
+    public List<NeededRequirement> getFinishedRequirements() {
+        return finishedWeightedRequirements;
     }
 
 }

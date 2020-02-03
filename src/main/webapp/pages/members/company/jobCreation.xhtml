@@ -256,7 +256,7 @@
                                         <div class="list-group-item">
                                             <h5 class="mb-3">Vorraussetzungen</h5>
                                             <div class="form-group">
-                                                <p:repeat value="#{JobCreation.weightedRequirements}" var="req">
+                                                <p:repeat value="#{JobCreation.finishedRequirements}" var="req">
                                                     <h:panelGrid columns="2" cellpadding="5">
                                                         <h:outputText value="#{req.requirement.name}:" />
                                                         <p:rating value="#{req.weight}" readonly="true"/>
