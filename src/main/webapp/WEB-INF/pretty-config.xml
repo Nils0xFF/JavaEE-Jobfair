@@ -1,0 +1,46 @@
+<pretty-config xmlns="http://ocpsoft.org/schema/rewrite-config-prettyfaces" 
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+               xsi:schemaLocation="http://ocpsoft.org/schema/rewrite-config-prettyfaces
+                      http://ocpsoft.org/xml/ns/prettyfaces/rewrite-config-prettyfaces.xsd">
+
+    <url-mapping id="home">
+        <pattern value="/" />
+        <view-id value="/faces/pages/public/index.xhtml" />
+    </url-mapping>
+        
+    <url-mapping id="dashboard">
+        <pattern value="/dashboard" />
+        <view-id value="/faces/pages/members/index.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="createJob">
+        <pattern value="/createJob" />
+        <view-id value="/faces/pages/members/company/jobCreation.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="editJob">
+        <pattern value="/editJob/#{ id : jobEditFace.id }" />
+        <view-id value="/faces/pages/members/company/jobEdit.xhtml" />
+    </url-mapping>
+            
+    <url-mapping id="profile">
+        <pattern value="/profile" />
+        <view-id value="/faces/pages/members/profile.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="setup">
+        <pattern value="/setup" />
+        <view-id value="/faces/pages/members/setup.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="registerCompany">
+        <pattern value="/registerCompany" />
+        <view-id value="/faces/pages/public/registerCompany.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="registerEmployee">
+        <pattern value="/registerEmployee" />
+        <view-id value="/faces/pages/public/registerEmployee.xhtml" />
+    </url-mapping>
+
+</pretty-config>

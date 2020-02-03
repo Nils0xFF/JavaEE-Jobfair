@@ -1,0 +1,30 @@
+/* 
+    Created on : 28-Jan-2020, 12:30:44
+    Author     : nilsgeschwinde
+*/
+
+#content{
+    min-height: 92.5vh;
+}
+
+@media (min-width: 1400px){
+    .container.wide{
+        min-width: 1340px;
+    }
+}
+
+@media (min-width: 1600px){
+    .container.wide{
+        min-width: 1540px;
+    }
+}
+
+@media (min-width: 1800px){
+    .container.wide{
+        min-width: 1740px;
+    }
+}
+
+.ui-autocomplete-multiple-container{
+    width: 100%;
+}

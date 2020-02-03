@@ -1,0 +1,33 @@
+/* 
+    Created on : 27-Jan-2020, 11:25:44
+    Author     : nilsgeschwinde
+*/
+
+*[id^='jumbotron']{
+    height: 100vh;
+    margin-bottom: 0 !important;
+    background: rgba(0,0,0,0.5) no-repeat center center / cover;
+    border-radius: 0 !important;
+    padding-top: 15vh !important;
+    z-index: 1 !important;
+}
+
+*[id^='jumbotron']:after {
+    position: absolute;
+    content:"";
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background-color: rgba(0,0,0,.5);
+    z-index: -1;
+}
+
+#jumbotron-company{
+    background-image: url("images/company.jpg");
+}
+
+#jumbotron-employee{
+    background-image: url("images/employee.jpg");
+}
+
