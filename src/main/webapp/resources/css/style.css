@@ -28,3 +28,28 @@
 .ui-autocomplete-multiple-container{
     width: 100%;
 }
+
+.ui-password-panel{
+    margin-top: 10px;
+    border: none;
+    width: 100%;
+    background: transparent;
+    color: black;
+}
+
+.ui-selectonemenu-label{
+    background: none;
+}
+
+.ui-selectonemenu{
+    -webkit-appearance: none;
+    background: none;
+}
+
+.ui-selectonemenu::-ms-expand{
+    display: none;
+}
+
+.ui-selectonemenu-filter-container{
+    width: 100%;
+}

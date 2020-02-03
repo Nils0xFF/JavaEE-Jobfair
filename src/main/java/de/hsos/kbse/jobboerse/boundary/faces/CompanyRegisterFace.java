@@ -19,8 +19,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -45,6 +48,7 @@ public class CompanyRegisterFace implements Serializable {
     @NotEmpty
     @Email(message = "Es muss eine gültige Email sein")
     private String email;
+    @NotEmpty
     @Size(min = 2, max = 24, message = "Passwort muss länger als 5 Zeichen sein.")
     private String pw, pw2;
     @NotEmpty
@@ -118,6 +122,22 @@ public class CompanyRegisterFace implements Serializable {
         } else {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "Register failed", null));
+        }
+    }
+
+    public void validatePasswordRepeat(FacesContext context, UIComponent component, Object value) {
+        
+        // Get Password Conformation
+        String confirmPassword = (String) value;
+        
+        // Get Value of Input Field
+        UIInput passwordInput = (UIInput) component.findComponent("password");
+        String password = (String) passwordInput.getLocalValue();
+        
+        if (password == null ||confirmPassword == null || !password.equals(confirmPassword)) {
+            String message = context.getApplication().evaluateExpressionGet(context, "Passwort muss übereinstimmen", String.class);
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message);
+            throw new ValidatorException(msg);
         }
     }
 
@@ -265,7 +285,7 @@ public class CompanyRegisterFace implements Serializable {
     public void setContactEmail(String contactEmail) {
         this.contactEmail = contactEmail;
     }
-    
+
     public Title[] getTitleValues() {
         return Title.values();
     }

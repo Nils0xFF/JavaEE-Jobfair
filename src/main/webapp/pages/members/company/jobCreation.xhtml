@@ -103,16 +103,16 @@
                                         </div>
                                     </div>
 
+
                                     <div class="form-group">
                                         <p:outputLabel for="@next" value="Branche des Jobs:"/>
-                                        <p:autoComplete multiple="false" value="#{JobCreation.jobfield}" completeMethod="#{Autocomplete.completeJobFieldData}"
-                                                        var="jobField" itemLabel="#{jobField.name}" itemValue="#{jobField}"  forceSelection="true"
-                                                        class="form-control h-auto" converter="JobFieldConverter" unique="true">
+                                        <p:selectOneMenu class="custom-select" value="#{JobCreation.jobfield}" 
+                                                         converter="JobFieldConverter" filter="true" filterMatchMode="contains">
+                                            <f:selectItems value="#{JobCreation.jobfields}" var="jobField"
+                                                           itemValue="#{jobField}" itemLabel="#{jobField.name}" />
+                                        </p:selectOneMenu>
 
-                                            <p:column>
-                                                <h:outputText value="#{jobField.name}" />
-                                            </p:column>
-                                        </p:autoComplete>
+
                                     </div>
 
                                     <div class="form-group">

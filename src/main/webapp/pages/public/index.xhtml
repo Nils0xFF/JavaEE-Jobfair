@@ -62,21 +62,22 @@
                                 </div>
                                 <div class="form-group">
                                     <p:outputLabel for="@next" value="Password"/>
-                                    <p:password class="form-control" id="password" value="#{CompanyRegisterFace.pw}" feedback="true" inline="false">
+                                    <p:password class="form-control" id="password" value="#{CompanyRegisterFace.pw}" feedback="true" inline="true" match="passwordRepeat">
                                         <p:clientValidator event="keyup"/>
                                     </p:password>
                                     <h:message for="@previous" class="small text-danger"/>
                                 </div>
                                 <div class="form-group">
                                     <p:outputLabel for="@next" value="Confirm Password"/>
-                                    <p:password class="form-control" id="passwordRepeat" value="#{CompanyRegisterFace.pw2}" feedback="true" inline="false">
+                                    <p:password class="form-control" id="passwordRepeat" value="#{CompanyRegisterFace.pw2}">
                                         <p:clientValidator event="keyup"/>
                                     </p:password>
+                                    <h:message for="@previous" class="small text-danger"/>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
-                                <p:commandButton class="btn btn-primary" value="Registrieren" action="#{CompanyRegisterFace.registerLogin() }" ajax="true" update="@form" ></p:commandButton>
+                                <p:commandButton class="btn btn-primary" value="Registrieren" action="#{CompanyRegisterFace.registerLogin() }" ajax="true" update="@form" process="@form" ></p:commandButton>
                                 <h:messages globalOnly="true" />
                             </div>
                         </h:form>
@@ -104,14 +105,14 @@
                                 </div>
                                 <div class="form-group">
                                     <p:outputLabel for="@next" value="Password"/>
-                                    <p:password class="form-control" id="password" value="#{UserRegisterFace.pw}" feedback="true" inline="false">
+                                    <p:password class="form-control" id="password" feedback="true" inline="true" match="passwordRepeat">
                                         <p:clientValidator event="keyup"/>
                                     </p:password>
                                     <h:message for="@previous" class="small text-danger"/>  
                                 </div>
                                 <div class="form-group">
                                     <p:outputLabel for="@next" value="Confirm Password"/>
-                                    <p:password class="form-control" id="passwordRepeat" value="#{UserRegisterFace.pw2}" feedback="true" inline="false">
+                                    <p:password class="form-control" id="passwordRepeat" value="#{UserRegisterFace.pw2}">
                                         <p:clientValidator event="keyup"/>
                                     </p:password>
                                     <h:message for="@previous" class="small text-danger"/>  
@@ -119,7 +120,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
-                                <p:commandButton class="btn btn-primary" value="Registrieren" action="#{UserRegisterFace.registerLogin()}" ajax="true" update="@form" ></p:commandButton>
+                                <p:commandButton class="btn btn-primary" value="Registrieren" action="#{UserRegisterFace.registerLogin()}" ajax="true" update="@form" process="@form" validateClient="true" ></p:commandButton>
                             </div>
                         </h:form>
                     </div>
