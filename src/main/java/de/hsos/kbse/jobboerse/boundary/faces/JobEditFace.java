@@ -120,10 +120,12 @@ public class JobEditFace implements Serializable {
     }
 
     @Transactional
-    public void updateJob() {
+    public String updateJob() {
         jobCntrl.createInfo(jobname, desc, jobfield, newWeightedRequirements, salary, relation)
                 .createAddress(street, housenumber, city, postalcode, country)
                 .finishUpdating(id);
+
+        return "/pages/members/index.xhtml?faces-redirect=true";
     }
 
     public String getDesc() {

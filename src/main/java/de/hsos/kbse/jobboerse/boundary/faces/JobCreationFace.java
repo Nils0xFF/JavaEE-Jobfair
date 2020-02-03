@@ -77,7 +77,7 @@ public class JobCreationFace implements Serializable {
                 .createAddress(street, housenumber, city, postalcode, country)
                 .finishCreation(context.getCallerPrincipal().getName());
         
-        return "pages/members/index";
+        return "pages/members/index.xhtml?faces-redirect=true";
     }
 
     public String getDesc() {
