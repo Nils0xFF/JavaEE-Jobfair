@@ -39,7 +39,7 @@
                             </li>
                             <li class="nav-item">
                                 <h:form id="login-containter">
-                                    <p:commandLink class="nav-link" action="#{ sessionController.logout() }" rendered="#{sessionController.userIsLoggedIn()}" ajax="false"><span class="oi oi-account-logout"></span> Logout</p:commandLink>
+                                    <p:commandLink class="nav-link" action="#{ sessionController.logout() }" rendered="#{sessionController.userIsLoggedIn()}"><span class="oi oi-account-logout"></span> Logout</p:commandLink>
                                 </h:form>
                             </li>
                         </ui:fragment>
