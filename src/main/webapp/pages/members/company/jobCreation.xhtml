@@ -111,8 +111,6 @@
                                             <f:selectItems value="#{JobCreation.jobfields}" var="jobField"
                                                            itemValue="#{jobField}" itemLabel="#{jobField.name}" />
                                         </p:selectOneMenu>
-
-
                                     </div>
 
                                     <div class="form-group">
@@ -240,15 +238,12 @@
 
                                             <div class="form-group">
                                                 <p:outputLabel for="@next" value="Branche des Jobs:"/>
-                                                <p:autoComplete multiple="false" value="#{JobCreation.jobfield}" completeMethod="#{Autocomplete.completeJobFieldData}"
-                                                                var="jobField" itemLabel="#{jobField.name}" itemValue="#{jobField}"  forceSelection="true"
-                                                                class="form-control h-auto" converter="JobFieldConverter" unique="true"
-                                                                readonly="true" disabled="true">
-
-                                                    <p:column>
-                                                        <h:outputText value="#{jobField.name}" />
-                                                    </p:column>
-                                                </p:autoComplete>
+                                                <p:selectOneMenu class="custom-select" value="#{JobCreation.jobfield}" 
+                                                                 converter="JobFieldConverter" filter="true" filterMatchMode="contains"
+                                                                 disabled="true">
+                                                    <f:selectItems value="#{JobCreation.jobfields}" var="jobField"
+                                                                   itemValue="#{jobField}" itemLabel="#{jobField.name}" />
+                                                </p:selectOneMenu>
                                             </div>
 
 

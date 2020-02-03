@@ -7,8 +7,6 @@ package de.hsos.kbse.jobboerse.boundary.faces;
 
 import de.hsos.kbse.jobboerse.algorithm.MatchingAlgorithm;
 import de.hsos.kbse.jobboerse.algorithm.qualifiers.Basic;
-import de.hsos.kbse.jobboerse.algorithm.qualifiers.Weighted;
-import de.hsos.kbse.jobboerse.entity.company.Job;
 import de.hsos.kbse.jobboerse.entity.company.JobField;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
 import de.hsos.kbse.jobboerse.entity.user.SeekingUser;
@@ -23,19 +21,15 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.security.enterprise.SecurityContext;
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 /**
  *
- * @author lennartwoltering
+ * @author lennartwoltering, nilsgeschwinde
  */
 @Named("UserDashboardFace")
 @ViewScoped

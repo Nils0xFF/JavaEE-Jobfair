@@ -46,12 +46,6 @@ import javax.validation.constraints.Size;
 public class CompanyRegisterFace implements Serializable {
 
     @NotEmpty
-    @Email(message = "Es muss eine gültige Email sein")
-    private String email;
-    @NotEmpty
-    @Size(min = 2, max = 24, message = "Passwort muss länger als 5 Zeichen sein.")
-    private String pw, pw2;
-    @NotEmpty
     private String firmname;
     @NotEmpty
     private String firstname;
@@ -94,19 +88,6 @@ public class CompanyRegisterFace implements Serializable {
     SecurityContext context;
 
     @Transactional
-    public void registerLogin() {
-        if (pw.equals(pw2)) {
-            if (companyRegCntrl.createLogin(email, pw)) {
-                FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, "Du kannst dich nun anmelden!", null));
-                return;
-            }
-        }
-        FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Registrierung fehlgeschlagen, überprüfe deine Eingaben", null));
-    }
-
-    @Transactional
     public void registerUser() {
         if (companyRegCntrl.createProfile(firmname, desc, workercount)
                 .createAddress(street, housenumber, city, postalcode, country)
@@ -142,30 +123,6 @@ public class CompanyRegisterFace implements Serializable {
     }
 
     //-------------------
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPw() {
-        return pw;
-    }
-
-    public void setPw(String pw) {
-        this.pw = pw;
-    }
-
-    public String getPw2() {
-        return pw2;
-    }
-
-    public void setPw2(String pw2) {
-        this.pw2 = pw2;
-    }
-
     public String getFirstname() {
         return firstname;
     }
