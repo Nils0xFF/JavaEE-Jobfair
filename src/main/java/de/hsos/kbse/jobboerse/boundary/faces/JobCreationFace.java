@@ -72,10 +72,12 @@ public class JobCreationFace implements Serializable {
     SecurityContext context;
 
     @Transactional
-    public void createJob() {
+    public String createJob() {
         jobCntrl.createInfo(jobname, desc, jobfield, oldWeightedRequirements, salary, relation)
                 .createAddress(street, housenumber, city, postalcode, country)
                 .finishCreation(context.getCallerPrincipal().getName());
+        
+        return "pages/members/index";
     }
 
     public String getDesc() {
