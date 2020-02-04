@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.faces.view.ViewScoped;
@@ -112,18 +114,6 @@ public class CompanyRegisterFace implements Serializable {
 
     public void setFile(UploadedFile file) {
         this.file = file;
-    }
-
-    @Transactional
-    public void registerLogin() {
-        if (pw.equals(pw2)) {
-            if(companyRegCntrl.createLogin(email, pw)){
-                 FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, "Du kannst dich nun anmelden!", null));
-            }
-        }
-         FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Registrierung fehlgeschlagen, überprüfe deine Eingaben", null));
     }
     
     @Transactional
