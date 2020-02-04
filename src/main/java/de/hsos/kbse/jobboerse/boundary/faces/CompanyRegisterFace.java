@@ -6,20 +6,18 @@
 package de.hsos.kbse.jobboerse.boundary.faces;
 
 import de.hsos.kbse.jobboerse.controllers.CompanyRegistrationController;
-import de.hsos.kbse.jobboerse.controllers.UserRegistrationController;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
 import de.hsos.kbse.jobboerse.enums.Salutation;
 import de.hsos.kbse.jobboerse.enums.Title;
 import de.hsos.kbse.jobboerse.enums.WorkerCount;
 import de.hsos.kbse.jobboerse.repositories.BenefitRepository;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -29,9 +27,13 @@ import javax.persistence.Enumerated;
 import javax.security.enterprise.SecurityContext;
 import javax.transaction.Transactional;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -69,9 +71,12 @@ public class CompanyRegisterFace implements Serializable{
 
     private byte[] pictureData;
 
+    private String dataType;
+
     private List<Benefit> fullfilledBenefits;
-    
+
     private UploadedFile file;
+
     @Enumerated(EnumType.STRING)
     private Salutation salutation;
     @Enumerated(EnumType.STRING)
@@ -95,7 +100,22 @@ public class CompanyRegisterFace implements Serializable{
         pictureData = event.getFile().getContents();
         dataType = event.getFile().getContentType();
     }
+
     public StreamedContent getProfileImage() {
+        if(pictureData != null){
+        return new DefaultStreamedContent(new ByteArrayInputStream(pictureData), dataType);
+        }
+        return null;
+    }
+
+    public UploadedFile getFile() {
+        return file;
+    }
+
+    public void setFile(UploadedFile file) {
+        this.file = file;
+    }
+
     @Transactional
     public void registerLogin() {
         if (pw.equals(pw2)) {
@@ -110,7 +130,7 @@ public class CompanyRegisterFace implements Serializable{
     
     @Transactional
     public void registerUser() {
-        if(companyRegCntrl.createProfile(email, desc, workercount)
+        if (companyRegCntrl.createProfile(firmname, desc, workercount, pictureData, dataType)
                 .createAddress(street, housenumber, city, postalcode, country)
                 .createContact(salutation, titles,firstname, lastname, telefon)
                 .finishRegistration(fullfilledBenefits, context.getCallerPrincipal().getName())){
@@ -269,8 +289,10 @@ public class CompanyRegisterFace implements Serializable{
     public void setWorkercount(WorkerCount workercount) {
         this.workercount = workercount;
     }
-    
 
+    public String getContactEmail() {
+        return contactEmail;
+    }
 
     public void setContactEmail(String contactEmail) {
         this.contactEmail = contactEmail;
@@ -287,13 +309,7 @@ public class CompanyRegisterFace implements Serializable{
     public WorkerCount[] getWorkerValues(){
         return WorkerCount.values();
     }
-    
-    
-    
-    
-    
-    
-    
+
     public byte[] getPictureData() {
         return pictureData;
     }
@@ -301,4 +317,5 @@ public class CompanyRegisterFace implements Serializable{
     public void setPictureData(byte[] pictureData) {
         this.pictureData = pictureData;
     }
+
 }
