@@ -13,7 +13,6 @@
                         <h:form id="dashboard-form">
                             <div class="form-group">
                                 <p:outputLabel for="@next" value="Branchen"/>
-
                                 <p:selectManyMenu id="jobField" value="#{UserDashboardFace.wishedJobfiels}" converter="JobFieldConverter"
                                                   var="jobfield" filter="true" filterMatchMode="contains" showCheckbox="true"
                                                   styleClass="w-100">
@@ -22,7 +21,7 @@
                                     <p:column>
                                         <h:outputText value="#{jobfield.name}" />
                                     </p:column>
-                                    <p:log/>
+                                    
                                 </p:selectManyMenu>
                             </div>
 

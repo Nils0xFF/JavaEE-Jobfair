@@ -42,5 +42,10 @@
         <pattern value="/registerEmployee" />
         <view-id value="/faces/pages/public/registerEmployee.xhtml" />
     </url-mapping>
+    
+    <url-mapping id="admin">
+        <pattern value="/admin" />
+        <view-id value="/faces/pages/admin/index.xhtml" />
+    </url-mapping>
 
 </pretty-config>
