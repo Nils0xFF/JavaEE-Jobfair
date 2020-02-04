@@ -33,7 +33,7 @@ public class LoginFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) sr;
         
         if (sessionCtrl.userIsLoggedIn()) {
-            if (sessionCtrl.userHasSetup() || request.getRequestURI().substring(request.getContextPath().length()).replaceAll("[/]+$", "").contains("setup")) {
+            if (sessionCtrl.userIsAdmin() || sessionCtrl.userHasSetup() || request.getRequestURI().substring(request.getContextPath().length()).replaceAll("[/]+$", "").contains("setup")) {
                 fc.doFilter(sr, sr1);
             } else {
                 

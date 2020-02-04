@@ -127,7 +127,6 @@ public class CompanyRegisterFace implements Serializable {
             } catch (IOException ex) {
                 FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, "Register failed", null));
-                Logger.getLogger(CompanyRegisterFace.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             FacesContext.getCurrentInstance().addMessage(null,
