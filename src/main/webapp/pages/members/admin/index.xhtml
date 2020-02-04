@@ -22,87 +22,92 @@
         <div class="tab-content" id="myTabContent">
 
             <div class="tab-pane fade show active" id="jobField" jsf:id="jobField" role="tabpanel" aria-labelledby="home-tab">
-                <h:form >
-                    <div class="row mt-3">
-                        <div class="col-9 form-group">
-                            <p:inputText class="form-control" placeholder="Name" value="#{ adminDashboardFace.jobFieldName }" />
-                        </div>
-                        <div class="col-3">
-                            <p:commandButton styleClass="btn bg-info btn-block" action="#{ adminDashboardFace.createJobField() }" 
-                                             value="Hinzfügen" ajax="true" update="jobField" onsuccess="#{ adminDashboardFace.init() }"/>
-                        </div>
-                    </div>
-                </h:form >
-                <p:dataList var="jobField" value="#{ adminDashboardFace.jobFields }" rows="20" paginator="true" type="none" class="list-group">
-                    <li class="list-group-item">
-                        <div class="row">
-                            <div class="col-12">
-                                <h:form>
-                                    <p:inplace id="ajax" editor="true">
-                                        <p:ajax event="save" listener="#{ adminDashboardFace.updateJobField(jobField.id, jobField.name) }" update="@parent" />
-                                        <p:inputText value="#{jobField.name}" required="true" label="text" />
-                                    </p:inplace>
-                                </h:form>
+                <div jsf:id="jobField-content">
+                    <h:form >
+                        <div class="row mt-3">
+                            <div class="col-9 form-group">
+                                <p:inputText class="form-control" placeholder="Name" value="#{ adminDashboardFace.jobFieldName }" />
+                            </div>
+                            <div class="col-3">
+                                <p:commandButton styleClass="btn bg-info btn-block" action="#{ adminDashboardFace.createJobField() }" 
+                                                 value="Hinzfügen" ajax="true" update="jobField-content" onsuccess="#{ adminDashboardFace.init() }"/>
                             </div>
                         </div>
-                    </li>
-                </p:dataList>
+                    </h:form >
+                    <p:dataList var="jobField" value="#{ adminDashboardFace.jobFields }" rows="20" paginator="true" type="none" class="list-group">
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h:form>
+                                        <p:inplace id="ajax" editor="true">
+                                            <p:ajax event="save" listener="#{ adminDashboardFace.updateJobField(jobField.id, jobField.name) }" update="@parent" />
+                                            <p:inputText value="#{jobField.name}" required="true" label="text" />
+                                        </p:inplace>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </li>
+                    </p:dataList>
+                </div>
             </div>
 
-            <div class="tab-pane fade" id="benefit" jsf:id="benefit" role="tabpanel" aria-labelledby="profile-tab">
-                <h:form>
-                    <div class="row mt-3">
-                        <div class="col-9 form-group">
-                            <p:inputText class="form-control" placeholder="Name" value="#{ adminDashboardFace.benefitName }" />
-                        </div>
-                        <div class="col-3">
-                            <p:commandButton styleClass="btn bg-info btn-block" action="#{ adminDashboardFace.createBenefit() }" 
-                                             value="Hinzfügen" ajax="true" update="benefit" onsuccess="#{ adminDashboardFace.init() }" />
-                        </div>
-                    </div>
-                </h:form>
-                <p:dataList var="benefit" value="#{ adminDashboardFace.benefits }" rows="20" paginator="true" type="none" class="list-group">
-                    <li class="list-group-item">
-                        <div class="row">
-                            <div class="col-12">
-                                <h:form>
-                                    <p:inplace id="ajax" editor="true">
-                                        <p:ajax event="save" listener="#{ adminDashboardFace.updateBenefit(benefit.id, benefit.name) }" update="@parent" />
-                                        <p:inputText value="#{benefit.name}" required="true" label="text" />
-                                    </p:inplace>
-                                </h:form>
+            <div class="tab-pane fade show" id="benefit" jsf:id="benefit" role="tabpanel" aria-labelledby="profile-tab">
+                <div jsf:id="benefit-content">
+                    <h:form>
+                        <div class="row mt-3">
+                            <div class="col-9 form-group">
+                                <p:inputText class="form-control" placeholder="Name" value="#{ adminDashboardFace.benefitName }" />
+                            </div>
+                            <div class="col-3">
+                                <p:commandButton styleClass="btn bg-info btn-block" action="#{ adminDashboardFace.createBenefit() }" 
+                                                 value="Hinzfügen" ajax="true" update="benefit-content" onsuccess="#{ adminDashboardFace.init() }" />
                             </div>
                         </div>
-                    </li>
-                </p:dataList>
-
+                    </h:form>
+                    <p:dataList var="benefit" value="#{ adminDashboardFace.benefits }" rows="20" paginator="true" type="none" class="list-group">
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h:form>
+                                        <p:inplace id="ajax" editor="true">
+                                            <p:ajax event="save" listener="#{ adminDashboardFace.updateBenefit(benefit.id, benefit.name) }" update="@parent" />
+                                            <p:inputText value="#{benefit.name}" required="true" label="text" />
+                                        </p:inplace>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </li>
+                    </p:dataList>
+                </div>  
             </div>
-            <div class="tab-pane fade" id="requirement" jsf:id="requirement" role="tabpanel" aria-labelledby="contact-tab" p:id="">
-                <h:form>
-                    <div class="row mt-3">
-                        <div class="col-9 form-group">
-                            <p:inputText class="form-control" placeholder="Name" value="#{ adminDashboardFace.requirementName }" />
-                        </div>
-                        <div class="col-3">
-                            <p:commandButton styleClass="btn bg-info btn-block" action="#{ adminDashboardFace.createRequirement() }" 
-                                             value="Hinzfügen" ajax="true" update="requirement" onsuccess="#{ adminDashboardFace.init() }"/>
-                        </div>
-                    </div>
-                </h:form>
-                <p:dataList var="req" value="#{ adminDashboardFace.requirements }" rows="20" paginator="true" type="none" class="list-group">
-                    <li class="list-group-item">
-                        <div class="row">
-                            <div class="col-12">
-                                <h:form>
-                                    <p:inplace id="ajax" editor="true">
-                                        <p:ajax event="save" listener="#{ adminDashboardFace.updateRequirement(req.id, req.name) }" update="@form" />
-                                        <p:inputText value="#{req.name}" required="true" label="text" />
-                                    </p:inplace>
-                                </h:form>
+            <div class="tab-pane fade show" id="requirement" jsf:id="requirement" role="tabpanel" aria-labelledby="contact-tab" p:id="">
+                <div jsf:id="requirement-content">
+                    <h:form>
+                        <div class="row mt-3">
+                            <div class="col-9 form-group">
+                                <p:inputText class="form-control" placeholder="Name" value="#{ adminDashboardFace.requirementName }" />
+                            </div>
+                            <div class="col-3">
+                                <p:commandButton styleClass="btn bg-info btn-block" action="#{ adminDashboardFace.createRequirement() }" 
+                                                 value="Hinzfügen" ajax="true" update="requirement-content" onsuccess="#{ adminDashboardFace.init() }"/>
                             </div>
                         </div>
-                    </li>
-                </p:dataList>
+                    </h:form>
+                    <p:dataList var="req" value="#{ adminDashboardFace.requirements }" rows="20" paginator="true" type="none" class="list-group">
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h:form>
+                                        <p:inplace id="ajax" editor="true">
+                                            <p:ajax event="save" listener="#{ adminDashboardFace.updateRequirement(req.id, req.name) }" update="@form" />
+                                            <p:inputText value="#{req.name}" required="true" label="text" />
+                                        </p:inplace>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </li>
+                    </p:dataList>
+                </div>
             </div>
         </div>
     </div>

@@ -117,7 +117,6 @@ public class CompanyProfileFace implements Serializable {
     
     @Transactional
     public void handleFileUpload(FileUploadEvent event){
-        System.out.println("ADD");
         Picture toInsert = Picture.builder().data(event.getFile().getContents()).dataType(event.getFile().getContentType()).build();
         compRepository.addPicture(context.getCallerPrincipal().getName(), toInsert);
     }
