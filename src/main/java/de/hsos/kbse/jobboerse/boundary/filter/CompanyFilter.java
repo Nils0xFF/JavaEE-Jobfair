@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package de.hsos.kbse.jobboerse.boundary.filter;
 
 import de.hsos.kbse.jobboerse.control.usermanagement.SessionController;
@@ -17,31 +22,23 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * @author nilsgeschwinde
- *
- * Requires you to be logged in, in order to see the member pages
  */
-@WebFilter(urlPatterns = "/faces/pages/members/*", dispatcherTypes = {REQUEST, FORWARD})
-public class LoginFilter implements Filter {
-    
+@WebFilter(urlPatterns = "/faces/pages/members/company/*", dispatcherTypes = {REQUEST, FORWARD})
+public class CompanyFilter implements Filter {
+
     @Inject
     private SessionController sessionCtrl;
-    
+
     @Override
     public void doFilter(ServletRequest sr, ServletResponse sr1, FilterChain fc) throws IOException, ServletException {
-        
-        HttpServletResponse response = (HttpServletResponse) sr1;
-        HttpServletRequest request = (HttpServletRequest) sr;
-        
-        if (sessionCtrl.userIsLoggedIn()) {
-            if (sessionCtrl.userIsAdmin() || sessionCtrl.userHasSetup() || request.getRequestURI().substring(request.getContextPath().length()).replaceAll("[/]+$", "").contains("setup")) {
-                fc.doFilter(sr, sr1);
-            } else {
-                
-                response.sendRedirect(request.getContextPath() + "/setup");
-            }
+
+        if (sessionCtrl.userIsCompany()) {
+            fc.doFilter(sr, sr1);
         } else {
-            response.sendRedirect(request.getContextPath() + "/");
+            HttpServletResponse response = (HttpServletResponse) sr1;
+            HttpServletRequest request = (HttpServletRequest) sr;
+            response.sendRedirect(request.getContextPath() + "/dashboard");
         }
-        
+
     }
 }

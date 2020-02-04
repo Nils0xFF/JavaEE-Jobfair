@@ -4,6 +4,15 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
     
+    <filter>
+        <filter-name>PrimeFaces FileUpload Filter</filter-name>
+        <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>PrimeFaces FileUpload Filter</filter-name>
+        <servlet-name>Faces Servlet</servlet-name>
+        <dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
     <context-param>
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
@@ -21,6 +30,13 @@
         <param-name>primefaces.THEME</param-name>
         <param-value>omega</param-value>
     </context-param>
+    
+    <context-param>
+        <param-name>primefaces.UPLOADER</param-name>
+        <param-value>commons</param-value>
+    </context-param>
+    
+    
 
     <security-constraint>
         <web-resource-collection>
@@ -73,7 +89,7 @@
         <welcome-file>public/index.html</welcome-file>
     </welcome-file-list>
     
-        <mime-mapping>
+    <mime-mapping>
         <extension>map</extension>
         <mime-type>css/map</mime-type>
     </mime-mapping>

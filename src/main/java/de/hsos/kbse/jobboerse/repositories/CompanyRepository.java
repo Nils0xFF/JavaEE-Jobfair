@@ -18,6 +18,7 @@ import de.hsos.kbse.jobboerse.entity.shared.Login;
 import de.hsos.kbse.jobboerse.entity.company.CompanyProfile;
 import de.hsos.kbse.jobboerse.entity.company.Job;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
+import de.hsos.kbse.jobboerse.entity.shared.Picture;
 import de.hsos.kbse.jobboerse.enums.Salutation;
 import de.hsos.kbse.jobboerse.enums.Title;
 import de.hsos.kbse.jobboerse.enums.WorkerCount;
@@ -59,7 +60,16 @@ public class CompanyRepository {
         return loginf.findByEmail(email) != null;
     }
     
-    public boolean createCompany(CompanyProfile toInsert, String email){
+    public void addPicture(String email, Picture toInsert) {
+        Login login = loginf.findByEmail(email);
+        if (login != null) {
+            login.getCompany().getProfile().setProfilePicture(toInsert);
+            System.out.println("ADD PIC");
+            loginf.edit(login);
+        }
+    }
+    
+    public boolean createCompany(CompanyProfile toInsert, String email) {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             login.getCompany().setProfile(toInsert);
@@ -70,9 +80,9 @@ public class CompanyRepository {
         }
         
         return false;
-    }    
+    }
     
-    public boolean updateCompany(CompanyProfile toInsert, String email){
+    public boolean updateCompany(CompanyProfile toInsert, String email) {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             login.getCompany().setProfile(toInsert);
@@ -83,11 +93,11 @@ public class CompanyRepository {
         return false;
     }  
     
-    public void createLogin(Login login){
+    public void createLogin(Login login) {
         loginf.create(login);
     }
     
-    public List<Job> findJobsByCompany(String email){
+    public List<Job> findJobsByCompany(String email) {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             return login.getCompany().getJobs();
@@ -95,7 +105,7 @@ public class CompanyRepository {
         return null;
     }
     
-    public boolean addJobtoCompany(String email, Job toInsert){
+    public boolean addJobtoCompany(String email, Job toInsert) {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             toInsert.setCompany(login.getCompany());
@@ -106,7 +116,7 @@ public class CompanyRepository {
         
     }
     
-    public void removeJobFromCompany(String email, Long Id){
+    public void removeJobFromCompany(String email, Long Id) {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             login.getCompany().getJobs().remove(jobRepo.find(Id));
@@ -115,7 +125,7 @@ public class CompanyRepository {
     }
     
     //Erster Ansatz; Überarbeitet. Registration Controller übernimmt das Erstellen der Klassen.
-    public boolean createLogin(String email, String password) {
+    public boolean createLogin(String email, String password) throws Exception {
         if (!checkEmailExists(email)) {
             Map<String, String> parameters = new HashMap<>();
             parameters.put("Pbkdf2PasswordHash.Iterations", "3072");
@@ -131,10 +141,18 @@ public class CompanyRepository {
         }
         return false;
     }
+
+    public boolean createCompany(Login toInsert){
+        if (!checkEmailExists(toInsert.getEmail())) {
+            loginf.create(toInsert);
+            return true;
+        }
+        return false;
+    }    
     
     public boolean createCompanyProfile(/* General Information */ String email, String name, String description, WorkerCount workercount, 
             /* Address */ String street, String housenumber, String city, String postalcode, String country, 
-            /* Contact */ Salutation salutation, Title title, String firstname, String lastname, String contactemail, String phone) {
+            /* Contact */ Salutation salutation, Title title, String firstname, String lastname, String contactemail, String phone) throws Exception {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             Address addressToInsert = Address.builder()
@@ -167,7 +185,18 @@ public class CompanyRepository {
         return false;
     }
 
-    public boolean updateCompanyProfile(String email, String name, String description, WorkerCount workercount, Address address, Contact contact) {
+    public boolean createCompanyProfile(String email, CompanyProfile profile) {
+        Login login = loginf.findByEmail(email);
+        if (login != null) {                      
+            login.getCompany().setProfile(profile);
+            login.getCompany().setLogin(login);
+            loginf.edit(login);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean updateCompanyProfile(String email, String name, String description, WorkerCount workercount, Address address, Contact contact) throws Exception {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             CompanyProfile toEdit = login.getCompany().getProfile();
@@ -181,8 +210,32 @@ public class CompanyRepository {
         }
         return false;
     }
+
+    public boolean updateCompanyProfile(String email, String name, String description, WorkerCount workercount) {
+        Login login = loginf.findByEmail(email);
+        if (login != null) {
+            CompanyProfile toEdit = login.getCompany().getProfile();
+            toEdit.setName(name);
+            toEdit.setDescription(description);
+            toEdit.setWorkercount(workercount);
+            companyprofilef.edit(toEdit);
+            return true;
+        }
+        return false;
+    }
     
-    public boolean updateCompanyAddress(String email, String street, String housenumber, String city, String postalcode, String country){
+    public boolean updateCompanyProfile(String email, CompanyProfile profile) {
+        Login login = loginf.findByEmail(email);
+        if (login != null) {
+            CompanyProfile toEdit = login.getCompany().getProfile();
+            profile.setId(toEdit.getId());
+            companyprofilef.edit(profile);
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean updateCompanyAddress(String email, String street, String housenumber, String city, String postalcode, String country) throws Exception {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             Address toEdit = login.getCompany().getProfile().getAddress();
@@ -197,7 +250,45 @@ public class CompanyRepository {
         return false;
     }
     
-    public boolean updateCompanyQualifications(String email, List<Benefit> benefits){
+    public boolean updateCompanyAddress(String email, Address address){
+        Login login = loginf.findByEmail(email);
+        if (login != null) {
+            Address toEdit = login.getCompany().getProfile().getAddress();
+            address.setId(toEdit.getId());
+            addressf.edit(address);
+            return true;
+        }
+        return false;
+    }  
+
+    public boolean updateCompanyContact(String email, String contactemail, Salutation salutation, Title title, String firstname, String lastname, String phone){
+        Login login = loginf.findByEmail(email);
+        if (login != null) {
+            Contact toEdit = login.getCompany().getProfile().getContact();
+            toEdit.setEmail(contactemail);
+            toEdit.setSalutation(salutation);
+            toEdit.setTitle(title);
+            toEdit.setFirstname(firstname);
+            toEdit.setLastname(lastname);
+            toEdit.setPhone(phone);
+            contactf.edit(toEdit);
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean updateCompanyContact(String email, Contact contact){
+        Login login = loginf.findByEmail(email);
+        if (login != null) {
+            Contact toEdit = login.getCompany().getProfile().getContact();
+            contact.setId(toEdit.getId());
+            contactf.edit(contact);
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean updateCompanyQualifications(String email, List<Benefit> benefits) throws Exception {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             CompanyProfile toEdit = login.getCompany().getProfile();
@@ -206,9 +297,9 @@ public class CompanyRepository {
             return true;
         }
         return false;
-    }
+    }    
     
-    public boolean addCompanyBenefit(String email, Benefit benefit) {
+    public boolean addCompanyBenefit(String email, Benefit benefit) throws Exception {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             CompanyProfile toEdit = login.getCompany().getProfile();
@@ -219,7 +310,7 @@ public class CompanyRepository {
         return false;
     }
     
-    public boolean removeCompanyBenefit(String email, Benefit benefit) {
+    public boolean removeCompanyBenefit(String email, Benefit benefit) throws Exception {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             CompanyProfile toEdit = login.getCompany().getProfile();
@@ -230,8 +321,7 @@ public class CompanyRepository {
         return false;
     }
 
-    
-    public boolean updateCompanyCredentials(String oldEmail, String newEmail, String newPassword) {
+    public boolean updateCompanyCredentials(String oldEmail, String newEmail, String newPassword) throws Exception {
         Login login = loginf.findByEmail(oldEmail);
         if (login != null) {
             Map<String, String> parameters = new HashMap<>();
@@ -247,7 +337,16 @@ public class CompanyRepository {
         return false;
     }
 
-    public boolean deleteCompany(String email) {
+    public boolean deleteCompany(Long id) throws Exception {
+        Login login = loginf.find(id);
+        if (login != null) {
+            loginf.remove(login);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean deleteCompany(String email) throws Exception {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             loginf.remove(login);
@@ -262,11 +361,10 @@ public class CompanyRepository {
             return login.getCompany();
         }
         return null;
-    }
+    }    
 
-    public void update(Company value) {
+    public void update(Company value) throws Exception {
         companyf.edit(value);
-    }
-    
+    }    
     
 }

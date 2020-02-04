@@ -4,10 +4,11 @@ package de.hsos.kbse.jobboerse.enums;
  *
  * @author lennartwoltering
  */
+
 public enum Sal_Relation {
     NJ("Nebenjob"),
-    HT("Halbtags"),
-    VT("Volltags"),
+    HT("Teilzeit"),
+    VT("Vollzeit"),
     WS("Werkstudent");
     
     private final String desc;
@@ -18,8 +19,5 @@ public enum Sal_Relation {
     
     public String getDesc(){
         return desc;
-    }
-    
-    
-    
+    }    
 }

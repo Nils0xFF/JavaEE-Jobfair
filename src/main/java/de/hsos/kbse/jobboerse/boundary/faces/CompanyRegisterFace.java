@@ -6,22 +6,20 @@
 package de.hsos.kbse.jobboerse.boundary.faces;
 
 import de.hsos.kbse.jobboerse.controllers.CompanyRegistrationController;
-import de.hsos.kbse.jobboerse.controllers.UserRegistrationController;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
 import de.hsos.kbse.jobboerse.enums.Salutation;
 import de.hsos.kbse.jobboerse.enums.Title;
 import de.hsos.kbse.jobboerse.enums.WorkerCount;
 import de.hsos.kbse.jobboerse.repositories.BenefitRepository;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.faces.view.ViewScoped;
@@ -32,10 +30,13 @@ import javax.persistence.Enumerated;
 import javax.security.enterprise.SecurityContext;
 import javax.transaction.Transactional;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -69,7 +70,14 @@ public class CompanyRegisterFace implements Serializable {
     private String city;
     @NotEmpty
     private String postalcode, country;
+
+    private byte[] pictureData;
+
+    private String dataType;
+
     private List<Benefit> fullfilledBenefits;
+
+    private UploadedFile file;
 
     @Enumerated(EnumType.STRING)
     private Salutation salutation;
@@ -87,9 +95,30 @@ public class CompanyRegisterFace implements Serializable {
     @Inject
     SecurityContext context;
 
+    public void handleFileUpload(FileUploadEvent event) {
+        System.out.println("UPLOAD");
+        pictureData = event.getFile().getContents();
+        dataType = event.getFile().getContentType();
+    }
+
+    public StreamedContent getProfileImage() {
+        if(pictureData != null){
+        return new DefaultStreamedContent(new ByteArrayInputStream(pictureData), dataType);
+        }
+        return null;
+    }
+
+    public UploadedFile getFile() {
+        return file;
+    }
+
+    public void setFile(UploadedFile file) {
+        this.file = file;
+    }
+    
     @Transactional
     public void registerUser() {
-        if (companyRegCntrl.createProfile(firmname, desc, workercount)
+        if (companyRegCntrl.createProfile(firmname, desc, workercount, pictureData, dataType)
                 .createAddress(street, housenumber, city, postalcode, country)
                 .createContact(salutation, titles, firstname, lastname, telefon, contactEmail)
                 .finishRegistration(fullfilledBenefits, context.getCallerPrincipal().getName())) {
@@ -98,7 +127,6 @@ public class CompanyRegisterFace implements Serializable {
             } catch (IOException ex) {
                 FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, "Register failed", null));
-                Logger.getLogger(CompanyRegisterFace.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             FacesContext.getCurrentInstance().addMessage(null,
@@ -253,6 +281,14 @@ public class CompanyRegisterFace implements Serializable {
 
     public WorkerCount[] getWorkerValues() {
         return WorkerCount.values();
+    }
+
+    public byte[] getPictureData() {
+        return pictureData;
+    }
+
+    public void setPictureData(byte[] pictureData) {
+        this.pictureData = pictureData;
     }
 
 }

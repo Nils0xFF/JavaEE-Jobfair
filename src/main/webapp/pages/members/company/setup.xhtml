@@ -10,7 +10,7 @@
         <div class="card">
             <h5 class="card-header">Erstmalige Einrichtung</h5>
             <div class="card-body">
-                <h:form>
+                <h:form enctype="multipart/form-data">
                     <p:wizard showNavBar="false" showStepStatus="true" widgetVar="wiz">
                         <p:tab id="personal" title="Allgemeines">
                             <p:separator/>
@@ -33,8 +33,9 @@
                             </div>
 
                             <div class="form-group">
-                                <p:outputLabel for="@next" value="Foto"/>
-                                <p:fileUpload fileUploadListener="" mode="advanced" dragDropSupport="false"
+                                <p:outputLabel for="@next" value="Dein Firmenfoto: "/>
+
+                                <p:fileUpload fileUploadListener="#{CompanyRegisterFace.handleFileUpload}" mode="advanced" dragDropSupport="true"
                                               sizeLimit="5242880" fileLimit="1" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
                             </div>
 
@@ -160,6 +161,7 @@
                                     <h5 class="mb-3">Generelle Informationen</h5>
                                     <div class="form-row">
                                         <div class="col-sm-8 form-group">
+                                            <p:graphicImage value="#{CompanyRegisterFace.profileImage}"/>
                                             <p:outputLabel for="@next" value="Name der Firma"/>
                                             <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{CompanyRegisterFace.firmname}"
                                                          readonly="true" disabled="true">
@@ -290,14 +292,15 @@
                                         </div>
                                         <div class="col-sm-6 form-group">
                                             <p:outputLabel for="@next" value="Email"/>
-                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{CompanyRegisterFace.email}" 
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{CompanyRegisterFace.contactEmail}" 
                                                          readonly="true" disabled="true">
                                                 <p:clientValidator event="keyup"/>
                                             </p:inputText>  
                                             <h:message for="@previous" class="small text-danger"/>
                                         </div> 
                                     </div>
-                                </div></div>
+                                </div>
+                            </div>
 
                             <p:commandButton class="btn btn-light" value="Zurück" onclick="PF('wiz').back();"></p:commandButton>
                             <p:commandButton class="btn btn-primary" value="Weiter" action="#{CompanyRegisterFace.registerUser()}" ajax="true" validateClient="true"></p:commandButton>

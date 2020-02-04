@@ -8,6 +8,7 @@ package de.hsos.kbse.jobboerse.boundary.faces;
 import de.hsos.kbse.jobboerse.controllers.CompanyRegistrationController;
 import de.hsos.kbse.jobboerse.entity.company.Company;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
+import de.hsos.kbse.jobboerse.entity.shared.Picture;
 import de.hsos.kbse.jobboerse.enums.Graduation;
 import de.hsos.kbse.jobboerse.enums.Salutation;
 import de.hsos.kbse.jobboerse.enums.Title;
@@ -26,6 +27,7 @@ import javax.transaction.Transactional;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
+import org.primefaces.event.FileUploadEvent;
 
 /**
  *
@@ -114,8 +116,14 @@ public class CompanyProfileFace implements Serializable {
     }
     
     @Transactional
+    public void handleFileUpload(FileUploadEvent event){
+        Picture toInsert = Picture.builder().data(event.getFile().getContents()).dataType(event.getFile().getContentType()).build();
+        compRepository.addPicture(context.getCallerPrincipal().getName(), toInsert);
+    }
+    
+    @Transactional
     public void updateProfile(){
-        companyCntrl.createProfile(firmname, desc, workercount)
+        companyCntrl.createProfile(firmname, desc, workercount, null, null)
                 .createAddress(street, housenumber, city, postalcode, country)
                 .createContact(salutation, titles, firstname, lastname, email, contactEmail)
                 .finishUpdating(fullfilledBenefits, context.getCallerPrincipal().getName());

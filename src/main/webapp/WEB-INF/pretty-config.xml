@@ -42,5 +42,5 @@
         <pattern value="/registerEmployee" />
         <view-id value="/faces/pages/public/registerEmployee.xhtml" />
     </url-mapping>
-
+    
 </pretty-config>

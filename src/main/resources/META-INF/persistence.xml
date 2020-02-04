@@ -21,7 +21,6 @@
     <class>de.hsos.kbse.jobboerse.entity.user.WeightedJob</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
-      <property name="javax.persistence.schema-generation.database.action" value="none"/>
     </properties>
   </persistence-unit>
 </persistence>

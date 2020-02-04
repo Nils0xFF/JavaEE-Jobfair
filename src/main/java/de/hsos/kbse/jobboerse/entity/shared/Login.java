@@ -10,6 +10,7 @@ import de.hsos.kbse.jobboerse.entity.user.SeekingUser;
 import java.io.Serializable;
 import javax.enterprise.inject.Vetoed;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,6 +31,7 @@ public class Login implements Serializable {
     private Long id;
     private String password;
     private String group_name;
+    @Column(unique = true)
     private String email;
     
     @OneToOne(cascade = CascadeType.ALL,

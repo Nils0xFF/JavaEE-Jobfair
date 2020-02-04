@@ -11,15 +11,16 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *
  * @author nilsgeschwinde
  *
- * Requires you to be logged in, in order to see the member pages
+ * Requires you be part of the admin role in order to visit the Admin area
  */
-
-@WebFilter(urlPatterns = "/faces/pages/admin/*", dispatcherTypes = {REQUEST, FORWARD})
+@WebFilter(urlPatterns = "/faces/pages/members/admin/*", dispatcherTypes = {REQUEST, FORWARD})
 public class AdminFilter implements Filter {
 
     @Inject
@@ -30,20 +31,11 @@ public class AdminFilter implements Filter {
 
         if (sessionCtrl.userIsAdmin()) {
             fc.doFilter(sr, sr1);
+        } else {
+            HttpServletResponse response = (HttpServletResponse) sr1;
+            HttpServletRequest request = (HttpServletRequest) sr;
+            response.sendRedirect(request.getContextPath() + "");
         }
 
-        throw new UnsupportedOperationException("Not supported yet.");
-
-        /*
-       System.out.println("LoginFilter");
-        
-        if (CookieService.getCookieValue((HttpServletRequest) sr, "userToken") == null) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-        
-        // FixMe Check if user is valid
-        fc.doFilter(sr, sr1);
-
-         */
     }
 }

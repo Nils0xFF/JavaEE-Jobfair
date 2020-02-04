@@ -27,16 +27,17 @@ public class JobFieldRepository implements Serializable {
     
     public JobFieldRepository() {}
 
-    public void create(String name) {
+    public JobField create(String name) throws Exception {
         JobField jobfield = JobField.builder().name(name).build();
         jff.create(jobfield);
+        return jff.findByName(name);
     }
     
     public JobField findById(Long id) {
         return jff.find(id);
     }
     
-    public JobField findByName(String name) {
+    public JobField findByName(String name) throws Exception {
         return jff.findByName(name);
     }
     
@@ -44,29 +45,35 @@ public class JobFieldRepository implements Serializable {
         return jff.findAll();
     }
     
-    public void updateName(int id, String name) throws RollbackException {
+    public void update(Long id, JobField jobfield) throws Exception {
+        JobField old = jff.find(id);
+        jobfield.setId(old.getId());
+        jff.edit(jobfield);
+    }
+    
+    public void update(String name, JobField jobfield) throws Exception {
+        JobField old = jff.findByName(name);
+        jobfield.setId(old.getId());
+        jff.edit(jobfield);
+    }
+    
+    public void updateName(Long id, String name) throws Exception {
         JobField old = jff.find(id);
         old.setName(name);
         jff.edit(old);
     }
     
-    public void update(int id, String name) throws RollbackException {
-        JobField old = jff.find(id);
-        old.setName(name);
-        jff.edit(old);
-    }
-    
-    public void updateName(String name, String sub) {
+    public void updateName(String name, String sub) throws Exception {
         JobField old = jff.findByName(name);
         old.setName(sub);
         jff.edit(old);
     }
     
-    public void delete(Long id) {
+    public void delete(Long id) throws Exception {
         jff.remove(jff.find(id));
     }
     
-    public void delete(String name) {
+    public void delete(String name) throws Exception {
         jff.remove(jff.findByName(name));
     }    
 }

@@ -10,7 +10,7 @@
         <ui:param name="transparentNav" value="false" />
         <ui:param name="title" value="Dashboard" />
         <ui:define name="content">
-            <ui:include src="#{sessionController.userIsCompany() ? 'company/dashboard.xhtml' : 'employee/dashboard.xhtml'}" rendered="false">
+            <ui:include src="#{sessionController.userIsAdmin() ? 'admin/index.xhtml' : sessionController.userIsCompany() ? 'company/dashboard.xhtml' : 'employee/dashboard.xhtml'}" rendered="false">
             </ui:include>
         </ui:define>
     </ui:composition>

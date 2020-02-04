@@ -27,7 +27,7 @@ public class JobRepository {
     
     public JobRepository() { }
     
-    public void create(String name, Sal_Relation relation, Double salary, String description, Address address, Company company, List<NeededRequirement> needed) {
+    public void create(String name, Sal_Relation relation, Double salary, String description, Address address, Company company, List<NeededRequirement> needed) throws Exception {
         Job job = Job.builder()
                 .name(name)
                 .relation(relation)
@@ -40,18 +40,18 @@ public class JobRepository {
         jf.create(job);
     }
     
-    public List<Job> findAll() {
+    public List<Job> findAll() throws Exception {
         return jf.findAll();
     }
     
-    public void update(Long id, Job job){
+    public void update(Long id, Job job) {
         Job old = jf.find(id);
         job.setId(old.getId());
         job.setCompany(old.getCompany());
         jf.edit(job);
     }
     
-    public void update(Long id, String name, Sal_Relation relation, Double salary, String description, Address address, Company company, List<NeededRequirement> needed) {
+    public void update(Long id, String name, Sal_Relation relation, Double salary, String description, Address address, Company company, List<NeededRequirement> needed) throws Exception {
         Job old = jf.find(id);
         old.setName(name);
         old.setRelation(relation);
@@ -63,71 +63,71 @@ public class JobRepository {
         jf.edit(old);
     }
     
-    public void updateName(Long id, String name) {
+    public void updateName(Long id, String name) throws Exception {
         Job old = jf.find(id);
         old.setName(name);
         jf.edit(old);
     }
     
-    public void updateRelation(Long id, Sal_Relation relation) {
+    public void updateRelation(Long id, Sal_Relation relation) throws Exception {
         Job old = jf.find(id);
         old.setRelation(relation);
         jf.edit(old);
     }
     
-    public void updateSalary(Long id, Double salary) {
+    public void updateSalary(Long id, Double salary) throws Exception {
         Job old = jf.find(id);
         old.setSalary(salary);
         jf.edit(old);
     }
     
-    public void updateDescription(Long id, String desc) {
+    public void updateDescription(Long id, String desc) throws Exception {
         Job old = jf.find(id);
         old.setDescription(desc);
         jf.edit(old);
     }
     
-    public void updateAddress(Long id, Address address) {
+    public void updateAddress(Long id, Address address) throws Exception {
         Job old = jf.find(id);
         old.setAddress(address);
         jf.edit(old);
     }
     
-    public void updateCompany(Long id, Company company) {
+    public void updateCompany(Long id, Company company) throws Exception {
         Job old = jf.find(id);
         old.setCompany(company);
         jf.edit(old);
     } 
     
-    public void updateNeededRequirements(Long id, List<NeededRequirement> needed) {
+    public void updateNeededRequirements(Long id, List<NeededRequirement> needed) throws Exception {
         Job old = jf.find(id);
         old.setNeeded(needed);
         jf.edit(old);
     }
     
-    public void addNeededRequirement(Long id, NeededRequirement needed) {
+    public void addNeededRequirement(Long id, NeededRequirement needed) throws Exception {
         Job old = jf.find(id);
         old.addNeededRequirement(needed);
         jf.edit(old);        
     }
     
-    public void removeNeededRequirement(Long id, NeededRequirement needed) {
+    public void removeNeededRequirement(Long id, NeededRequirement needed) throws Exception {
         Job old = jf.find(id);
         old.removeNeededRequirement(needed);
         jf.edit(old);
     }
     
-    public List<Job> findJobsByJobField(String name){
+    public List<Job> findJobsByJobField(String name) {
         return jf.findJobsByJobField(name);
     }
     
-    public void delete(Long id) {
+    public void delete(Long id) throws Exception {
         Job found = jf.find(id);
         found.setCompany(null);
         jf.remove(found);
     }
     
-    public Job find(Long id){
+    public Job find(Long id) {
         return jf.find(id);
     }
     
