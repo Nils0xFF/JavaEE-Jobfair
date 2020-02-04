@@ -5,7 +5,6 @@
  */
 package de.hsos.kbse.jobboerse.boundary.faces;
 
-import de.hsos.kbse.jobboerse.boundary.faces.mockfiles.AutoCompleteData;
 import de.hsos.kbse.jobboerse.controllers.UserRegistrationController;
 import de.hsos.kbse.jobboerse.entity.company.JobField;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
@@ -16,12 +15,15 @@ import de.hsos.kbse.jobboerse.enums.Title;
 import de.hsos.kbse.jobboerse.repositories.BenefitRepository;
 import de.hsos.kbse.jobboerse.repositories.JobFieldRepository;
 import de.hsos.kbse.jobboerse.repositories.RequirementRepository;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
-import javax.enterprise.context.RequestScoped;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -29,13 +31,10 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.security.enterprise.SecurityContext;
 import javax.transaction.Transactional;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -95,13 +94,20 @@ public class UserRegisterFace implements Serializable {
     SecurityContext context;
 
     @Transactional
-    public boolean registerUser() {
-        return userRegCntrl
+    public void registerUser() {
+        userRegCntrl
                 .createUserProfile(salutation, titles, firstname, lastname, telefon, birthday)
                 .createAddress(street, housenumber, city, postalcode, country)
                 .createQualifications(grades, fullfilledRequirements, desc)
                 .setupSearchParameters(wishedBenefits, wishedJobFields)
                 .finishRegistration(context.getCallerPrincipal().getName());
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/dashboard");
+        } catch (IOException ex) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Register failed", null));
+            Logger.getLogger(CompanyRegisterFace.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     //GETTER / SETTER

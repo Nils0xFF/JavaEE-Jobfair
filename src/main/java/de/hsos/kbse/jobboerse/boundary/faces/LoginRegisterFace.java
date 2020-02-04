@@ -59,17 +59,11 @@ public class LoginRegisterFace implements Serializable {
 
         if (pw.equals(pw2)) {
             if (seekingUser && userRegCntrl.createLogin(email, pw)) {
-                FacesContext.getCurrentInstance().addMessage("registerGrowl",
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, "Du kannst dich nun anmelden!", null));
-                PrimeFaces.current().executeScript("$('#registerModal').modal('hide');");
-                successful = true;
+                successCallback();
                 return;
             }
             if (company && companyRegCntrl.createLogin(email, pw)) {
-                FacesContext.getCurrentInstance().addMessage("registerGrowl",
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, "Du kannst dich nun anmelden!", null));
-                PrimeFaces.current().executeScript("$('#registerModal').modal('hide');");
-                successful = true;
+                successCallback();
                 return;
             }
         }
@@ -77,6 +71,13 @@ public class LoginRegisterFace implements Serializable {
         FacesContext.getCurrentInstance().addMessage("registerError",
                 new FacesMessage(FacesMessage.SEVERITY_ERROR, "Registrierung fehlgeschlagen, überprüfe deine Eingaben", null));
         return;
+    }
+
+    private void successCallback() {
+        FacesContext.getCurrentInstance().addMessage("registerGrowl",
+                new FacesMessage(FacesMessage.SEVERITY_INFO, "Du kannst dich nun anmelden!", null));
+        PrimeFaces.current().executeScript("$('#registerModal').modal('hide');");
+        successful = true;
     }
 
     public void userRegistration() {

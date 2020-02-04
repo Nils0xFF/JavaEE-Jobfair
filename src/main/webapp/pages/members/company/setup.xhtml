@@ -32,14 +32,10 @@
                                 </div>
                             </div>
 
-                            <p:outputLabel for="@next" value="Dein Firmenfoto: "/>
-                
-                                <p:fileUpload fileUploadListener="#{CompanyRegisterFace.handleFileUpload}" mode="advanced" dragDropSupport="true"
-                                              sizeLimit="5242880" fileLimit="1" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
-
                             <div class="form-group">
-                                <p:outputLabel for="@next" value="Foto"/>
-                                <p:fileUpload fileUploadListener="" mode="advanced" dragDropSupport="false"
+                                <p:outputLabel for="@next" value="Dein Firmenfoto: "/>
+
+                                <p:fileUpload fileUploadListener="#{CompanyRegisterFace.handleFileUpload}" mode="advanced" dragDropSupport="true"
                                               sizeLimit="5242880" fileLimit="1" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
                             </div>
 
@@ -296,7 +292,7 @@
                                         </div>
                                         <div class="col-sm-6 form-group">
                                             <p:outputLabel for="@next" value="Email"/>
-                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{CompanyRegisterFace.email}" 
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{CompanyRegisterFace.contactEmail}" 
                                                          readonly="true" disabled="true">
                                                 <p:clientValidator event="keyup"/>
                                             </p:inputText>  

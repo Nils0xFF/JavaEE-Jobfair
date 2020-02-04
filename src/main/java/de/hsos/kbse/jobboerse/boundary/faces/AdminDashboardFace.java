@@ -16,36 +16,77 @@ import java.util.List;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.transaction.Transactional;
 
 /**
  *
  * @author nilsgeschwinde
  */
-
 @Named
 @ViewScoped
-public class AdminDashboardFace implements Serializable{
-    
+public class AdminDashboardFace implements Serializable {
+
+    private String requirementName;
+    private String benefitName;
+    private String jobFieldName;
+
     @Inject
     private BenefitRepository benefitRepo;
-    
+
     @Inject
     private JobFieldRepository jobFieldRepo;
-    
+
     @Inject
     private RequirementRepository requirementRepo;
-    
-    
-    public List<Requirement> getRequirements(){
+
+    @Transactional
+    public void createRequirement() {
+        requirementRepo.create(requirementName, "");
+    }
+
+    @Transactional
+    public void createBenefit() {
+        benefitRepo.create(benefitName, "");
+    }
+
+    public void createJobField() {
+        benefitRepo.create(jobFieldName, "");
+    }
+
+    public List<Requirement> getRequirements() {
         return requirementRepo.findAll();
     }
-    
-    public List<Benefit> getBenefits(){
+
+    public List<Benefit> getBenefits() {
         return benefitRepo.findAll();
     }
-    
-    public List<JobField> getJobFields(){
+
+    public List<JobField> getJobFields() {
         return jobFieldRepo.findAll();
     }
-    
+
+    public String getRequirementName() {
+        return requirementName;
+    }
+
+    public void setRequirementName(String requirementName) {
+        this.requirementName = requirementName;
+    }
+
+    public String getBenefitName() {
+        return benefitName;
+    }
+
+    public void setBenefitName(String benefitName) {
+        this.benefitName = benefitName;
+    }
+
+    public String getJobFieldName() {
+        return jobFieldName;
+    }
+
+    public void setJobFieldName(String jobFieldName) {
+        this.jobFieldName = jobFieldName;
+    }
+
 }
