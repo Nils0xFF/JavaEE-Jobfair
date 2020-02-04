@@ -19,6 +19,7 @@ import de.hsos.kbse.jobboerse.enums.Graduation;
 import de.hsos.kbse.jobboerse.enums.Salutation;
 import de.hsos.kbse.jobboerse.enums.Title;
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,12 +56,19 @@ public class GeneralUserRepository {
     public boolean createUser(User_Profile toInsert, SearchRequest searchInsert, String email){
         Login login = logins.findByEmail(email);
         if (login != null) {
-            System.out.println("CREATE USER: REPO");
             login.getSeekingUser().setProfile(toInsert);
             login.getSeekingUser().setSearchrequest(searchInsert);
             login.getSeekingUser().setLogin(login);
             login.getSeekingUser().setCompleted(true);
             logins.edit(login);
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean createUser(Login toInsert) throws Exception {
+        if (!checkEmailExists(toInsert.getEmail())) {
+            logins.create(toInsert);
             return true;
         }
         return false;
@@ -101,6 +109,7 @@ public class GeneralUserRepository {
         return false;
     }
     
+    
     public boolean createUserProfile(String email, Salutation salutation, Title title, String firstname, 
             String lastname, String description, String telefon, LocalDate birthday, 
             Graduation grad, String street, String housenumber, String city, 
@@ -131,7 +140,7 @@ public class GeneralUserRepository {
             return true;
         }
         return false;
-    }
+    }    
 
     public boolean editUserProfile(String email, Salutation salutation, Title title, String firstname, String lastname, String description, String telefon) {
         Login login = logins.findByEmail(email);
@@ -143,6 +152,17 @@ public class GeneralUserRepository {
             toEdit.setLastname(lastname);
             toEdit.setTelefon(telefon);
             userprofiles.edit(toEdit);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean editUserProfile(String email, User_Profile profile) {
+        Login login = logins.findByEmail(email);
+        if (login != null) {
+            User_Profile toEdit = login.getSeekingUser().getProfile();
+            profile.setId(toEdit.getId());
+            userprofiles.edit(profile);
             return true;
         }
         return false;
@@ -201,6 +221,18 @@ public class GeneralUserRepository {
         return false;
     }
 
+    public Collection<SeekingUser> getAllUsers() {
+        return users.findAll();
+    }
+
+    public SeekingUser getUser(Long id) {
+        Login login = logins.find(id);
+        if (login != null) {
+            return login.getSeekingUser();
+        }
+        return null;
+    }
+
     public SeekingUser getUserByEmail(String email) {
         Login login = logins.findByEmail(email);
         if (login != null) {
@@ -212,5 +244,5 @@ public class GeneralUserRepository {
     public void edit(SeekingUser value) {
         users.edit(value);
     }
-
+    
 }
