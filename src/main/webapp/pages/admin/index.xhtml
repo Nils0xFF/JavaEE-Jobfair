@@ -36,10 +36,10 @@
                         <h:form>
                             <div class="row mt-3">
                                 <div class="col-9 form-group">
-                                    <p:inputText class="form-control" placeholder="Name" value="#{ ad }" />
+                                    <p:inputText class="form-control" placeholder="Name" value="#{ adminDashboardFace.jobFieldName }" />
                                 </div>
                                 <div class="col-3">
-                                    <p:commandButton styleClass="btn bg-info btn-block" action=" " value="Hinzfügen" ajax="true"/>
+                                    <p:commandButton styleClass="btn bg-info btn-block" action="#{ adminDashboardFace.createJobField() }" value="Hinzfügen" ajax="true" update="@page"/>
                                 </div>
                             </div>
                         </h:form>
