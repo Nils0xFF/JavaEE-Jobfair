@@ -6,21 +6,17 @@
 package de.hsos.kbse.jobboerse.boundary.faces;
 
 import de.hsos.kbse.jobboerse.controllers.CompanyRegistrationController;
-import de.hsos.kbse.jobboerse.controllers.UserRegistrationController;
+import de.hsos.kbse.jobboerse.entity.company.Company;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
+import de.hsos.kbse.jobboerse.entity.shared.Picture;
+import de.hsos.kbse.jobboerse.enums.Graduation;
 import de.hsos.kbse.jobboerse.enums.Salutation;
 import de.hsos.kbse.jobboerse.enums.Title;
 import de.hsos.kbse.jobboerse.enums.WorkerCount;
-import de.hsos.kbse.jobboerse.repositories.BenefitRepository;
-import java.io.IOException;
+import de.hsos.kbse.jobboerse.repositories.CompanyRepository;
 import java.io.Serializable;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
+import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -29,22 +25,35 @@ import javax.persistence.Enumerated;
 import javax.security.enterprise.SecurityContext;
 import javax.transaction.Transactional;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
+import org.primefaces.event.FileUploadEvent;
 
 /**
  *
- * @author lennartwoltering
+ * @author nilsgeschwinde
  */
-@Named("CompanyRegisterFace")
+@Named
 @ViewScoped
-public class CompanyRegisterFace implements Serializable{
+public class CompanyProfileFace implements Serializable {
+
+    @Inject
+    private SecurityContext context;
+
+    @Inject
+    private CompanyRepository compRepository;
+    
+    @Inject
+    private CompanyRegistrationController companyCntrl;
+
+    private boolean editMode = false;
+
+    private Company companyDetails;
+
     @NotEmpty
     @Email(message = "Es muss eine gültige Email sein")
     private String email;
-    @Min(value = 5, message = "Passwort muss länger als 5 Zeichen sein.")
-    private String pw, pw2;
+
     @NotEmpty
     private String firmname;
     @NotEmpty
@@ -52,87 +61,93 @@ public class CompanyRegisterFace implements Serializable{
     @NotEmpty
     private String lastname;
     @NotEmpty
-    @Pattern(regexp= "^[^a-zA-Z]+$")
+    @Pattern(regexp = "^[^a-zA-Z]+$")
     private String telefon;
+
+    @NotEmpty
+    @Email(message = "Es muss eine gültige Email sein")
+    private String contactEmail;
+
     @NotEmpty
     private String desc;
-    @Pattern(regexp= "^[^0-9]+$")
+    @Pattern(regexp = "^[^0-9]+$")
     @NotEmpty
     private String street;
     @NotEmpty
     private String housenumber;
     @NotEmpty
-    @Pattern(regexp= "^[^0-9]+$")
+    @Pattern(regexp = "^[^0-9]+$")
     private String city;
     @NotEmpty
     private String postalcode, country;
-
-    private byte[] pictureData;
-
     private List<Benefit> fullfilledBenefits;
-    
-    private UploadedFile file;
+
     @Enumerated(EnumType.STRING)
     private Salutation salutation;
     @Enumerated(EnumType.STRING)
     private Title titles;
     @Enumerated(EnumType.STRING)
     private WorkerCount workercount;
-    
-    
-    @Inject
-    BenefitRepository benefitRepo;
-    
-    @Inject
-    CompanyRegistrationController companyRegCntrl;
-    
-    @Inject
-    SecurityContext context;
-   
 
-    public void handleFileUpload(FileUploadEvent event) {
-        System.out.println("UPLOAD");
-        pictureData = event.getFile().getContents();
-        dataType = event.getFile().getContentType();
-    }
-    public StreamedContent getProfileImage() {
-    @Transactional
-    public void registerLogin() {
-        if (pw.equals(pw2)) {
-            if(companyRegCntrl.createLogin(email, pw)){
-                 FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, "Du kannst dich nun anmelden!", null));
-            }
-        }
-         FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Registrierung fehlgeschlagen, überprüfe deine Eingaben", null));
+    @PostConstruct
+    private void init() {
+        companyDetails = compRepository.getCompanyByEmail(context.getCallerPrincipal().getName());
+        email = context.getCallerPrincipal().getName();
+
+        firmname = companyDetails.getProfile().getName();
+        desc = companyDetails.getProfile().getDescription();
+        workercount = companyDetails.getProfile().getWorkercount();
+
+        street = companyDetails.getProfile().getAddress().getStreet();
+        housenumber = companyDetails.getProfile().getAddress().getHousenumber();
+        city = companyDetails.getProfile().getAddress().getCity();
+        postalcode = companyDetails.getProfile().getAddress().getPostalcode();
+        country = companyDetails.getProfile().getAddress().getCountry();
+        
+        fullfilledBenefits = companyDetails.getProfile().getBenefits();
+
+        salutation = companyDetails.getProfile().getContact().getSalutation();
+        titles = companyDetails.getProfile().getContact().getTitle();
+        firstname = companyDetails.getProfile().getContact().getFirstname();
+        lastname = companyDetails.getProfile().getContact().getLastname();
+        telefon = companyDetails.getProfile().getContact().getPhone();
+        contactEmail = companyDetails.getProfile().getContact().getEmail();
+
     }
     
     @Transactional
-    public void registerUser() {
-        if(companyRegCntrl.createProfile(email, desc, workercount)
+    public void handleFileUpload(FileUploadEvent event){
+        System.out.println("ADD");
+        Picture toInsert = Picture.builder().data(event.getFile().getContents()).dataType(event.getFile().getContentType()).build();
+        compRepository.addPicture(context.getCallerPrincipal().getName(), toInsert);
+    }
+    
+    @Transactional
+    public void updateProfile(){
+        companyCntrl.createProfile(firmname, desc, workercount, null, null)
                 .createAddress(street, housenumber, city, postalcode, country)
-                .createContact(salutation, titles,firstname, lastname, telefon)
-                .finishRegistration(fullfilledBenefits, context.getCallerPrincipal().getName())){
-            try{
-                FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/dashboard");
-            } catch (IOException ex) {
-                FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Register failed", null));
-                Logger.getLogger(CompanyRegisterFace.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }else{
-            FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Register failed", null));
-        }
+                .createContact(salutation, titles, firstname, lastname, email, contactEmail)
+                .finishUpdating(fullfilledBenefits, context.getCallerPrincipal().getName());
+                
+        editMode = false;
     }
-    
-    
-    
-    
-    
-    
-    //-------------------
+
+    public void startEdit() {
+        editMode = true;
+    }
+
+    public void cancleEdit() {
+        editMode = false;
+        init();
+    }
+
+    public boolean isEditMode() {
+        return editMode;
+    }
+
+    public void setEditMode(boolean editMode) {
+        this.editMode = editMode;
+    }
 
     public String getEmail() {
         return email;
@@ -142,20 +157,12 @@ public class CompanyRegisterFace implements Serializable{
         this.email = email;
     }
 
-    public String getPw() {
-        return pw;
+    public String getFirmname() {
+        return firmname;
     }
 
-    public void setPw(String pw) {
-        this.pw = pw;
-    }
-
-    public String getPw2() {
-        return pw2;
-    }
-
-    public void setPw2(String pw2) {
-        this.pw2 = pw2;
+    public void setFirmname(String firmname) {
+        this.firmname = firmname;
     }
 
     public String getFirstname() {
@@ -180,6 +187,14 @@ public class CompanyRegisterFace implements Serializable{
 
     public void setTelefon(String telefon) {
         this.telefon = telefon;
+    }
+
+    public String getContactEmail() {
+        return contactEmail;
+    }
+
+    public void setContactEmail(String contactEmail) {
+        this.contactEmail = contactEmail;
     }
 
     public String getDesc() {
@@ -254,14 +269,6 @@ public class CompanyRegisterFace implements Serializable{
         this.titles = titles;
     }
 
-    public String getFirmname() {
-        return firmname;
-    }
-
-    public void setFirmname(String firmname) {
-        this.firmname = firmname;
-    }
-
     public WorkerCount getWorkercount() {
         return workercount;
     }
@@ -269,11 +276,9 @@ public class CompanyRegisterFace implements Serializable{
     public void setWorkercount(WorkerCount workercount) {
         this.workercount = workercount;
     }
-    
 
-
-    public void setContactEmail(String contactEmail) {
-        this.contactEmail = contactEmail;
+    public WorkerCount[] getWorkerValues() {
+        return WorkerCount.values();
     }
 
     public Title[] getTitleValues() {
@@ -283,22 +288,5 @@ public class CompanyRegisterFace implements Serializable{
     public Salutation[] getSalutationValues() {
         return Salutation.values();
     }
-    
-    public WorkerCount[] getWorkerValues(){
-        return WorkerCount.values();
-    }
-    
-    
-    
-    
-    
-    
-    
-    public byte[] getPictureData() {
-        return pictureData;
-    }
 
-    public void setPictureData(byte[] pictureData) {
-        this.pictureData = pictureData;
-    }
 }

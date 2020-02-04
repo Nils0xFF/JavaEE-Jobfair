@@ -1,7 +1,198 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    Hello Employee
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <div class="container">
+        <div class="bg-white mt-4 shadow">
+            <div class="card-body">
+                <h3 class="text-center mb-4">Firma Informationen</h3>
+                <h:form enctype="multipart/form-data">
+                <p:outputLabel for="@next" value="Dein Firmenfoto: "/>
+                <p:graphicImage value="#{ImageService.getImagefromEmail()}" alt="Noch keins Hochgeladen!">
+                    <f:param name="email" value="#{companyProfileFace.email}" />
+                </p:graphicImage>
+                <p:fileUpload fileUploadListener="#{companyProfileFace.handleFileUpload}" mode="advanced" dragDropSupport="true"
+                                              sizeLimit="5242880" fileLimit="1" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                </h:form>
+                <h:form onkeypress="return event.keyCode != 13;">
+                    <div class="list-group">
+                        <div class="list-group-item">
+                            <h5 class="mb-3">Generelle Informationen</h5>
+                            <div class="form-row">
+                                <div class="col-sm-3">
+                                    <p:outputLabel for="@next" value="Email"/>
+                                    <p:inputText class="form-control" value="#{companyProfileFace.email}" required="true" readonly="true" disabled="true">
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText>
+                                    <h:message for="@previous"/>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-sm-8 form-group">
+                                    <p:outputLabel for="@next" value="Name der Firma"/>
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{companyProfileFace.firmname}"
+                                                 readonly="#{!companyProfileFace.editMode}" disabled="#{!companyProfileFace.editMode}">
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText>
+                                    <h:message for="@previous" class="small text-danger"/>
+                                </div>
+                                <div class="col-sm-4">
+                                    <p:outputLabel for="@next" value="Größe"/>
+                                    <h:selectOneMenu class="custom-select  #{component.valid ? '' : 'is-invalid'}" value="#{companyProfileFace.workercount}" 
+                                                     readonly="#{!companyProfileFace.editMode}" disabled="#{!companyProfileFace.editMode}">
+                                        <f:selectItems value="#{companyProfileFace.workerValues}" var="workercount"
+                                                       itemValue="#{workercount}" itemLabel="#{workercount.count}" />
+                                    </h:selectOneMenu>
+                                    <h:message for="@previous" class="small text-danger"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <p:outputLabel for="@next" value="Beschreibung"/>
+                                <p:inputTextarea class="form-control #{component.valid ? '' : 'is-invalid'}" id="description" value="#{companyProfileFace.desc}" rows="6" cols="33"
+                                                 readonly="#{!companyProfileFace.editMode}" disabled="#{!companyProfileFace.editMode}">
+                                    <p:clientValidator event="keyup"/>
+                                </p:inputTextarea>
+                                <h:message for="@previous" class="small text-danger"/>
+                            </div>
+                            <p:outputLabel value="Vorteile, die ihre Firma bietet: " for="@next" />
+                            <p:autoComplete multiple="true" value="#{companyProfileFace.fullfilledBenefits}" completeMethod="#{Autocomplete.completeBenefitData}"
+                                            var="benefit" itemLabel="#{benefit.name}" itemValue="#{benefit}"  forceSelection="true"
+                                            class="form-control h-auto" converter="BenefitConverter" unique="true"
+                                            readonly="#{!companyProfileFace.editMode}" disabled="#{!companyProfileFace.editMode}">
+
+                                <p:column>
+                                    <h:outputText value="#{benefit.name}" />
+                                </p:column>
+                            </p:autoComplete>
+
+                            <div class="form-row">
+                                <div class="col-sm-9 form-group">
+                                    <p:outputLabel for="@next" value="Straße"/>
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{companyProfileFace.street}"
+                                                 readonly="#{!companyProfileFace.editMode}" disabled="#{!companyProfileFace.editMode}">
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText>
+                                    <h:message for="@previous" class="small text-danger"/>
+                                </div>
+                                <div class="col-sm-3 form-group">
+                                    <p:outputLabel for="@next" value="Hausnummer"/>
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{companyProfileFace.housenumber}"
+                                                 readonly="#{!companyProfileFace.editMode}" disabled="#{!companyProfileFace.editMode}">
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText> 
+                                    <h:message for="@previous" class="small text-danger"/>
+                                </div> 
+                            </div>
+
+                            <div class="form-row">
+                                <div class="col-sm-4 form-group">
+                                    <p:outputLabel for="@next" value="PLZ"/>
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{companyProfileFace.postalcode}"
+                                                 readonly="#{!companyProfileFace.editMode}" disabled="#{!companyProfileFace.editMode}">
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText>
+                                    <h:message for="@previous" class="small text-danger"/>
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                    <p:outputLabel for="@next" value="Stadt"/>
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{companyProfileFace.city}"
+                                                 readonly="#{!companyProfileFace.editMode}" disabled="#{!companyProfileFace.editMode}">
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText>  
+                                    <h:message for="@previous" class="small text-danger"/>
+                                </div> 
+                                <div class="col-sm-4 form-group">
+                                    <p:outputLabel for="@next" value="Land"/>
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{companyProfileFace.country}"
+                                                 readonly="#{!companyProfileFace.editMode}" disabled="#{!companyProfileFace.editMode}">
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText>  
+                                    <h:message for="@previous" class="small text-danger"/>
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="list-group-item">
+                            <h5 class="mb-3">Kontaktperson</h5>
+                            <div class="form-row">
+                                <div class="col-sm-3">
+                                    <p:outputLabel for="@next" value="Anrede"/>
+                                    <h:selectOneMenu class="custom-select" value="#{companyProfileFace.salutation}" 
+                                                     readonly="#{!companyProfileFace.editMode}" disabled="#{!companyProfileFace.editMode}">
+                                        <f:selectItems value="#{companyProfileFace.salutationValues}" var="salutation"
+                                                       itemValue="#{salutation}" itemLabel="#{salutation.salut}" />
+                                    </h:selectOneMenu>
+                                    <h:message for="@previous" class="small text-danger"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <p:outputLabel for="@next" value="Title"/>
+                                    <h:selectOneMenu id="title" class="custom-select" value="#{companyProfileFace.titles}" 
+                                                     readonly="#{!companyProfileFace.editMode}" disabled="#{!companyProfileFace.editMode}">
+                                        <f:selectItems value="#{companyProfileFace.titleValues}" var="GradTitle"
+                                                       itemValue="#{GradTitle}" itemLabel="#{GradTitle.address}" />
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-sm-6 form-group">
+                                    <p:outputLabel for="@next" value="Vorname"/>
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{companyProfileFace.firstname}" required="true"
+                                                 readonly="#{!companyProfileFace.editMode}" disabled="#{!companyProfileFace.editMode}">
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText>
+                                    <h:message for="@previous" class="small text-danger"/>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <p:outputLabel for="@next" value="Nachname"/>
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{companyProfileFace.lastname}" 
+                                                 readonly="#{!companyProfileFace.editMode}" disabled="#{!companyProfileFace.editMode}">
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText>  
+                                    <h:message for="@previous" class="small text-danger"/>
+                                </div> 
+                                <div class="col-sm-6 form-group">
+                                    <p:outputLabel for="@next" value="Telefonnummer"/>
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{companyProfileFace.telefon}" 
+                                                 readonly="#{!companyProfileFace.editMode}" disabled="#{!companyProfileFace.editMode}">
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText>  
+                                    <h:message for="@previous" class="small text-danger"/>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <p:outputLabel for="@next" value="Email"/>
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{companyProfileFace.contactEmail}" 
+                                                 readonly="#{!companyProfileFace.editMode}" disabled="#{!companyProfileFace.editMode}">
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText>  
+                                    <h:message for="@previous" class="small text-danger"/>
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="list-group-item">
+
+                            <div class="row" >
+                                <ui:fragment rendered="#{!companyProfileFace.editMode}" >
+                                    <div class="col-12">
+                                        <p:commandButton class="btn btn-block bg-primary" ajax="true" update="@form" value="Edit" action="#{companyProfileFace.startEdit}"></p:commandButton>    
+                                    </div>
+                                </ui:fragment>
+                                <ui:fragment rendered="#{companyProfileFace.editMode}">
+                                    <div class="col-6">
+                                        <p:commandButton class="btn btn-block bg-light text-dark" ajax="true" update="@form" value="Abbrechen" action="#{companyProfileFace.cancleEdit}"></p:commandButton>
+                                    </div>
+                                    <div class="col-6">
+                                        <p:commandButton class="btn btn-block bg-dark" ajax="true" update="@form" value="Speichern" action="#{companyProfileFace.updateProfile()}"></p:commandButton>   
+                                    </div>
+                                </ui:fragment>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+            </div>
+        </div>
+    </div>
 </html>
 
