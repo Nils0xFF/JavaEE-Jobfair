@@ -7,8 +7,8 @@ package de.hsos.kbse.jobboerse.enums;
 
 public enum Sal_Relation {
     NJ("Nebenjob"),
-    HT("Halbtags"),
-    VT("Volltags"),
+    HT("Teilzeit"),
+    VT("Vollzeit"),
     WS("Werkstudent");
     
     private final String desc;

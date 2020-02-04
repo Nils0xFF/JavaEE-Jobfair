@@ -29,13 +29,9 @@ public class BenefitRepository {
         return bf.find(id);
     }
     
-    public void create(String name, String desc) throws Exception {
+    public void create(String name, String desc) {
         Benefit benefit = Benefit.builder().name(name).description(desc).build();
         bf.create(benefit);
-    }
-
-    public Benefit find(Long id) throws Exception {
-        return bf.find(id);
     }
     
     public Benefit findByName(String name) throws Exception {

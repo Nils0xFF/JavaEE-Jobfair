@@ -44,7 +44,7 @@ public class JobRepository {
         return jf.findAll();
     }
     
-    public void update(Long id, Job job) throws Exception {
+    public void update(Long id, Job job) {
         Job old = jf.find(id);
         job.setId(old.getId());
         job.setCompany(old.getCompany());
@@ -117,7 +117,7 @@ public class JobRepository {
         jf.edit(old);
     }
     
-    public List<Job> findJobsByJobField(String name) throws Exception {
+    public List<Job> findJobsByJobField(String name) {
         return jf.findJobsByJobField(name);
     }
     
@@ -127,7 +127,7 @@ public class JobRepository {
         jf.remove(found);
     }
     
-    public Job find(Long id) throws Exception {
+    public Job find(Long id) {
         return jf.find(id);
     }
     

@@ -56,11 +56,11 @@ public class CompanyRepository {
     
     public CompanyRepository() { }   
 
-    public boolean checkEmailExists(String email) throws Exception {
+    public boolean checkEmailExists(String email) {
         return loginf.findByEmail(email) != null;
     }
     
-    public void addPicture(String email, Picture toInsert) throws Exception {
+    public void addPicture(String email, Picture toInsert) {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             login.getCompany().getProfile().setProfilePicture(toInsert);
@@ -69,7 +69,7 @@ public class CompanyRepository {
         }
     }
     
-    public boolean createCompany(CompanyProfile toInsert, String email) throws Exception {
+    public boolean createCompany(CompanyProfile toInsert, String email) {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             login.getCompany().setProfile(toInsert);
@@ -82,7 +82,7 @@ public class CompanyRepository {
         return false;
     }
     
-    public boolean updateCompany(CompanyProfile toInsert, String email) throws Exception {
+    public boolean updateCompany(CompanyProfile toInsert, String email) {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             login.getCompany().setProfile(toInsert);
@@ -93,11 +93,11 @@ public class CompanyRepository {
         return false;
     }  
     
-    public void createLogin(Login login) throws Exception {
+    public void createLogin(Login login) {
         loginf.create(login);
     }
     
-    public List<Job> findJobsByCompany(String email) throws Exception {
+    public List<Job> findJobsByCompany(String email) {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             return login.getCompany().getJobs();
@@ -105,7 +105,7 @@ public class CompanyRepository {
         return null;
     }
     
-    public boolean addJobtoCompany(String email, Job toInsert) throws Exception {
+    public boolean addJobtoCompany(String email, Job toInsert) {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             toInsert.setCompany(login.getCompany());
@@ -116,7 +116,7 @@ public class CompanyRepository {
         
     }
     
-    public void removeJobFromCompany(String email, Long Id) throws Exception {
+    public void removeJobFromCompany(String email, Long Id) {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             login.getCompany().getJobs().remove(jobRepo.find(Id));
@@ -355,7 +355,7 @@ public class CompanyRepository {
         return false;
     }
 
-    public Company getCompanyByEmail(String email) throws Exception {
+    public Company getCompanyByEmail(String email) {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             return login.getCompany();

@@ -20,11 +20,11 @@ public class RequirementRepository {
     @Inject
     RequirementFacade rf;
     
-    public Requirement find(Long id) throws Exception {
+    public Requirement find(Long id) {
         return rf.find(id);
     }
     
-    public void create(String name, String desc) throws Exception {
+    public void create(String name, String desc) {
         Requirement req = Requirement.builder().name(name).description(desc).build();
         rf.create(req);
     }
@@ -33,7 +33,7 @@ public class RequirementRepository {
         return rf.findByName(name);
     }
     
-    public List<Requirement> findAll() throws Exception {
+    public List<Requirement> findAll() {
         return rf.findAll();
     }
     

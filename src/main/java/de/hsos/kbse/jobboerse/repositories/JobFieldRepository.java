@@ -33,7 +33,7 @@ public class JobFieldRepository implements Serializable {
         return jff.findByName(name);
     }
     
-    public JobField findById(Long id) throws Exception {
+    public JobField findById(Long id) {
         return jff.find(id);
     }
     
@@ -41,7 +41,7 @@ public class JobFieldRepository implements Serializable {
         return jff.findByName(name);
     }
     
-    public List<JobField> findAll() throws Exception {
+    public List<JobField> findAll() {
         return jff.findAll();
     }
     
