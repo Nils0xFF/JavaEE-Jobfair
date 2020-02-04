@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -28,7 +29,7 @@ import javax.transaction.Transactional;
  * @author lennartwoltering
  */
 @Named("CompanyDashboard")
-@ViewScoped
+@RequestScoped
 public class CompanyDashboard implements Serializable {
 
     @Inject

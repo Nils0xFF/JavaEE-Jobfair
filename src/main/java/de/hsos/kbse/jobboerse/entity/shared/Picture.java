@@ -29,6 +29,52 @@ public class Picture implements Serializable {
     @Lob
     private byte[] data;
     
+    private String dataType;
+
+    public static class Builder {
+
+        private byte[] data;
+        private String dataType;
+
+        private Builder() {
+        }
+
+        public Builder data(final byte[] value) {
+            this.data = value;
+            return this;
+        }
+
+        public Builder dataType(final String value) {
+            this.dataType = value;
+            return this;
+        }
+
+        public Picture build() {
+            return new Picture(data, dataType);
+        }
+    }
+
+    public static Picture.Builder builder() {
+        return new Picture.Builder();
+    }
+
+    private Picture(final byte[] data, final String dataType) {
+        this.data = data;
+        this.dataType = dataType;
+    }
+    
+    public Picture(){
+        
+    }
+
+    public String getDataType() {
+        return dataType;
+    }
+
+    public void setDataType(String dataType) {
+        this.dataType = dataType;
+    }
+    
     public byte[] getData() {
         return data;
     }

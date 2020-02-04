@@ -18,6 +18,7 @@ import de.hsos.kbse.jobboerse.entity.shared.Login;
 import de.hsos.kbse.jobboerse.entity.company.CompanyProfile;
 import de.hsos.kbse.jobboerse.entity.company.Job;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
+import de.hsos.kbse.jobboerse.entity.shared.Picture;
 import de.hsos.kbse.jobboerse.enums.Salutation;
 import de.hsos.kbse.jobboerse.enums.Title;
 import de.hsos.kbse.jobboerse.enums.WorkerCount;
@@ -57,6 +58,15 @@ public class CompanyRepository {
 
     public boolean checkEmailExists(String email) {
         return loginf.findByEmail(email) != null;
+    }
+    
+    public void addPicture(String email, Picture toInsert){
+        Login login = loginf.findByEmail(email);
+        if (login != null) {
+            login.getCompany().getProfile().setProfilePicture(toInsert);
+            System.out.println("ADD PIC");
+            loginf.edit(login);
+        }
     }
     
     public boolean createCompany(CompanyProfile toInsert, String email){

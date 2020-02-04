@@ -34,7 +34,6 @@ public class SearchRepository {
         if(foundUser != null){
             SearchRequest toInsert = SearchRequest.builder()
                     .benefits(wishedBenefits)
-                    .foundJobs(new ArrayList<>())
                     .jobField(jobfield)
                     .build();
             foundUser.setSearchrequest(toInsert);
@@ -69,14 +68,6 @@ public class SearchRepository {
         return null;
     }
     
-    public void updateFoundJobs(String email, List<WeightedJob> foundJobs){
-        SearchRequest request = getSearchRequest(email);
-        if(request != null){
-            request.setFoundJobs(foundJobs);
-            searchrequests.edit(request);
-        }
-    }
-    
     public void updateRequest(String email, List<Benefit> wishedBenefits, List<JobField> wishedJobfield){
         SearchRequest request = getSearchRequest(email);
         if(request != null){
@@ -86,17 +77,4 @@ public class SearchRepository {
         }
     }
     
-    public List<WeightedJob> getFoundJobs(String email){
-        SeekingUser foundUser = users.getUserByEmail(email);
-        if(foundUser != null){
-            return foundUser.getSearchrequest().getFoundJobs();
-        }
-        return null;
-    }
-    
-    public List<WeightedJob> getOrderedFoundJobs(String email){
-        List<WeightedJob> foundJobs = getFoundJobs(email);
-        if(foundJobs.size() > 0) Collections.sort(foundJobs);
-        return foundJobs;
-    }
 }
