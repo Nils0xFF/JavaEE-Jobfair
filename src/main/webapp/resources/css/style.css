@@ -53,3 +53,7 @@
 .ui-selectonemenu-filter-container{
     width: 100%;
 }
+
+.btn{
+    border: none !important;
+}
