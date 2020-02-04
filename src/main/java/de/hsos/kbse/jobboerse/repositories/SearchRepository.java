@@ -39,10 +39,23 @@ public class SearchRepository {
                     .build();
             foundUser.setSearchrequest(toInsert);
             foundUser.setCompleted(true);
-            users.edit(foundUser);
-            return true;
+            try {
+                users.edit(foundUser);
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
         }
         return false;
+    }
+    
+    public void createSearchRequirements(String email, SearchRequest search) throws Exception {
+        SeekingUser foundUser = users.getUserByEmail(email);
+        if (foundUser != null) {
+            foundUser.setSearchrequest(search);
+            foundUser.setCompleted(true);            
+            users.edit(foundUser);
+        }
     }
     
     public SearchRequest getSearchRequest(String email){

@@ -53,7 +53,7 @@ public class User_Profile implements Serializable {
     @ManyToMany
     private List<Requirement> fullfiledRequirements;
 
-    private String telefon;
+    private String phone;
     private Graduation grad;
 
     public static class Builder {
@@ -65,7 +65,7 @@ public class User_Profile implements Serializable {
         private String description;
         private Date birthday;
         private Address address;
-        private String telefon;
+        private String phone;
         private Graduation grad;
         private List<Requirement> fullfilledRequirements;
 
@@ -106,7 +106,7 @@ public class User_Profile implements Serializable {
         }
 
         public Builder telefon(final String value) {
-            this.telefon = value;
+            this.phone = value;
             return this;
         }
 
@@ -121,7 +121,7 @@ public class User_Profile implements Serializable {
         }
         
         public User_Profile build() {
-            return new User_Profile(salutation, title ,firstname, lastname, description, telefon, address, grad, birthday, fullfilledRequirements);
+            return new User_Profile(salutation, title ,firstname, lastname, description, phone, address, grad, birthday, fullfilledRequirements);
 
         }
     }
@@ -147,7 +147,7 @@ public class User_Profile implements Serializable {
         }else{
             this.address = address;
         }
-        this.telefon = telefon;
+        this.phone = telefon;
         this.grad = grad;
         this.fullfiledRequirements = fullfilledRequirements;
     }
@@ -217,12 +217,12 @@ public class User_Profile implements Serializable {
     }
 
 
-    public String getTelefon() {
-        return telefon;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setTelefon(String telefon) {
-        this.telefon = telefon;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public Graduation getGrad() {

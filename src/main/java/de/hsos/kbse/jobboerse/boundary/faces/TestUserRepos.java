@@ -17,6 +17,8 @@ import de.hsos.kbse.jobboerse.repositories.RequirementRepository;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -121,8 +123,12 @@ public class TestUserRepos {
     }
 
     public void getRequirements(){
-        selectedRequirements = new DualListModel<Requirement>(
-         requirementRepo.findAll(), reqTarget);
+        try {
+            selectedRequirements = new DualListModel<Requirement>(
+                    requirementRepo.findAll(), reqTarget);
+        } catch (Exception ex) {
+            Logger.getLogger(TestUserRepos.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public DualListModel<Requirement> getSelectedRequirements() {

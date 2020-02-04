@@ -15,32 +15,38 @@ import javax.inject.Inject;
  *
  * @author soere
  */
+
 @RequestScoped
 public class RequirementRepository {
     @Inject
     RequirementFacade rf;
     
-    public void create(String name, String desc) {
+    public Requirement create(String name, String desc) throws Exception {
         Requirement req = Requirement.builder().name(name).description(desc).build();
         rf.create(req);
-    }
-    
-    public Requirement findByName(String name) {
         return rf.findByName(name);
     }
     
-    public List<Requirement> findAll() {
+    public Requirement findById(Long id) throws Exception {
+        return rf.find(id);
+    }
+    
+    public Requirement findByName(String name) throws Exception {
+        return rf.findByName(name);
+    }
+    
+    public List<Requirement> findAll() throws Exception {
         return rf.findAll();
     }
     
-    public void update(Long id, String name, String desc) {
+    public void update(Long id, String name, String desc) throws Exception {
         Requirement old = rf.find(id);
         old.setName(name);
         old.setDescription(desc);
         rf.edit(old);
     }
     
-    public void update(String name, String sub, String desc) {
+    public void update(String name, String sub, String desc) throws Exception {
         Requirement old = rf.findByName(name);
         old.setName(sub);
         old.setDescription(desc);
@@ -53,29 +59,29 @@ public class RequirementRepository {
         rf.edit(old);
     }
     
-    public void updateName(String name, String sub) {
+    public void updateName(String name, String sub) throws Exception {
         Requirement old = rf.findByName(name);
         old.setName(name);
         rf.edit(old);
     }
     
-    public void updateDescription(Long id, String desc) {
+    public void updateDescription(Long id, String desc) throws Exception {
         Requirement old = rf.find(id);
         old.setDescription(desc);
         rf.edit(old);
     }
     
-    public void updateDescription(String name, String desc) {
+    public void updateDescription(String name, String desc) throws Exception {
         Requirement old = rf.findByName(name);
         old.setDescription(desc);
         rf.edit(old);
     }
     
-    public void delete(Long id) {
+    public void delete(Long id) throws Exception {
         rf.remove(rf.find(id));
     }
     
-    public void delete(String name) {
+    public void delete(String name) throws Exception {
         rf.remove(rf.findByName(name));
     }
 }

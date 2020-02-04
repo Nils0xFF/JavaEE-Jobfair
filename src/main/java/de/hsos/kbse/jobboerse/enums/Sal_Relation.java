@@ -14,8 +14,5 @@ public enum Sal_Relation {
     
     private Sal_Relation(String desc){
         this.desc = desc;
-    }
-    
-    
-    
+    }    
 }

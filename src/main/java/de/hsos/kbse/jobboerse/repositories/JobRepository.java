@@ -32,6 +32,14 @@ public class JobRepository {
         jf.create(job);
     }
     
+    public void create(Job job) throws Exception {
+        jf.create(job);
+    }
+    
+    public Job findById(Long id) throws Exception {
+        return jf.find(id);
+    }
+    
     public List<Job> findAll() {
         return jf.findAll();
     }
@@ -46,6 +54,12 @@ public class JobRepository {
         old.setCompany(company);
         old.setNeeded(needed);
         jf.edit(old);
+    }
+    
+    public void update(Long id, Job job) throws Exception {
+        Job old = jf.find(id);
+        job.setId(old.getId());
+        jf.edit(job);
     }
     
     public void updateName(Long id, String name) {
@@ -72,7 +86,7 @@ public class JobRepository {
         jf.edit(old);
     }
     
-    public void updateAddress(Long id, Address address) {
+    public void updateAddress(Long id, Address address) throws Exception {
         Job old = jf.find(id);
         old.setAddress(address);
         jf.edit(old);
@@ -84,19 +98,19 @@ public class JobRepository {
         jf.edit(old);
     } 
     
-    public void updateNeededRequirements(Long id, List<NeededRequirement> needed) {
+    public void updateNeededRequirements(Long id, List<NeededRequirement> needed) throws Exception {
         Job old = jf.find(id);
         old.setNeeded(needed);
         jf.edit(old);
     }
     
-    public void addNeededRequirement(Long id, NeededRequirement needed) {
+    public void addNeededRequirement(Long id, NeededRequirement needed) throws Exception {
         Job old = jf.find(id);
         old.addNeededRequirement(needed);
         jf.edit(old);        
     }
     
-    public void removeNeededRequirement(Long id, NeededRequirement needed) {
+    public void removeNeededRequirement(Long id, NeededRequirement needed) throws Exception {
         Job old = jf.find(id);
         old.removeNeededRequirement(needed);
         jf.edit(old);
@@ -106,7 +120,7 @@ public class JobRepository {
         return jf.findJobsByJobField(name);
     }
     
-    public void delete(Long id) {
+    public void delete(Long id) throws Exception {
         jf.remove(jf.find(id));
     }
 }

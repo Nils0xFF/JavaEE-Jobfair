@@ -17,7 +17,8 @@ import de.hsos.kbse.jobboerse.entity.user.User_Profile;
 import de.hsos.kbse.jobboerse.enums.Graduation;
 import de.hsos.kbse.jobboerse.enums.Salutation;
 import de.hsos.kbse.jobboerse.enums.Title;
-import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +41,7 @@ public class GeneralUserRepository {
 
     @Inject
     private User_ProfileFacade userprofiles;
-    
+
     @Inject
     private AddressFacade addresses;
 
@@ -50,16 +51,15 @@ public class GeneralUserRepository {
     public boolean checkEmailExists(String email) {
         return logins.findByEmail(email) != null;
     }
-    
-    public boolean createUser(Login toInsert){
+
+    public boolean createUser(Login toInsert) throws Exception {
         if (!checkEmailExists(toInsert.getEmail())) {
             logins.create(toInsert);
             return true;
         }
         return false;
     }
-    
-    
+
     //Erster Ansatz; Überarbeitet. Registration Controller übernimmt das Erstellen der Klassen.
     public boolean createLogin(String email, String password) {
         if (!checkEmailExists(email)) {
@@ -77,10 +77,10 @@ public class GeneralUserRepository {
         }
         return false;
     }
-    
-    public boolean createUserProfile(String email, Salutation salutation, Title title, String firstname, 
-            String lastname, String description, String telefon, LocalDate birthday, 
-            Graduation grad, String street, String housenumber, String city, 
+
+    public boolean createUserProfile(String email, Salutation salutation, Title title, String firstname,
+            String lastname, String description, String telefon, Date birthday,
+            Graduation grad, String street, String housenumber, String city,
             String postalcode, String country, List<Requirement> fullfilledRequirements) {
         Login login = logins.findByEmail(email);
         if (login != null) {
@@ -90,6 +90,7 @@ public class GeneralUserRepository {
                     .firstname(firstname)
                     .lastname(lastname)
                     .description(description)
+                    .birthday(birthday)
                     .telefon(telefon)
                     .grad(grad)
                     .fullfilledRequirements(fullfilledRequirements)
@@ -110,7 +111,37 @@ public class GeneralUserRepository {
         return false;
     }
 
-    public boolean editUserProfile(String email, Salutation salutation, Title title, String firstname, String lastname, String description, String telefon) {
+    public boolean createUserProfile(String email, User_Profile profile) {
+        Login login = logins.findByEmail(email);
+        if (login != null) {
+            User_Profile profileToInsert = User_Profile.builder()
+                    .salutation(profile.getSalutation())
+                    .title(profile.getTitle())
+                    .firstname(profile.getFirstname())
+                    .lastname(profile.getLastname())
+                    .description(profile.getDescription())
+                    .birthday(profile.getBirthday())
+                    .telefon(profile.getPhone())
+                    .grad(profile.getGrad())
+                    .fullfilledRequirements(profile.getFullfiledRequirements())
+                    .build();
+            Address addressToInsert = Address.builder()
+                    .street(profile.getAddress().getStreet())
+                    .housenumber(profile.getAddress().getHousenumber())
+                    .city(profile.getAddress().getCity())
+                    .postalcode(profile.getAddress().getPostalcode())
+                    .country(profile.getAddress().getCountry())
+                    .build();
+            login.getSeekingUser().setProfile(profileToInsert);
+            login.getSeekingUser().getProfile().setAddress(addressToInsert);
+            login.getSeekingUser().setLogin(login);
+            logins.edit(login);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean editUserProfile(String email, Salutation salutation, Title title, String firstname, String lastname, String description, String phone) {
         Login login = logins.findByEmail(email);
         if (login != null) {
             User_Profile toEdit = login.getSeekingUser().getProfile();
@@ -118,14 +149,25 @@ public class GeneralUserRepository {
             toEdit.setTitle(title);
             toEdit.setFirstname(firstname);
             toEdit.setLastname(lastname);
-            toEdit.setTelefon(telefon);
+            toEdit.setPhone(phone);
             userprofiles.edit(toEdit);
             return true;
         }
         return false;
     }
-    
-    public boolean editUserAddress(String email, String street, String housenumber, String city, String postalcode, String country){
+
+    public boolean editUserProfile(String email, User_Profile profile) {
+        Login login = logins.findByEmail(email);
+        if (login != null) {
+            User_Profile toEdit = login.getSeekingUser().getProfile();
+            profile.setId(toEdit.getId());
+            userprofiles.edit(profile);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean editUserAddress(String email, String street, String housenumber, String city, String postalcode, String country) {
         Login login = logins.findByEmail(email);
         if (login != null) {
             Address toEdit = login.getSeekingUser().getProfile().getAddress();
@@ -139,8 +181,8 @@ public class GeneralUserRepository {
         }
         return false;
     }
-    
-    public boolean editUserQualifications(String email, Graduation grad, List<Requirement> fullfiledRequirements){
+
+    public boolean editUserQualifications(String email, Graduation grad, List<Requirement> fullfiledRequirements) {
         Login login = logins.findByEmail(email);
         if (login != null) {
             User_Profile toEdit = login.getSeekingUser().getProfile();
@@ -152,7 +194,6 @@ public class GeneralUserRepository {
         return false;
     }
 
-    
     public boolean editUserCredentials(String oldEmail, String newEmail, String newPassword) {
         Login login = logins.findByEmail(oldEmail);
         if (login != null) {
@@ -178,6 +219,18 @@ public class GeneralUserRepository {
         return false;
     }
 
+    public Collection<SeekingUser> getAllUsers() {
+        return users.findAll();
+    }
+
+    public SeekingUser getUser(Long id) {
+        Login login = logins.find(id);
+        if (login != null) {
+            return login.getSeekingUser();
+        }
+        return null;
+    }
+
     public SeekingUser getUserByEmail(String email) {
         Login login = logins.findByEmail(email);
         if (login != null) {
@@ -186,7 +239,7 @@ public class GeneralUserRepository {
         return null;
     }
 
-    public void edit(SeekingUser value) {
+    public void edit(SeekingUser value) throws Exception {
         users.edit(value);
     }
 

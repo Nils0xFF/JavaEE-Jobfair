@@ -20,6 +20,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.ManagedBean;
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
@@ -97,10 +99,12 @@ public class UserRegistrationController implements Serializable{
         login.getSeekingUser().setProfile(userProfile);
         userProfile.setGrad(grad);
         userProfile.setFullfiledRequirements(fullfilledRequirements);
-        if(userRepo.createUser(login)){
-            return true;
+        try {
+            userRepo.createUser(login);
+            return true;            
+        } catch (Exception ex) {
+            return false;
         }
-        return false;
     }
     
 }

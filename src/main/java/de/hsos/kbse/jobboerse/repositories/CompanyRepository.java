@@ -20,6 +20,7 @@ import de.hsos.kbse.jobboerse.entity.shared.Benefit;
 import de.hsos.kbse.jobboerse.enums.Salutation;
 import de.hsos.kbse.jobboerse.enums.Title;
 import de.hsos.kbse.jobboerse.enums.WorkerCount;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,17 +117,37 @@ public class CompanyRepository {
         }
         return false;
     }
+    
+    public boolean createCompanyProfile(String email, CompanyProfile profile) {
+        Login login = loginf.findByEmail(email);
+        if (login != null) {                      
+            login.getCompany().setProfile(profile);
+            login.getCompany().setLogin(login);
+            loginf.edit(login);
+            return true;
+        }
+        return false;
+    }
 
-    public boolean updateCompanyProfile(String email, String name, String description, WorkerCount workercount, Address address, Contact contact) {
+    public boolean updateCompanyProfile(String email, String name, String description, WorkerCount workercount) {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             CompanyProfile toEdit = login.getCompany().getProfile();
             toEdit.setName(name);
             toEdit.setDescription(description);
             toEdit.setWorkercount(workercount);
-            toEdit.setAddress(address);
-            toEdit.setContact(contact);
             companyprofilef.edit(toEdit);
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean updateCompanyProfile(String email, CompanyProfile profile) {
+        Login login = loginf.findByEmail(email);
+        if (login != null) {
+            CompanyProfile toEdit = login.getCompany().getProfile();
+            profile.setId(toEdit.getId());
+            companyprofilef.edit(profile);
             return true;
         }
         return false;
@@ -142,6 +163,44 @@ public class CompanyRepository {
             toEdit.setPostalcode(postalcode);
             toEdit.setCountry(country);
             addressf.edit(toEdit);
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean updateCompanyAddress(String email, Address address){
+        Login login = loginf.findByEmail(email);
+        if (login != null) {
+            Address toEdit = login.getCompany().getProfile().getAddress();
+            address.setId(toEdit.getId());
+            addressf.edit(address);
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean updateCompanyContact(String email, String contactemail, Salutation salutation, Title title, String firstname, String lastname, String phone){
+        Login login = loginf.findByEmail(email);
+        if (login != null) {
+            Contact toEdit = login.getCompany().getProfile().getContact();
+            toEdit.setEmail(contactemail);
+            toEdit.setSalutation(salutation);
+            toEdit.setTitle(title);
+            toEdit.setFirstname(firstname);
+            toEdit.setLastname(lastname);
+            toEdit.setPhone(phone);
+            contactf.edit(toEdit);
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean updateCompanyContact(String email, Contact contact){
+        Login login = loginf.findByEmail(email);
+        if (login != null) {
+            Contact toEdit = login.getCompany().getProfile().getContact();
+            contact.setId(toEdit.getId());
+            contactf.edit(contact);
             return true;
         }
         return false;
@@ -205,6 +264,27 @@ public class CompanyRepository {
         }
         return false;
     }
+    
+    public boolean deleteCompany(Long id) {
+        Login login = loginf.find(id);
+        if (login != null) {
+            loginf.remove(login);
+            return true;
+        }
+        return false;
+    }
+    
+    public Collection<Company> getAllCompanies() {
+        return companyf.findAll();
+    }
+    
+    public Company getCompanyById(Long id) {
+        Login login = loginf.find(id);
+        if (login != null) {
+            return login.getCompany();
+        }
+        return null;
+    }
 
     public Company getCompanyByEmail(String email) {
         Login login = loginf.findByEmail(email);
@@ -214,7 +294,7 @@ public class CompanyRepository {
         return null;
     }
 
-    public void update(Company value) {
+    public void update(Company value) throws Exception {
         companyf.edit(value);
     }
     

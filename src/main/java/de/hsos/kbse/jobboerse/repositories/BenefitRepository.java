@@ -15,6 +15,7 @@ import javax.inject.Inject;
  *
  * @author soere
  */
+
 @RequestScoped
 public class BenefitRepository {
     
@@ -23,62 +24,66 @@ public class BenefitRepository {
     
     public BenefitRepository() { }
     
-    public void create(String name, String desc) {
+    public Benefit create(String name, String desc) throws Exception {
         Benefit benefit = Benefit.builder().name(name).description(desc).build();
         bf.create(benefit);
-    }
-    
-    public Benefit findByName(String name) {
         return bf.findByName(name);
     }
     
-    public List<Benefit> findAll() {
+    public Benefit find(Long id) throws Exception {
+        return bf.find(id);
+    }    
+    public Benefit findByName(String name) throws Exception {
+        return bf.findByName(name);
+    }
+    
+    public List<Benefit> findAll() throws Exception {
         return bf.findAll();
     }
     
-    public void update(Long id, String name, String desc) {
+    public void update(Long id, String name, String desc) throws Exception {
         Benefit old = bf.find(id);
         old.setName(name);
         old.setDescription(desc);
         bf.edit(old);
     }
     
-    public void update(String name, String sub, String desc) {
+    public void update(String name, String sub, String desc) throws Exception {
         Benefit old = bf.findByName(name);
         old.setName(name);
         old.setDescription(desc);
         bf.edit(old);
     }
     
-    public void updateName(Long id, String name) {
+    public void updateName(Long id, String name) throws Exception {
         Benefit old = bf.find(id);
         old.setName(name);
         bf.edit(old);
     }
     
-    public void updateName(String name, String sub) {
+    public void updateName(String name, String sub) throws Exception {
         Benefit old = bf.findByName(name);
         old.setName(name);
         bf.edit(old);
     }
     
-    public void updateDescription(Long id, String desc) {
+    public void updateDescription(Long id, String desc) throws Exception {
         Benefit old = bf.find(id);
         old.setDescription(desc);
         bf.edit(old);
     }
     
-    public void updateDescription(String name, String desc) {
+    public void updateDescription(String name, String desc) throws Exception {
         Benefit old = bf.findByName(name);
         old.setDescription(desc);
         bf.edit(old);
     }
     
-    public void delete(Long id) {
+    public void delete(Long id) throws Exception {
         bf.remove(bf.find(id));
     }
     
-    public void delete(String name) {
+    public void delete(String name) throws Exception {
         bf.remove(bf.findByName(name));
     }
 }
