@@ -2,6 +2,7 @@ package de.hsos.kbse.jobboerse.entity.company;
 
 import de.hsos.kbse.jobboerse.entity.shared.Address;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
+import de.hsos.kbse.jobboerse.entity.shared.Picture;
 import de.hsos.kbse.jobboerse.enums.WorkerCount;
 import java.io.Serializable;
 import java.util.List;
@@ -11,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 
@@ -27,7 +29,11 @@ public class CompanyProfile implements Serializable {
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
     private String name;
+    @Lob
     private String description;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    private Picture profilePicture;
+    
     private WorkerCount workercount;
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
@@ -40,6 +46,7 @@ public class CompanyProfile implements Serializable {
 
         private String name;
         private String description;
+        private Picture profilePicture;
         private WorkerCount workercount;
         private Address address;
         private Contact contact;
@@ -55,6 +62,11 @@ public class CompanyProfile implements Serializable {
 
         public Builder description(final String value) {
             this.description = value;
+            return this;
+        }
+
+        public Builder profilePicture(final Picture value) {
+            this.profilePicture = value;
             return this;
         }
 
@@ -79,25 +91,27 @@ public class CompanyProfile implements Serializable {
         }
 
         public CompanyProfile build() {
-            return new CompanyProfile(name, description, workercount, address, contact, benefits);
+            return new CompanyProfile(name, description, profilePicture, workercount, address, contact, benefits);
         }
-    }
-
-    public CompanyProfile() {
     }
 
     public static CompanyProfile.Builder builder() {
         return new CompanyProfile.Builder();
     }
 
-    private CompanyProfile(final String name, final String description, final WorkerCount workercount, final Address address, final Contact contact, final List<Benefit> benefits) {
+    private CompanyProfile(final String name, final String description, final Picture profilePicture, final WorkerCount workercount, final Address address, final Contact contact, final List<Benefit> benefits) {
         this.name = name;
         this.description = description;
+        this.profilePicture = profilePicture;
         this.workercount = workercount;
         this.address = address;
         this.contact = contact;
         this.benefits = benefits;
     }
+
+    public CompanyProfile() {
+    }
+
     
     
     public String getName() {
@@ -165,6 +179,14 @@ public class CompanyProfile implements Serializable {
         this.id = id;
     }
 
+    public Picture getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(Picture profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

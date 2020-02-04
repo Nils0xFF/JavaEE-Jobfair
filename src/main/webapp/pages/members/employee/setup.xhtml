@@ -14,115 +14,126 @@
                 <h:form>
                     <p:wizard showNavBar="false" showStepStatus="true" widgetVar="wiz">
                         <p:tab id="personal" title="Persönliche Daten">
+                            <p:separator/>
                             <div class="form-row">
                                 <div class="col-sm-3">
                                     <p:outputLabel for="@next" value="Anrede"/>
-                                    <h:selectOneMenu class="custom-select #{salutation.valid ? '' : 'is-invalid'}" binding="#{salutation}" required="true">
-                                        <f:selectItem itemLabel="-" itemValue="" />
-                                        <f:selectItem itemLabel="Herr" itemValue="Herr" />
-                                        <f:selectItem itemLabel="Frau" itemValue="Frau" />
-                                        <p:clientValidator />
+                                    <h:selectOneMenu class="custom-select" value="#{UserRegisterFace.salutation}" >
+                                        <f:selectItems value="#{UserRegisterFace.salutationValues}" var="salutation"
+                                                       itemValue="#{salutation}" itemLabel="#{salutation.salut}" />
                                     </h:selectOneMenu>
-                                    <h:message for="@previous" class="small text-danger"/>
+                                    <p:message for="@previous"/>
                                 </div>
                                 <div class="col-sm-3">
                                     <p:outputLabel for="@next" value="Title"/>
-                                    <h:selectOneMenu id="title" class="custom-select">
-                                        <f:selectItem itemLabel="-" itemValue="" />
-                                        <f:selectItem itemLabel="Dr" itemValue="Herr" />
-                                        <f:selectItem itemLabel="Prof" itemValue="Frau" />
+                                    <h:selectOneMenu id="title" class="custom-select" value="#{UserRegisterFace.titles}" >
+                                        <f:selectItems value="#{UserRegisterFace.titleValues}" var="GradTitle"
+                                                       itemValue="#{GradTitle}" itemLabel="#{GradTitle.address}" />
                                     </h:selectOneMenu>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="col-sm-6 form-group">
                                     <p:outputLabel for="@next" value="Vorname"/>
-                                    <p:inputText class="form-control #{firstName.valid ? '' : 'is-invalid'}" binding="#{firstName}" value=" " required="true">
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{UserRegisterFace.firstname}" required="true">
                                         <p:clientValidator event="keyup"/>
                                     </p:inputText>
                                     <h:message for="@previous" class="small text-danger"/>
                                 </div>
                                 <div class="col-sm-6">
                                     <p:outputLabel for="@next" value="Nachname"/>
-                                    <p:inputText class="form-control" id="lastName" value=" " >
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{UserRegisterFace.lastname}" >
                                         <p:clientValidator event="keyup"/>
                                     </p:inputText>  
+                                    <h:message for="@previous" class="small text-danger"/>
                                 </div> 
                                 <div class="col-sm-6">
-                                    <p:outputLabel for="@next" value="Geburtsdatum"/>
-                                    <p:inputText class="form-control" id="birthdate" value=" " >
+                                    <p:outputLabel for="@next" value="Geburtsdatum"/> 
+                                    <p:datePicker class="#{component.valid ? '' : 'is-invalid'}" view="month" value="#{UserRegisterFace.birthday}" pattern="MM/yyyy" yearNavigator="true" yearRange="1890:2002">
                                         <p:clientValidator event="keyup"/>
-                                    </p:inputText>  
+                                    </p:datePicker>
+                                    <h:message for="@previous" class="small text-danger"/>
                                 </div> 
                                 <div class="col-sm-6">
                                     <p:outputLabel for="@next" value="Telefonnummer"/>
-                                    <p:inputText class="form-control" id="telNr" value=" " >
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{UserRegisterFace.telefon}" >
                                         <p:clientValidator event="keyup"/>
                                     </p:inputText>  
+                                    <h:message for="@previous" class="small text-danger"/>
                                 </div> 
                             </div>
 
                             <div class="form-row">
                                 <div class="col-sm-9 form-group">
                                     <p:outputLabel for="@next" value="Straße"/>
-                                    <p:inputText class="form-control #{streetName.valid ? '' : 'is-invalid'}" binding="#{streetName}" value=" " required="true">
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{UserRegisterFace.street}" required="true">
                                         <p:clientValidator event="keyup"/>
                                     </p:inputText>
                                     <h:message for="@previous" class="small text-danger"/>
                                 </div>
                                 <div class="col-sm-3 form-group">
                                     <p:outputLabel for="@next" value="Hausnummer"/>
-                                    <p:inputText class="form-control #{streetNumber.valid ? '' : 'is-invalid'}" binding="#{streetNumber}" value=" ">
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{UserRegisterFace.housenumber}">
                                         <p:clientValidator event="keyup"/>
-                                    </p:inputText>  
+                                    </p:inputText> 
+                                    <h:message for="@previous" class="small text-danger"/>
                                 </div> 
                             </div>
 
                             <div class="form-row">
-                                <div class="col-sm-3 form-group">
+                                <div class="col-sm-4 form-group">
                                     <p:outputLabel for="@next" value="PLZ"/>
-                                    <p:inputText class="form-control #{postalCode.valid ? '' : 'is-invalid'}" binding="#{postalCode}" value=" " required="true">
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{UserRegisterFace.postalcode}" required="true">
                                         <p:clientValidator event="keyup"/>
                                     </p:inputText>
                                     <h:message for="@previous" class="small text-danger"/>
                                 </div>
-                                <div class="col-sm-9 form-group">
+                                <div class="col-sm-4 form-group">
                                     <p:outputLabel for="@next" value="Stadt"/>
-                                    <p:inputText class="form-control #{cityName.valid ? '' : 'is-invalid'}" binding="#{cityName}" value=" ">
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{UserRegisterFace.city}">
                                         <p:clientValidator event="keyup"/>
                                     </p:inputText>  
+                                    <h:message for="@previous" class="small text-danger"/>
+                                </div> 
+                                <div class="col-sm-4 form-group">
+                                    <p:outputLabel for="@next" value="Land"/>
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{UserRegisterFace.country}">
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText> 
+                                    <h:message for="@previous" class="small text-danger"/>
                                 </div> 
                             </div>
 
-                            <p:commandButton class="btn btn-light" value="Abbrechen" onclick="PF('wiz').back();"></p:commandButton>
-                            <p:commandButton class="btn btn-primary" value="Weiter" onclick="PF('wiz').next();" validateClient="true"></p:commandButton>
+                            <p:commandButton styleClass="btn btn-light" value="Abbrechen" onclick="PF('wiz').back();"></p:commandButton>
+                            <p:commandButton styleClass="btn btn-primary" value="Weiter" onclick="PF('wiz').next();" validateClient="true"></p:commandButton>
                         </p:tab>
 
                         <p:tab id="company" title="Qualifikationen">
+                            <p:separator/>
                             <div class="form-group">
                                 <p:outputLabel for="@next" value="Abschluss"/>
-                                <h:selectOneMenu id="degree" class="custom-select">
-                                    <f:selectItem itemLabel="-" itemValue="" />
-                                    <f:selectItem itemLabel="Dr" itemValue="Herr" />
-                                    <f:selectItem itemLabel="Prof" itemValue="Frau" />
+                                <h:selectOneMenu class="custom-select" value="#{UserRegisterFace.grades}" >
+                                    <f:selectItems value="#{UserRegisterFace.graduationValues}" var="graduation"
+                                                   itemValue="#{graduation}" itemLabel="#{graduation.grad}" />
                                 </h:selectOneMenu>
+
                             </div>
 
                             <div class="form-group">
                                 <p:outputLabel value="Fähigkeiten" for="@next" />
-                                <p:autoComplete id="abilities" multiple="true" value="#{autoCompleteView.data}" completeMethod="#{autoCompleteView.completeData}"
-                                                var="string" itemLabel="#{string.name}" itemValue="#{string}"  forceSelection="true"
-                                                class="form-control h-auto" converter="autoCompleteConverter" unique="false">
+                                <p:autoComplete id="abilities" multiple="true" value="#{UserRegisterFace.fullfilledRequirements}" completeMethod="#{Autocomplete.completeRequirementData}"
+                                                var="requirement" itemLabel="#{requirement.name}" itemValue="#{requirement}"  forceSelection="true"
+                                                class="form-control h-auto" converter="RequirementConverter" unique="true" panelStyle="position: fixed;" >
 
                                     <p:column>
-                                        <h:outputText value="#{string.name}" />
+                                        <h:outputText value="#{requirement.name}" />
                                     </p:column>
                                 </p:autoComplete>
                             </div>
 
                             <div class="form-group">
                                 <p:outputLabel for="@next" value="Beschreibung"/>
-                                <p:inputTextarea class="form-control" id="description" value=" " rows="6" cols="33" >
+                                <p:inputTextarea class="form-control" value="#{UserRegisterFace.desc}" rows="6" cols="33" >
                                     <p:clientValidator event="keyup"/>
                                 </p:inputTextarea>
                             </div>
@@ -131,35 +142,178 @@
                         </p:tab>
 
                         <p:tab id="person" title="Präferenzen">
+                            <p:separator/>
                             <div class="form-group">
-                                <p:outputLabel for="@next" value="Branchen"/>
-                                <h:selectManyMenu id="jobField" class="form-control">
-                                    <f:selectItem itemLabel="IT" itemValue="" />
-                                    <f:selectItem itemLabel="Sozialesr" itemValue="Herr" />
-                                    <f:selectItem itemLabel="Prof" itemValue="Frau" />
-                                </h:selectManyMenu>
+                                <p:outputLabel for="@next" value="Branche in der Sie unterwegs sein möchten:"/>
+                                <p:autoComplete id="jobfields" multiple="true" value="#{UserRegisterFace.wishedJobField}" completeMethod="#{Autocomplete.completeJobFieldData}"
+                                                var="jobField" itemLabel="#{jobField.name}" itemValue="#{jobField}"  forceSelection="true"
+                                                class="form-control h-auto" converter="JobFieldConverter" unique="true">
+
+                                    <p:column>
+                                        <h:outputText value="#{jobField.name}" />
+                                    </p:column>
+                                </p:autoComplete>
+
                             </div>
 
                             <div class="form-group">
-                                <p:outputLabel value="Benefits" for="@next" />
-                                <p:autoComplete multiple="true" value="#{autoCompleteView.data}" completeMethod="#{autoCompleteView.completeData}"
-                                                var="string" itemLabel="#{string.name}" itemValue="#{string}"  forceSelection="true"
-                                                class="form-control h-auto" converter="autoCompleteConverter" unique="false">
+                                <p:outputLabel value="Nach welchen Firmenvorteilen sollen wir für sie Ausschau halten?" for="@next" />
+                                <p:autoComplete multiple="true" value="#{UserRegisterFace.wishedBenefits}" completeMethod="#{Autocomplete.completeBenefitData}"
+                                                var="benefit" itemLabel="#{benefit.name}" itemValue="#{benefit}"  forceSelection="true"
+                                                class="form-control h-auto" converter="BenefitConverter" unique="true">
 
                                     <p:column>
-                                        <h:outputText value="#{string.name}" />
+                                        <h:outputText value="#{benefit.name}" />
                                     </p:column>
                                 </p:autoComplete>
                             </div>
 
-                            <p:commandButton class="btn btn-light" value="Zurück" onclick="PF('wiz').back();"></p:commandButton>
+                            <p:commandButton styleClass="btn btn-light" value="Zurück" onclick="PF('wiz').back();"></p:commandButton>
                             <p:commandButton class="btn btn-primary" value="Weiter" onclick="PF('wiz').next();" ></p:commandButton>
                         </p:tab>
 
                         <p:tab id="overview" title="Übersicht">
 
+                            <div class="list-group">
+                                <div class="list-group-item">
+                                    <h5 class="mb-3">Persönliche Informationen</h5>
+                                    <div class="form-row">
+                                        <div class="col-sm-3">
+                                            <p:outputLabel for="@next" value="Anrede"/>
+                                            <h:selectOneMenu class="custom-select" value="#{UserRegisterFace.salutation}" 
+                                                             readonly="true" disabled="true">
+                                                <f:selectItems value="#{UserRegisterFace.salutationValues}" var="salutation"
+                                                               itemValue="#{salutation}" itemLabel="#{salutation.salut}" />
+                                            </h:selectOneMenu>
+                                            <p:message for="@previous"/>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <p:outputLabel for="@next" value="Title"/>
+                                            <h:selectOneMenu class="custom-select" value="#{UserRegisterFace.titles}" 
+                                                             readonly="true" disabled="true">
+                                                <f:selectItems value="#{UserRegisterFace.titleValues}" var="GradTitle"
+                                                               itemValue="#{GradTitle}" itemLabel="#{GradTitle.address}" />
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-sm-6 form-group">
+                                            <p:outputLabel for="@next" value="Vorname"/>
+                                            <p:inputText class="form-control" value="#{UserRegisterFace.firstname}" 
+                                                         readonly="true" disabled="true">
+                                                <p:clientValidator event="keyup"/>
+                                            </p:inputText>
+                                            <h:message for="@previous"/>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <p:outputLabel for="@next" value="Nachname"/>
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{UserRegisterFace.lastname}" 
+                                                         readonly="true" disabled="true" >
+                                                <p:clientValidator event="keyup"/>
+                                            </p:inputText>  
+                                            <h:message for="@previous" class="small text-danger"/>
+                                        </div> 
+                                        <div class="col-sm-6">
+                                            <p:outputLabel for="@next" value="Geburtsdatum"/> 
+                                            <p:datePicker class="#{component.valid ? '' : 'is-invalid'}" view="month" value="#{UserRegisterFace.birthday}" pattern="MM/yyyy" yearNavigator="true" yearRange="1890:2002"
+                                                          readonly="true" disabled="true" >
+                                                <p:clientValidator event="keyup"/>
+                                            </p:datePicker>
+                                            <h:message for="@previous" class="small text-danger"/>
+                                        </div> 
+                                        <div class="col-sm-6">
+                                            <p:outputLabel for="@next" value="Telefonnummer"/>
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{UserRegisterFace.telefon}" 
+                                                         readonly="true" disabled="true" >
+                                                <p:clientValidator event="keyup"/>
+                                            </p:inputText>  
+                                            <h:message for="@previous" class="small text-danger"/>
+                                        </div> 
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="col-sm-9 form-group">
+                                            <p:outputLabel for="@next" value="Straße"/>
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{UserRegisterFace.street}" 
+                                                         readonly="true" disabled="true">
+                                                <p:clientValidator event="keyup"/>
+                                            </p:inputText>
+                                            <h:message for="@previous" class="small text-danger"/>
+                                        </div>
+                                        <div class="col-sm-3 form-group">
+                                            <p:outputLabel for="@next" value="Hausnummer"/>
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{UserRegisterFace.housenumber}" 
+                                                         readonly="true" disabled="true">
+                                                <p:clientValidator event="keyup"/>
+                                            </p:inputText> 
+                                            <h:message for="@previous" class="small text-danger"/>
+                                        </div> 
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="col-sm-4 form-group">
+                                            <p:outputLabel for="@next" value="PLZ"/>
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{UserRegisterFace.postalcode}" 
+                                                         readonly="true" disabled="true">
+                                                <p:clientValidator event="keyup"/>
+                                            </p:inputText>
+                                            <h:message for="@previous" class="small text-danger"/>
+                                        </div>
+                                        <div class="col-sm-4 form-group">
+                                            <p:outputLabel for="@next" value="Stadt"/>
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{UserRegisterFace.city}"
+                                                         readonly="true" disabled="true">
+                                                <p:clientValidator event="keyup"/>
+                                            </p:inputText>  
+                                            <h:message for="@previous" class="small text-danger"/>
+                                        </div> 
+                                        <div class="col-sm-4 form-group">
+                                            <p:outputLabel for="@next" value="Land"/>
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{UserRegisterFace.country}"
+                                                         readonly="true" disabled="true">
+                                                <p:clientValidator event="keyup"/>
+                                            </p:inputText> 
+                                            <h:message for="@previous" class="small text-danger"/>
+                                        </div> 
+                                    </div>
+                                </div>
+                                <div class="list-group-item">
+                                    <h5 class="mb-3">Qualifikationen</h5>
+                                    <div class="form-group">
+                                        <p:outputLabel for="@next" value="Abschluss"/>
+                                        <h:selectOneMenu class="custom-select" value="#{UserRegisterFace.grades}" 
+                                                         readonly="true" disabled="true">
+                                            <f:selectItems value="#{UserRegisterFace.graduationValues}" var="graduation"
+                                                           itemValue="#{graduation}" itemLabel="#{graduation.grad}" />
+                                        </h:selectOneMenu>
+
+                                    </div>
+
+                                    <div class="form-group">
+                                        <p:outputLabel value="Fähigkeiten" for="@next" />
+                                        <p:autoComplete multiple="true" value="#{UserRegisterFace.fullfilledRequirements}" completeMethod="#{Autocomplete.completeRequirementData}"
+                                                        var="requirement" itemLabel="#{requirement.name}" itemValue="#{requirement}"  forceSelection="true"
+                                                        class="form-control h-auto" converter="RequirementConverter" unique="true" panelStyle="position: fixed;" 
+                                                        readonly="true" disabled="true">
+
+                                            <p:column>
+                                                <h:outputText value="#{requirement.name}" />
+                                            </p:column>
+                                        </p:autoComplete>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <p:outputLabel for="@next" value="Beschreibung"/>
+                                        <p:inputTextarea class="form-control" value="#{UserRegisterFace.desc}" rows="6" cols="33"                                            
+                                                         readonly="true" disabled="true">
+                                            <p:clientValidator event="keyup"/>
+                                        </p:inputTextarea>
+                                    </div>
+                                </div>
+                            </div>                                
+
                             <p:commandButton class="btn btn-light" value="Zurück" onclick="PF('wiz').back();"></p:commandButton>
-                            <p:commandButton class="btn btn-primary" value="Weiter" action=" " ajax="true" validateClient="true"></p:commandButton>
+                            <p:commandButton class="btn btn-primary" value="Weiter" action="#{UserRegisterFace.registerUser()}" ajax="true" validateClient="true"></p:commandButton>
                         </p:tab>
                     </p:wizard>
 

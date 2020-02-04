@@ -5,19 +5,18 @@
  */
 package de.hsos.kbse.jobboerse.entity.shared;
 
-import de.hsos.kbse.jobboerse.entity.company.Job;
 import de.hsos.kbse.jobboerse.entity.company.JobField;
 import de.hsos.kbse.jobboerse.entity.user.WeightedJob;
 import java.io.Serializable;
 import java.util.List;
 import javax.enterprise.inject.Vetoed;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 /**
  *
@@ -32,9 +31,6 @@ public class SearchRequest implements Serializable {
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
     
-    @OneToMany()
-    private List<WeightedJob> foundJobs;
-    
     @ManyToMany
     private List<Benefit> wishedBenefits;
     
@@ -43,17 +39,11 @@ public class SearchRequest implements Serializable {
 
     public static class Builder {
 
-        private List<WeightedJob> foundJobs;
         private List<Benefit> benefits;
         private List<Requirement> requirements;
         private List<JobField> jobField;
 
         private Builder() {
-        }
-
-        public Builder foundJobs(final List<WeightedJob> value) {
-            this.foundJobs = value;
-            return this;
         }
 
         public Builder benefits(final List<Benefit> value) {
@@ -72,7 +62,7 @@ public class SearchRequest implements Serializable {
         }
 
         public SearchRequest build() {
-            return new SearchRequest(foundJobs, benefits, requirements, jobField);
+            return new SearchRequest(benefits, requirements, jobField);
         }
     }
 
@@ -83,8 +73,7 @@ public class SearchRequest implements Serializable {
         return new SearchRequest.Builder();
     }
 
-    private SearchRequest(final List<WeightedJob> foundJobs, final List<Benefit> benefits, final List<Requirement> requirements, final List<JobField> jobfield) {
-        this.foundJobs = foundJobs;
+    private SearchRequest(final List<Benefit> benefits, final List<Requirement> requirements, final List<JobField> jobfield) {
         this.wishedBenefits = benefits;
         this.jobfield = jobfield;
     }
@@ -97,14 +86,6 @@ public class SearchRequest implements Serializable {
         this.jobfield = jobfield;
     }
     
-    public List<WeightedJob> getFoundJobs() {
-        return foundJobs;
-    }
-
-    public void setFoundJobs(List<WeightedJob> foundJobs) {
-        this.foundJobs = foundJobs;
-    }
-
     public List<Benefit> getWishedBenefits() {
         return wishedBenefits;
     }

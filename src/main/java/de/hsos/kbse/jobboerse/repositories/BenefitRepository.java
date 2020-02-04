@@ -24,20 +24,25 @@ public class BenefitRepository {
     
     public BenefitRepository() { }
     
-    public Benefit create(String name, String desc) throws Exception {
-        Benefit benefit = Benefit.builder().name(name).description(desc).build();
-        bf.create(benefit);
-        return bf.findByName(name);
+    
+    public Benefit find(Long id){
+        return bf.find(id);
     }
     
+    public void create(String name, String desc) throws Exception {
+        Benefit benefit = Benefit.builder().name(name).description(desc).build();
+        bf.create(benefit);
+    }
+
     public Benefit find(Long id) throws Exception {
         return bf.find(id);
-    }    
+    }
+    
     public Benefit findByName(String name) throws Exception {
         return bf.findByName(name);
     }
     
-    public List<Benefit> findAll() throws Exception {
+    public List<Benefit> findAll() {
         return bf.findAll();
     }
     

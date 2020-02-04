@@ -18,7 +18,6 @@ import javax.servlet.annotation.WebFilter;
  *
  * Requires you to be logged in, in order to see the member pages
  */
-
 @WebFilter(urlPatterns = "/faces/pages/admin/*", dispatcherTypes = {REQUEST, FORWARD})
 public class AdminFilter implements Filter {
 
@@ -32,7 +31,7 @@ public class AdminFilter implements Filter {
             fc.doFilter(sr, sr1);
         }
 
-        throw new UnsupportedOperationException("Not supported yet.");
+        fc.doFilter(sr, sr1);
 
         /*
        System.out.println("LoginFilter");

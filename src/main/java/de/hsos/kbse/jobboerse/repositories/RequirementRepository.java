@@ -15,20 +15,18 @@ import javax.inject.Inject;
  *
  * @author soere
  */
-
 @RequestScoped
 public class RequirementRepository {
     @Inject
     RequirementFacade rf;
     
-    public Requirement create(String name, String desc) throws Exception {
-        Requirement req = Requirement.builder().name(name).description(desc).build();
-        rf.create(req);
-        return rf.findByName(name);
+    public Requirement find(Long id) throws Exception {
+        return rf.find(id);
     }
     
-    public Requirement findById(Long id) throws Exception {
-        return rf.find(id);
+    public void create(String name, String desc) throws Exception {
+        Requirement req = Requirement.builder().name(name).description(desc).build();
+        rf.create(req);
     }
     
     public Requirement findByName(String name) throws Exception {
@@ -53,7 +51,7 @@ public class RequirementRepository {
         rf.edit(old);
     }
     
-    public void updateName(Long id, String name) {
+    public void updateName(Long id, String name) throws Exception {
         Requirement old = rf.find(id);
         old.setName(name);
         rf.edit(old);
@@ -84,4 +82,5 @@ public class RequirementRepository {
     public void delete(String name) throws Exception {
         rf.remove(rf.findByName(name));
     }
+    
 }

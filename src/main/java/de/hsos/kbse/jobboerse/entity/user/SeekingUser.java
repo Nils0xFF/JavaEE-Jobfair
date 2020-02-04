@@ -47,7 +47,8 @@ public class SeekingUser implements Serializable {
             orphanRemoval=true)
     private SearchRequest searchrequest; 
     
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL,
+            orphanRemoval=true)
     private List<Job> favorites;
 
     public static class Builder {
@@ -83,8 +84,6 @@ public class SeekingUser implements Serializable {
         this.login = login;
     }
 
-    
-    
     private SeekingUser(final boolean completed, final User_Profile profile) {
         this.completed = completed;
         this.favorites = new ArrayList<>();

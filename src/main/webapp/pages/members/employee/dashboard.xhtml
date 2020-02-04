@@ -1,7 +1,268 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    Hello Employee
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <div class="container wide">
+        <div class="row mt-4">
+            <div class="col-lg-4">
+                <div class="bg-white mt-4 shadow">
+                    <div class="card-body">
+                        <h2 class="card-title text-center mt-2 mb-4">Filter</h2>
+                        <h:form id="dashboard-form">
+                            <div class="form-group">
+                                <p:outputLabel for="@next" value="Branchen"/>
+                                <p:selectManyMenu id="jobField" value="#{UserDashboardFace.wishedJobfiels}" converter="JobFieldConverter"
+                                                  var="jobfield" filter="true" filterMatchMode="contains" showCheckbox="true"
+                                                  styleClass="w-100">
+                                    <f:selectItems value="#{UserDashboardFace.allJobfields}" var="field" itemLabel="#{field.name}" itemValue="#{field}" />
+
+                                    <p:column>
+                                        <h:outputText value="#{jobfield.name}" />
+                                    </p:column>
+                                </p:selectManyMenu>
+                            </div>
+
+                            <div class="form-group">
+                                <p:outputLabel value="Benefits" for="@next" />
+                                <p:autoComplete multiple="true" value="#{UserDashboardFace.wishedBenefits}" completeMethod="#{Autocomplete.completeBenefitData}"
+                                                var="benefit" itemLabel="#{benefit.name}" itemValue="#{benefit}"  forceSelection="true"
+                                                class="form-control h-auto p-0" converter="BenefitConverter" unique="true">
+
+                                    <p:column>
+                                        <h:outputText value="#{benefit.name}" />
+                                    </p:column>
+                                </p:autoComplete>
+                            </div>
+                            <p:commandButton class="btn btn-light" value="Reset" action="#{UserDashboardFace.init()}" update="dashboard-form"></p:commandButton>
+                            <p:commandButton class="btn btn-info" value="Apply" action="#{UserDashboardFace.updateSearchRequest()}" update="availableJobs"></p:commandButton>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7">        
+                <div class="bg-white mt-4 shadow">
+                    <div class="card-body">
+
+                        <h2 class="card-title text-center mt-2 mb-4">Passende Angebote</h2>
+
+
+                        <div class="accordion" id="jobAccordion">
+                            <h:panelGroup id="availableJobs">
+
+                                <p:repeat value="#{UserDashboardFace.availableJobs}" var="job">
+                                    <div class="card jobCard">
+                                        <a data-toggle="collapse" data-target="#job#{job.job.id}" aria-expanded="true" aria-controls="job#{job.job.id}" style="cursor: pointer">
+                                            <div class="card-header">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h5 class="mb-0">#{job.job.jobfield.name} - #{job.job.name}</h5>
+                                                    <small class="align-self-center">Click for Details</small>
+
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-1  text-center"><span class="oi oi-briefcase"></span></div>
+                                                    <div class="col-11 "><span>#{job.job.company.profile.name}</span></div>
+                                                </div>
+                                                <div class="row mt-2">
+                                                    <div class="col-1 align-self-center text-center"><span class="oi oi-map-marker"></span></div>
+                                                    <div class="col-11">#{job.job.address.street} #{job.job.address.housenumber}, #{job.job.address.postalcode} #{job.job.address.city}, #{job.job.address.country}</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="job-header">
+
+                                                <p:graphicImage class="jobImage" value="#{ImageService.image}" alt="Noch keins Hochgeladen!">
+                                                    <f:param name="jobID" value="#{job.job.id}"/>
+                                                </p:graphicImage>
+                                            </div>
+                                        </a>
+
+                                        <div id="job#{job.job.id}" class="collapse" aria-labelledby="headingOne" data-parent="#jobAccordion">
+                                            <div class="card-body">
+                                                <h5 class="">Informationen</h5>
+                                                <div class="row mt-3">
+                                                    <div class="col-1 align-self-center text-center"><span class="oi oi-heart"></span></div>
+                                                    <div class="col-11">#{UserDashboardFace.benefitsToString(job)}</div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-1 align-self-center text-center"><span class="oi oi-info"></span></div>
+                                                    <div class="col-11">#{UserDashboardFace.requirementToString(job)}</div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-1 align-self-center text-center"><span class="oi oi-pencil"></span></div>
+                                                    <div class="col-11">
+                                                        #{job.job.description}
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-1 align-self-center text-center"><span class="oi oi-dollar"></span></div>
+                                                    <div class="col-11">#{job.job.relation.desc} #{job.job.salary}€</div>
+                                                </div>
+
+                                                <div class="row mt-5">
+                                                    <div class="col-12 mb-3">
+                                                        <h5>Kontakt</h5>
+                                                    </div>
+                                                    <div class="col-1 align-self-center text-center"><span class="oi oi-person"></span></div>
+                                                    <div class="col-11">#{job.job.company.profile.contact.salutation.salut} #{job.job.company.profile.contact.title.address} #{job.job.company.profile.contact.firstname} #{job.job.company.profile.contact.lastname}</div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-1 align-self-center text-center"><span class="oi oi-phone"></span></div>
+                                                    <div class="col-11">#{job.job.company.profile.contact.phone}</div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-1 align-self-center text-center"><span class="oi oi-envelope-closed"></span></div>
+                                                    <div class="col-11">#{job.job.company.profile.contact.email}</div>
+                                                </div>
+
+                                                <div class="row mt-5">
+                                                    <div class="col-12 mb-3">
+                                                        <h5>Übers Unternehmen</h5>
+                                                    </div>
+                                                    <div class="col-1 align-self-center text-center"><span class="oi oi-pencil"></span></div>
+                                                    <div class="col-11">
+                                                        #{job.job.company.profile.description}
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="card-footer">
+                                            <div class="row mt-2">
+                                                <div class="col-12">                                
+                                                    <div class="progress" style="height: 20px;">
+                                                        <div class="progress-bar bg-info" role="progressbar" style="width: #{job.requirementPercentage}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                                            Qualifikation: #{UserDashboardFace.df.format(job.requirementPercentage)}%
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="col-12">
+                                                    <div class="progress" style="height: 20px;">
+                                                        <div class="progress-bar bg-info" role="progressbar" style="width: #{job.benefitPercentage}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                                            Benefits: #{UserDashboardFace.df.format(job.benefitPercentage)}%
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="col-12">                                
+                                                    <div class="progress" style="height: 20px;">
+                                                        <div class="progress-bar bg-info" role="progressbar" style="width: #{job.totalPercentage}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                                            Total: #{UserDashboardFace.df.format(job.totalPercentage)}%
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </p:repeat>
+                            </h:panelGroup>
+
+                            <!--
+                            <div class="card jobCard">
+                                <a data-toggle="collapse" data-target="#job2" aria-expanded="true" aria-controls="job2" style="cursor: pointer">
+                                    <div class="card-header">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-0">Branche - Job Bezeichnung</h5>
+                                            <small class="align-self-center">Click for Details</small>
+
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-1  text-center"><span class="oi oi-briefcase"></span></div>
+                                            <div class="col-11 "><span>Crazy Company INC</span></div>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <div class="col-1 align-self-center text-center"><span class="oi oi-map-marker"></span></div>
+                                            <div class="col-11">Crazy Street 7a, 79080 Crazy, Deutschland</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="job-header">
+
+
+                                    </div>
+                                </a>
+
+                                <div id="job2" class="collapse" aria-labelledby="headingOne" data-parent="#jobAccordion">
+                                    <div class="card-body">
+                                        <h5>Informationen</h5>
+                                        <div class="row mt-3">
+                                            <div class="col-1 align-self-center text-center"><span class="oi oi-heart"></span></div>
+                                            <div class="col-11">Kinderfreundlich, locker, toll, schön</div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-1 align-self-center text-center"><span class="oi oi-info"></span></div>
+                                            <div class="col-11">Java EE, Java SE, JSF, Web Entwicklung</div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-1 align-self-center text-center"><span class="oi oi-pencil"></span></div>
+                                            <div class="col-11">
+                                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-1 align-self-center text-center"><span class="oi oi-dollar"></span></div>
+                                            <div class="col-11">10,000</div>
+                                        </div>
+
+                                        <div class="row mt-5">
+                                            <div class="col-12">
+                                                <h5>Kontakt</h5>
+                                            </div>
+                                            <div class="col-1 align-self-center text-center"><span class="oi oi-person"></span></div>
+                                            <div class="col-11">Hans Dieter Peter Müller</div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-1 align-self-center text-center"><span class="oi oi-phone"></span></div>
+                                            <div class="col-11">+491961989477</div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-1 align-self-center text-center"><span class="oi oi-envelope-closed"></span></div>
+                                            <div class="col-11">mail@müller.com</div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="row mt-2">
+                                        <div class="col-12">                                
+                                            <div class="progress" style="height: 20px;">
+                                                <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                                    Qualifikation: 40%
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-12">
+                                            <div class="progress" style="height: 20px;">
+                                                <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                                    Benefits: 40%
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-12">                                
+                                            <div class="progress" style="height: 20px;">
+                                                <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                                    Total: 40%
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </html>
 

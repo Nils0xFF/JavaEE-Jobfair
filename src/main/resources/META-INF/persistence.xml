@@ -7,9 +7,20 @@
     <class>de.hsos.kbse.jobboerse.entity.user.User_Profile</class>
     <class>de.hsos.kbse.jobboerse.entity.shared.SearchRequest</class>
     <class>de.hsos.kbse.jobboerse.entity.shared.Login</class>
+    <class>de.hsos.kbse.jobboerse.entity.company.Company</class>
+    <class>de.hsos.kbse.jobboerse.entity.company.CompanyProfile</class>
+    <class>de.hsos.kbse.jobboerse.entity.company.Contact</class>
+    <class>de.hsos.kbse.jobboerse.entity.company.Job</class>
+    <class>de.hsos.kbse.jobboerse.entity.company.JobField</class>
+    <class>de.hsos.kbse.jobboerse.entity.shared.Address</class>
+    <class>de.hsos.kbse.jobboerse.entity.shared.Benefit</class>
+    <class>de.hsos.kbse.jobboerse.entity.shared.NeededRequirement</class>
+    <class>de.hsos.kbse.jobboerse.entity.shared.Picture</class>
+    <class>de.hsos.kbse.jobboerse.entity.shared.Requirement</class>
+    <class>de.hsos.kbse.jobboerse.entity.user.SeekingUser</class>
+    <class>de.hsos.kbse.jobboerse.entity.user.WeightedJob</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
-      <property name="javax.persistence.schema-generation.database.action" value="none"/>
     </properties>
   </persistence-unit>
 </persistence>

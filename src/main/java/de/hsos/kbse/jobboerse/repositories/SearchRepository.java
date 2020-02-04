@@ -29,36 +29,22 @@ public class SearchRepository {
     @Inject
     private GeneralUserRepository users;
     
-    public boolean createSearchRequirements(String email, List<Benefit> wishedBenefits, List<JobField> jobfield){
+    public boolean createSearchRequirements(String email, List<Benefit> wishedBenefits, List<JobField> jobfield) throws Exception {
         SeekingUser foundUser = users.getUserByEmail(email);
         if(foundUser != null){
             SearchRequest toInsert = SearchRequest.builder()
                     .benefits(wishedBenefits)
-                    .foundJobs(new ArrayList<>())
                     .jobField(jobfield)
                     .build();
             foundUser.setSearchrequest(toInsert);
             foundUser.setCompleted(true);
-            try {
-                users.edit(foundUser);
-                return true;
-            } catch (Exception e) {
-                return false;
-            }
+            users.edit(foundUser);
+            return true;
         }
         return false;
     }
     
-    public void createSearchRequirements(String email, SearchRequest search) throws Exception {
-        SeekingUser foundUser = users.getUserByEmail(email);
-        if (foundUser != null) {
-            foundUser.setSearchrequest(search);
-            foundUser.setCompleted(true);            
-            users.edit(foundUser);
-        }
-    }
-    
-    public SearchRequest getSearchRequest(String email){
+    public SearchRequest getSearchRequest(String email) {
         SeekingUser foundUser = users.getUserByEmail(email);
         if(foundUser != null){
             return foundUser.getSearchrequest();
@@ -66,7 +52,7 @@ public class SearchRepository {
         return null;
     }
     
-    public List<JobField> getJobField(String email){
+    public List<JobField> getJobField(String email) {
         SeekingUser foundUser = users.getUserByEmail(email);
         if(foundUser != null){
             return foundUser.getSearchrequest().getJobfield();
@@ -74,7 +60,7 @@ public class SearchRepository {
         return null;
     }
     
-    public List<Benefit> getWishedBenefits(String email){
+    public List<Benefit> getWishedBenefits(String email) {
         SeekingUser foundUser = users.getUserByEmail(email);
         if(foundUser != null){
             return foundUser.getSearchrequest().getWishedBenefits();
@@ -82,25 +68,13 @@ public class SearchRepository {
         return null;
     }
     
-    public void updateFoundJobs(String email, List<WeightedJob> foundJobs){
+    public void updateRequest(String email, List<Benefit> wishedBenefits, List<JobField> wishedJobfield) {
         SearchRequest request = getSearchRequest(email);
         if(request != null){
-            request.setFoundJobs(foundJobs);
+            request.setJobfield(wishedJobfield);
+            request.setWishedBenefits(wishedBenefits);
             searchrequests.edit(request);
         }
     }
     
-    public List<WeightedJob> getFoundJobs(String email){
-        SeekingUser foundUser = users.getUserByEmail(email);
-        if(foundUser != null){
-            return foundUser.getSearchrequest().getFoundJobs();
-        }
-        return null;
-    }
-    
-    public List<WeightedJob> getOrderedFoundJobs(String email){
-        List<WeightedJob> foundJobs = getFoundJobs(email);
-        if(foundJobs.size() > 0) Collections.sort(foundJobs);
-        return foundJobs;
-    }
 }

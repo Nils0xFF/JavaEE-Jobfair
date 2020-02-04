@@ -20,6 +20,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
@@ -41,6 +42,7 @@ public class User_Profile implements Serializable {
     private Title title;
     private String firstname;
     private String lastname;
+     @Lob
     private String description;
     
     @Temporal(TemporalType.DATE)
@@ -53,7 +55,7 @@ public class User_Profile implements Serializable {
     @ManyToMany
     private List<Requirement> fullfiledRequirements;
 
-    private String phone;
+    private String telefon;
     private Graduation grad;
 
     public static class Builder {
@@ -65,7 +67,7 @@ public class User_Profile implements Serializable {
         private String description;
         private Date birthday;
         private Address address;
-        private String phone;
+        private String telefon;
         private Graduation grad;
         private List<Requirement> fullfilledRequirements;
 
@@ -106,7 +108,7 @@ public class User_Profile implements Serializable {
         }
 
         public Builder telefon(final String value) {
-            this.phone = value;
+            this.telefon = value;
             return this;
         }
 
@@ -121,7 +123,7 @@ public class User_Profile implements Serializable {
         }
         
         public User_Profile build() {
-            return new User_Profile(salutation, title ,firstname, lastname, description, phone, address, grad, birthday, fullfilledRequirements);
+            return new User_Profile(salutation, title ,firstname, lastname, description, telefon, address, grad, birthday, fullfilledRequirements);
 
         }
     }
@@ -147,7 +149,7 @@ public class User_Profile implements Serializable {
         }else{
             this.address = address;
         }
-        this.phone = telefon;
+        this.telefon = telefon;
         this.grad = grad;
         this.fullfiledRequirements = fullfilledRequirements;
     }
@@ -217,12 +219,12 @@ public class User_Profile implements Serializable {
     }
 
 
-    public String getPhone() {
-        return phone;
+    public String getTelefon() {
+        return telefon;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setTelefon(String telefon) {
+        this.telefon = telefon;
     }
 
     public Graduation getGrad() {

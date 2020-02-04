@@ -26,15 +26,19 @@ public class WeightedJob implements Serializable, Comparable< WeightedJob >{
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
+    private float BenefitPercentage;
+    private float RequirementPercentage;
+    private float TotalPercentage;
     
     @OneToOne
     private Job job;
-    private float percentage;
 
     public static class Builder {
 
         private Job job;
-        private float percentage;
+        private float BenefitPercentage;
+        private float RequirementPercentage;
+        private float TotalPercentage;
 
         private Builder() {
         }
@@ -44,27 +48,42 @@ public class WeightedJob implements Serializable, Comparable< WeightedJob >{
             return this;
         }
 
-        public Builder percentage(final float value) {
-            this.percentage = value;
+        public Builder BenefitPercentage(final float value) {
+            this.BenefitPercentage = value;
+            return this;
+        }
+
+        public Builder RequirementPercentage(final float value) {
+            this.RequirementPercentage = value;
+            return this;
+        }
+
+        public Builder TotalPercentage(final float value) {
+            this.TotalPercentage = value;
             return this;
         }
 
         public WeightedJob build() {
-            return new WeightedJob(job, percentage);
+            return new WeightedJob(job, BenefitPercentage, RequirementPercentage, TotalPercentage);
         }
-    }
-
-    public WeightedJob() {
     }
 
     public static WeightedJob.Builder builder() {
         return new WeightedJob.Builder();
     }
 
-    private WeightedJob(final Job job, final float percentage) {
+    private WeightedJob(final Job job, final float BenefitPercentage, final float RequirementPercentage, final float TotalPercentage) {
         this.job = job;
-        this.percentage = percentage;
+        this.BenefitPercentage = BenefitPercentage;
+        this.RequirementPercentage = RequirementPercentage;
+        this.TotalPercentage = TotalPercentage;
     }
+    
+
+
+    public WeightedJob() {
+    }
+
 
     public Job getJob() {
         return job;
@@ -74,13 +93,31 @@ public class WeightedJob implements Serializable, Comparable< WeightedJob >{
         this.job = job;
     }
 
-    public float getPercentage() {
-        return percentage;
+    public float getBenefitPercentage() {
+        return BenefitPercentage;
     }
 
-    public void setPercentage(float percentage) {
-        this.percentage = percentage;
+    public void setBenefitPercentage(float BenefitPercentage) {
+        this.BenefitPercentage = BenefitPercentage;
     }
+
+    public float getRequirementPercentage() {
+        return RequirementPercentage;
+    }
+
+    public void setRequirementPercentage(float RequirementPercentage) {
+        this.RequirementPercentage = RequirementPercentage;
+    }
+
+    public float getTotalPercentage() {
+        return TotalPercentage;
+    }
+
+    public void setTotalPercentage(float TotalPercentage) {
+        this.TotalPercentage = TotalPercentage;
+    }
+
+    
     
     public Long getId() {
         return id;
@@ -99,7 +136,7 @@ public class WeightedJob implements Serializable, Comparable< WeightedJob >{
     
     @Override
     public int compareTo(WeightedJob o) {
-        return Float.compare(this.getPercentage(),o.getPercentage()); //To change body of generated methods, choose Tools | Templates.
+        return Float.compare(this.getTotalPercentage(),o.getTotalPercentage()); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
