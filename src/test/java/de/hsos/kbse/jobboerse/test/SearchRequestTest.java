@@ -223,7 +223,7 @@ public class SearchRequestTest {
             NeededRequirement needed = NeededRequirement.builder().requirement(req).weight(2).build();
             requirements.add(needed);
         });
-        jobCntrl.createInfo("TestJob", "TestJobDesc", jobFieldRepo.findAll().get(0), requirements, "10", Sal_Relation.HT)
+        jobCntrl.createInfo("TestJob", "TestJobDesc", jobFieldRepo.findAll().get(0), requirements, 10.0d, Sal_Relation.HT)
                 .createAddress("TestJobStreet", "TestJobHousenumber", "TestJobCity", "TestJobPostal", "TestJobCountry")
                 .finishCreation("company@test.de");
         Company toTest = cmpyRepo.getCompanyByEmail("company@test.de");
@@ -254,25 +254,21 @@ public class SearchRequestTest {
     @Test
     @InSequence(8)
     public void should_retrieve_SearchResults() throws Exception{
-        utx.begin();
         List<WeightedJob> jobs = basicMatching.findSuitableJobs("user@test.de");
         Assert.assertTrue(jobs.size() == 1);
         Assert.assertEquals(100.0, jobs.get(0).getBenefitPercentage(), 0.1);
         Assert.assertEquals(50.0, jobs.get(0).getRequirementPercentage(), 0.1);
         Assert.assertEquals(75.0, jobs.get(0).getTotalPercentage(), 0.1);
-        utx.commit();
     }
     
     @Test
     @InSequence(9)
     public void should_retrieve_WeightedSearchResults() throws Exception{
-        utx.begin();
         List<WeightedJob> jobs = weightedMatching.findSuitableJobs("user@test.de");
         Assert.assertTrue(jobs.size() == 1);
         Assert.assertEquals(100.0, jobs.get(0).getBenefitPercentage(), 0.1);
         Assert.assertEquals(75.0, jobs.get(0).getRequirementPercentage(), 0.1);
         Assert.assertEquals(87.5, jobs.get(0).getTotalPercentage(), 0.1);
-        utx.commit();
     }
 
 }

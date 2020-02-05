@@ -46,7 +46,7 @@ public class UserRegistrationController implements Serializable{
     private Address userAddress;
     private SearchRequest searchrequest;
     
-    private boolean checkEmailAvailability(String email){
+    public boolean checkEmailAvailability(String email){
         return !userRepo.checkEmailExists(email);
     }
     
