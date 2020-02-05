@@ -32,13 +32,13 @@ public class JobCreationController {
     private Job job;
     private Address address;
 
-    public JobCreationController createInfo(String jobname, String desc, JobField jobfield, List<NeededRequirement> requirements, String salary, Sal_Relation relation) {
+    public JobCreationController createInfo(String jobname, String desc, JobField jobfield, List<NeededRequirement> requirements, Double salary, Sal_Relation relation) {
         job = Job.builder()
                 .name(jobname)
                 .description(desc)
                 .jobField(jobfield)
                 .needed(requirements)
-                .salary(Double.parseDouble(salary))
+                .salary(salary)
                 .relation(relation)
                 .build();
         return this;

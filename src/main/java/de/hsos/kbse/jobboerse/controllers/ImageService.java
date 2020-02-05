@@ -65,4 +65,15 @@ public class ImageService {
 
     }
 
+    public StreamedContent getTempImage(byte[] pictureData, String dataType) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
+            return new DefaultStreamedContent();
+        } else {
+            // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
+            return new DefaultStreamedContent(new ByteArrayInputStream(pictureData), dataType);
+        }
+    }
+
 }

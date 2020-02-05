@@ -42,16 +42,16 @@ public class User_Profile implements Serializable {
     private Title title;
     private String firstname;
     private String lastname;
-     @Lob
+    @Lob
     private String description;
-    
+
     @Temporal(TemporalType.DATE)
     private Date birthday;
 
     @OneToOne(cascade = CascadeType.ALL,
             orphanRemoval = true)
     private Address address;
-    
+
     @ManyToMany
     private List<Requirement> fullfiledRequirements;
 
@@ -63,7 +63,7 @@ public class User_Profile implements Serializable {
         private String firstname;
         private String lastname;
         private Salutation salutation;
-        private Title title;    
+        private Title title;
         private String description;
         private Date birthday;
         private Address address;
@@ -83,10 +83,12 @@ public class User_Profile implements Serializable {
             this.lastname = value;
             return this;
         }
+
         public Builder salutation(final Salutation value) {
             this.salutation = value;
             return this;
         }
+
         public Builder title(final Title value) {
             this.title = value;
             return this;
@@ -96,12 +98,12 @@ public class User_Profile implements Serializable {
             this.description = value;
             return this;
         }
-        
+
         public Builder birthday(final Date value) {
             this.birthday = value;
             return this;
         }
-        
+
         public Builder address(final Address value) {
             this.address = value;
             return this;
@@ -117,19 +119,17 @@ public class User_Profile implements Serializable {
             return this;
         }
 
-        public Builder fullfilledRequirements(final List<Requirement> value){
+        public Builder fullfilledRequirements(final List<Requirement> value) {
             this.fullfilledRequirements = value;
             return this;
         }
-        
+
         public User_Profile build() {
-            return new User_Profile(salutation, title ,firstname, lastname, description, telefon, address, grad, birthday, fullfilledRequirements);
+            return new User_Profile(salutation, title, firstname, lastname, description, telefon, address, grad, birthday, fullfilledRequirements);
 
         }
     }
 
-    
-    
     public User_Profile() {
     }
 
@@ -144,9 +144,9 @@ public class User_Profile implements Serializable {
         this.lastname = lastname;
         this.description = description;
         this.birthday = birthday;
-        if(address == null){
+        if (address == null) {
             this.address = new Address();
-        }else{
+        } else {
             this.address = address;
         }
         this.telefon = telefon;
@@ -161,7 +161,7 @@ public class User_Profile implements Serializable {
     public void setFullfiledRequirements(List<Requirement> fullfiledRequirements) {
         this.fullfiledRequirements = fullfiledRequirements;
     }
-    
+
     public Salutation getSalutation() {
         return salutation;
     }
@@ -177,7 +177,7 @@ public class User_Profile implements Serializable {
     public void setTitle(Title title) {
         this.title = title;
     }
-    
+
     public String getFirstname() {
         return firstname;
     }
@@ -201,23 +201,22 @@ public class User_Profile implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-        
+
     public Date getBirthday() {
         return birthday;
     }
-    
+
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
-    
+
     public Address getAddress() {
         return this.address;
     }
-    
+
     public void setAddress(Address address) {
         this.address = address;
     }
-
 
     public String getTelefon() {
         return telefon;
@@ -234,7 +233,6 @@ public class User_Profile implements Serializable {
     public void setGrad(Graduation grad) {
         this.grad = grad;
     }
-    
 
     public Long getId() {
         return id;
@@ -268,5 +266,5 @@ public class User_Profile implements Serializable {
     public String toString() {
         return "de.hsos.kbse.jobboerse.entity.user.User_Profile[ id=" + id + " ]";
     }
-    
+
 }
