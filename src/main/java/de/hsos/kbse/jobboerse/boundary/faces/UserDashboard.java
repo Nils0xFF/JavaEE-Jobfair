@@ -107,11 +107,11 @@ public class UserDashboard implements Serializable{
     }
     
     public String requirementToString(WeightedJob job){
-        return job.getJob().getNeeded().stream().map(req -> req.getRequirement().getName()).collect(Collectors.joining(","));
+        return job.getJob().getNeeded().stream().map(req -> req.getRequirement().getName()).collect(Collectors.joining(", "));
     }
     
     public String benefitsToString(WeightedJob job){
-        return job.getJob().getCompany().getProfile().getBenefits().stream().map(bene -> bene.getName()).collect(Collectors.joining(","));
+        return job.getJob().getCompany().getProfile().getBenefits().stream().map(bene -> bene.getName()).collect(Collectors.joining(", "));
     }
 
     public DecimalFormat getDf() {

@@ -10,12 +10,18 @@
             <div class="card-body">
                 <h3 class="text-center mb-4">Firma Informationen</h3>
                 <h:form enctype="multipart/form-data">
-                <p:outputLabel for="@next" value="Dein Firmenfoto: "/>
-                <p:graphicImage value="#{ImageService.getImagefromEmail()}" alt="Noch keins Hochgeladen!" class="img-fluid" cache="false" id="image">
-                    <f:param name="email" value="#{companyProfileFace.email}" />
-                </p:graphicImage>
-                <p:fileUpload fileUploadListener="#{companyProfileFace.handleFileUpload}" mode="advanced" dragDropSupport="true"
-                              sizeLimit="5242880" fileLimit="1" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" class="mt-3" update="image"/>
+                    <div class="row">
+                        <div class="col-12">                        
+                            <p:outputLabel for="@next" value="Ihr Firmenfoto: "/>
+                        </div>
+                        <div class="col-12 text-center">
+                            <p:graphicImage value="#{ImageService.getImagefromEmail()}" alt="Noch keins Hochgeladen!" class="profileImage img-fluid text-center" cache="false" id="image">
+                                <f:param name="email" value="#{companyProfileFace.email}" />
+                            </p:graphicImage>
+                            <p:fileUpload fileUploadListener="#{companyProfileFace.handleFileUpload}" mode="advanced" dragDropSupport="true"
+                                          sizeLimit="5242880" fileLimit="1" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" class="mt-3" update="image"/>   
+                        </div>
+                    </div>
                 </h:form>
                 <h:form onkeypress="return event.keyCode != 13;" class="mt-3">
                     <div class="list-group">
