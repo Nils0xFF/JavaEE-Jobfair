@@ -47,7 +47,7 @@
             </div>
         </nav>
 
-        <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -76,9 +76,13 @@
                                 <h:message for="@previous" class="small text-danger"/>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <p:commandButton styleClass="btn btn-primary" value="Login" action="#{loginBacking.submit}" ajax="true" update="@form"></p:commandButton>
+                        <div class="modal-footer row m-0">
+                            <div class="col-6 m-0">
+                                <a type="button" class="btn btn-light btn-block" data-dismiss="modal">Close</a>
+                            </div>
+                            <div class="col-6 m-0">
+                                <p:commandButton class="btn bg-primary btn-block" value="Login" action="#{loginBacking.submit}" ajax="true" update="@form"></p:commandButton>   
+                            </div>
                         </div>
                     </h:form>
                 </div>

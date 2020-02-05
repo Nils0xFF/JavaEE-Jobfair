@@ -63,13 +63,13 @@ public class JobEditFace implements Serializable {
     private String jobname;
     @NotBlank
     private String desc;
-    @Pattern(regexp = "^[^0-9]+$")
+    @Pattern(regexp = "^[^0-9]+$", message = "{}")
     @NotBlank
     private String street;
     @NotBlank
     private String housenumber;
     @NotBlank
-    @Pattern(regexp = "^[^0-9]+$")
+    @Pattern(regexp = "^[^0-9]+$", message = "{}")
     private String city;
     @NotBlank
     private String postalcode, country;
