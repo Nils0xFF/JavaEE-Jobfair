@@ -6,6 +6,7 @@
 package de.hsos.kbse.jobboerse.entity.facades;
 
 import java.util.List;
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 
 /**
@@ -22,19 +23,19 @@ public abstract class AbstractFacade<T> {
 
     protected abstract EntityManager getEntityManager();
 
-    public void create(T entity) {
+    public void create(T entity) throws EntityExistsException {
         getEntityManager().persist(entity);
     }
 
-    public void edit(T entity) {
+    public void edit(T entity) throws IllegalArgumentException {
         getEntityManager().merge(entity);
     }
 
-    public void remove(T entity) {
+    public void remove(T entity) throws IllegalArgumentException {
         getEntityManager().remove(getEntityManager().merge(entity));
     }
 
-    public T find(Object id) {
+    public T find(Object id) throws IllegalArgumentException {
         return getEntityManager().find(entityClass, id);
     }
 
