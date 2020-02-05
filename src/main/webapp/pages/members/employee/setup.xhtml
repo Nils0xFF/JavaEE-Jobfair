@@ -11,7 +11,7 @@
         <div class="card">
             <h5 class="card-header">Erstmalige Einrichtung</h5>
             <div class="card-body">
-                <h:form>
+                <h:form onkeypress="if(event.keyCode === 13) PF('wiz').next(); return false;">
                     <p:wizard showNavBar="false" showStepStatus="true" widgetVar="wiz">
                         <p:tab id="personal" title="Persönliche Daten">
                             <p:separator/>
@@ -105,7 +105,7 @@
                                 </div> 
                             </div>
 
-                            <p:commandButton styleClass="btn btn-light" value="Abbrechen" onclick="PF('wiz').back();"></p:commandButton>
+                            <p:commandButton styleClass="btn btn-light" value="Zurück" onclick="PF('wiz').back();"></p:commandButton>
                             <p:commandButton styleClass="btn btn-primary" value="Weiter" onclick="PF('wiz').next();" validateClient="true"></p:commandButton>
                         </p:tab>
 
@@ -117,7 +117,7 @@
                                     <f:selectItems value="#{UserRegisterFace.graduationValues}" var="graduation"
                                                    itemValue="#{graduation}" itemLabel="#{graduation.grad}" />
                                 </h:selectOneMenu>
-
+                                <h:message for="@previous" class="small text-danger"/>
                             </div>
 
                             <div class="form-group">
@@ -130,6 +130,7 @@
                                         <h:outputText value="#{requirement.name}" />
                                     </p:column>
                                 </p:autoComplete>
+                                <h:message for="@previous" class="small text-danger"/>
                             </div>
 
                             <div class="form-group">
@@ -137,6 +138,7 @@
                                 <p:inputTextarea class="form-control" value="#{UserRegisterFace.desc}" rows="6" cols="33" >
                                     <p:clientValidator event="keyup"/>
                                 </p:inputTextarea>
+                                <h:message for="@previous" class="small text-danger"/>
                             </div>
                             <p:commandButton class="btn btn-light" value="Zurück" onclick="PF('wiz').back();"></p:commandButton>
                             <p:commandButton class="btn btn-primary" value="Weiter" onclick="PF('wiz').next();" ></p:commandButton>
@@ -154,7 +156,7 @@
                                         <h:outputText value="#{jobField.name}" />
                                     </p:column>
                                 </p:autoComplete>
-
+                                <h:message for="@previous" class="small text-danger"/>
                             </div>
 
                             <div class="form-group">
@@ -167,6 +169,7 @@
                                         <h:outputText value="#{benefit.name}" />
                                     </p:column>
                                 </p:autoComplete>
+                                <h:message for="@previous" class="small text-danger"/>
                             </div>
 
                             <p:commandButton styleClass="btn btn-light" value="Zurück" onclick="PF('wiz').back();"></p:commandButton>

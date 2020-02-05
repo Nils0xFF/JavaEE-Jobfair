@@ -30,6 +30,7 @@ import javax.persistence.Enumerated;
 import javax.security.enterprise.SecurityContext;
 import javax.transaction.Transactional;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -46,29 +47,29 @@ import org.primefaces.model.UploadedFile;
 @ViewScoped
 public class CompanyRegisterFace implements Serializable {
 
-    @NotEmpty
+    @NotBlank
     private String firmname;
-    @NotEmpty
+    @NotBlank
     private String firstname;
-    @NotEmpty
+    @NotBlank
     private String lastname;
-    @NotEmpty
-    @Pattern(regexp = "^[^a-zA-Z]+$")
+    @NotBlank
+    @Pattern(regexp = "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*$", message = "{de.hsos.kbse.util.validation.invalidPhoneNumber}")
     private String telefon;
-    @NotEmpty
+    @NotBlank
     @Email(message = "Es muss eine gültige Email sein")
     private String contactEmail;
-    @NotEmpty
+    @NotBlank
     private String desc;
     @Pattern(regexp = "^[^0-9]+$")
-    @NotEmpty
+    @NotBlank
     private String street;
-    @NotEmpty
+    @NotBlank
     private String housenumber;
-    @NotEmpty
+    @NotBlank
     @Pattern(regexp = "^[^0-9]+$")
     private String city;
-    @NotEmpty
+    @NotBlank
     private String postalcode, country;
 
     private byte[] pictureData;

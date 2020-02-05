@@ -31,6 +31,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.security.enterprise.SecurityContext;
 import javax.transaction.Transactional;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
@@ -44,27 +45,27 @@ import javax.validation.constraints.Pattern;
 @ViewScoped
 public class UserRegisterFace implements Serializable {
 
-    @NotEmpty
+    @NotBlank
     private String firstname;
-    @NotEmpty
+    @NotBlank
     private String lastname;
-    @NotEmpty
-    @Pattern(regexp = "^[^a-zA-Z]+$")
+    @NotBlank
+    @Pattern(regexp = "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*$", message = "{de.hsos.kbse.util.validation.invalidPhoneNumber}")
     private String telefon;
-    @NotEmpty
+    @NotBlank
     private String desc;
     @NotNull
     @Past
     private Date birthday;
     @Pattern(regexp = "^[^0-9]+$")
-    @NotEmpty
+    @NotBlank
     private String street;
-    @NotEmpty
+    @NotBlank
     private String housenumber;
-    @NotEmpty
+    @NotBlank
     @Pattern(regexp = "^[^0-9]+$")
     private String city;
-    @NotEmpty
+    @NotBlank
     private String postalcode, country;
     private List<Requirement> fullfilledRequirements;
     private List<Benefit> wishedBenefits;
@@ -76,7 +77,7 @@ public class UserRegisterFace implements Serializable {
     @Enumerated(EnumType.STRING)
     private Graduation grades;
 
-    private final SimpleDateFormat sdf = new SimpleDateFormat("MM/yy");
+    private final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
     @Inject
     UserRegistrationController userRegCntrl;

@@ -10,7 +10,6 @@ import de.hsos.kbse.jobboerse.controllers.ImageService;
 import de.hsos.kbse.jobboerse.entity.company.Company;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
 import de.hsos.kbse.jobboerse.entity.shared.Picture;
-import de.hsos.kbse.jobboerse.enums.Graduation;
 import de.hsos.kbse.jobboerse.enums.Salutation;
 import de.hsos.kbse.jobboerse.enums.Title;
 import de.hsos.kbse.jobboerse.enums.WorkerCount;
@@ -26,7 +25,7 @@ import javax.persistence.Enumerated;
 import javax.security.enterprise.SecurityContext;
 import javax.transaction.Transactional;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import org.primefaces.event.FileUploadEvent;
 
@@ -54,35 +53,35 @@ public class CompanyProfileFace implements Serializable {
 
     private Company companyDetails;
 
-    @NotEmpty
-    @Email(message = "Es muss eine gültige Email sein")
+    @NotBlank
+    @Email
     private String email;
 
-    @NotEmpty
+    @NotBlank
     private String firmname;
-    @NotEmpty
+    @NotBlank
     private String firstname;
-    @NotEmpty
+    @NotBlank
     private String lastname;
-    @NotEmpty
-    @Pattern(regexp = "^[^a-zA-Z]+$")
+    @NotBlank
+    @Pattern(regexp = "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*$", message = "{de.hsos.kbse.util.validation.invalidPhoneNumber}")
     private String telefon;
 
-    @NotEmpty
-    @Email(message = "Es muss eine gültige Email sein")
+    @NotBlank
+    @Email
     private String contactEmail;
 
-    @NotEmpty
+    @NotBlank
     private String desc;
     @Pattern(regexp = "^[^0-9]+$")
-    @NotEmpty
+    @NotBlank
     private String street;
-    @NotEmpty
+    @NotBlank
     private String housenumber;
-    @NotEmpty
+    @NotBlank
     @Pattern(regexp = "^[^0-9]+$")
     private String city;
-    @NotEmpty
+    @NotBlank
     private String postalcode, country;
     private List<Benefit> fullfilledBenefits;
 
