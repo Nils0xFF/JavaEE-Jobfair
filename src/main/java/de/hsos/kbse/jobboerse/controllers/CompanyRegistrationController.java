@@ -117,5 +117,5 @@ public class CompanyRegistrationController {
         profile.setBenefits(benefits);
         return companyRepo.updateCompany(profile, email);
     }
-    
+
 }
