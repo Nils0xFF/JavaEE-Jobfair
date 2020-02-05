@@ -1,0 +1,280 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!-- Author: Nils Geschwinde -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/pages/templates/template.xhtml">
+        <ui:param name="stylesheet" value="home.css"/>
+        <ui:param name="transparentNav" value="false" />
+        <ui:param name="title" value="Job Erstellen" />
+        <ui:define name="content">
+            <div class="container mt-5">
+                <div class="card">
+                    <h5 class="card-header">Stellenangebot bearbeiten</h5>
+                    <div class="card-body">
+                        <h:form>
+                            <p:wizard showNavBar="false" showStepStatus="true" widgetVar="wiz">
+                                <p:tab id="personal" title="Allgemeines">
+                                    <p:separator/>
+                                    <div class="form-row">
+                                        <div class="col-sm-8 form-group">
+                                            <p:outputLabel for="@next" value="Name des Jobs"/>
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{jobEditFace.jobname}" required="true">
+                                                <p:clientValidator event="keyup"/>
+                                            </p:inputText>
+                                            <h:message for="@previous" class="small text-danger"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <p:outputLabel for="@next" value="Beschreibung"/>
+                                        <p:inputTextarea class="form-control #{component.valid ? '' : 'is-invalid'}" id="description" value="#{jobEditFace.desc}" rows="6" cols="33" >
+                                            <p:clientValidator event="keyup"/>
+                                        </p:inputTextarea>
+                                        <h:message for="@previous" class="small text-danger"/>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="col-sm-9 form-group">
+                                            <p:outputLabel for="@next" value="Straße"/>
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{jobEditFace.street}" required="true">
+                                                <p:clientValidator event="keyup"/>
+                                            </p:inputText>
+                                            <h:message for="@previous" class="small text-danger"/>
+                                        </div>
+                                        <div class="col-sm-3 form-group">
+                                            <p:outputLabel for="@next" value="Hausnummer"/>
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{jobEditFace.housenumber}">
+                                                <p:clientValidator event="keyup"/>
+                                            </p:inputText>
+                                            <h:message for="@previous" class="small text-danger"/>
+                                        </div> 
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="col-sm-4 form-group">
+                                            <p:outputLabel for="@next" value="PLZ"/>
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{jobEditFace.postalcode}" required="true">
+                                                <p:clientValidator event="keyup"/>
+                                            </p:inputText>
+                                            <h:message for="@previous" class="small text-danger"/>
+                                        </div>
+                                        <div class="col-sm-4 form-group">
+                                            <p:outputLabel for="@next" value="Stadt"/>
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{jobEditFace.city}">
+                                                <p:clientValidator event="keyup"/>
+                                            </p:inputText>  
+                                            <h:message for="@previous" class="small text-danger"/>
+                                        </div> 
+                                        <div class="col-sm-4 form-group">
+                                            <p:outputLabel for="@next" value="Land"/>
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{jobEditFace.country}">
+                                                <p:clientValidator event="keyup"/>
+                                            </p:inputText>  
+                                            <h:message for="@previous" class="small text-danger"/>
+                                        </div> 
+                                    </div>
+
+                                    <p:commandButton class="btn btn-light" value="Abbrechen" onclick="PF('wiz').back();"></p:commandButton>
+                                    <p:commandButton class="btn btn-primary" value="Weiter" onclick="PF('wiz').next();" validateClient="true"></p:commandButton>
+                                </p:tab>
+
+                                <p:tab id="details" title="Details">
+                                    <p:separator/>
+                                    <div class="form-row">
+                                        <div class="col-sm-6 form-group">
+                                            <p:outputLabel for="@next" value="Bezahlung pro Stunde"/>
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{jobEditFace.salary}">
+                                                <p:clientValidator event="keyup"/>
+                                            </p:inputText>  
+                                            <h:message for="@previous" class="small text-danger"/>
+                                        </div> 
+
+                                        <div class="col-sm-6">
+                                            <p:outputLabel for="@next" value="Stellentyp"/>
+                                            <h:selectOneMenu class="custom-select" value="#{jobEditFace.relation}" >
+                                                <f:selectItems value="#{jobEditFace.relations}" var="relation"
+                                                               itemValue="#{relation}" itemLabel="#{relation.desc}" />
+                                            </h:selectOneMenu>
+                                            <h:message for="@previous" class="small text-danger"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <p:outputLabel for="@next" value="Branche des Jobs:"/>
+                                        <p:selectOneMenu class="custom-select" value="#{jobEditFace.jobfield}" 
+                                                         converter="JobFieldConverter" filter="true" filterMatchMode="contains">
+                                            <f:selectItems value="#{jobEditFace.jobfields}" var="jobField"
+                                                           itemValue="#{jobField}" itemLabel="#{jobField.name}" />
+                                        </p:selectOneMenu>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <p:outputLabel value="Vorraussetzungen für den Beruf: " for="@next" />
+                                        <p:autoComplete multiple="true" value="#{jobEditFace.wishedRequirement}" completeMethod="#{Autocomplete.completeRequirementData}"
+                                                        var="requirement" itemLabel="#{requirement.name}" itemValue="#{requirement}"  forceSelection="true"
+                                                        class="form-control h-auto" converter="RequirementConverter" unique="true">
+
+                                            <p:column>
+                                                <h:outputText value="#{requirement.name}" />
+                                            </p:column>
+                                        </p:autoComplete>
+
+                                    </div>
+
+                                    <p:commandButton class="btn btn-light" value="Zurück" onclick="PF('wiz').back();"></p:commandButton>
+                                    <p:commandButton class="btn btn-primary" value="Weiter" onclick="PF('wiz').next();" validateClient="true"></p:commandButton>
+                                </p:tab>
+                                <p:tab id="requirementWeight" title="Vorraussetzungen bewerten">
+                                    <p:separator/>
+                                    <div class="form-group">
+
+                                        <p:repeat value="#{jobEditFace.weightedRequirements}" var="req">
+                                            <h:panelGrid columns="2" cellpadding="5">
+                                                <h:outputText value="#{req.requirement.name}:" />
+                                                <p:rating value="#{req.weight}" cancel="false"/>
+                                            </h:panelGrid>
+                                        </p:repeat>
+
+                                    </div>
+                                    <p:commandButton class="btn btn-light" value="Abbrechen" onclick="PF('wiz').back();"></p:commandButton>
+                                    <p:commandButton class="btn btn-primary" value="Weiter" onclick="PF('wiz').next();" validateClient="true"></p:commandButton>
+                                </p:tab>
+                                <p:tab id="overview" title="Übersicht">
+                                    <div class="list-group">
+                                        <div class="list-group-item">
+                                            <h5 class="mb-3">Allgemeines</h5>
+                                            <div class="form-row">
+                                                <div class="col-sm-8">
+                                                    <p:outputLabel for="@next" value="Name der Stelle"/>
+                                                    <p:inputText class="form-control" value="#{jobEditFace.jobname}" required="true" 
+                                                                 readonly="true" disabled="true">
+                                                        <p:clientValidator event="keyup"/>
+                                                    </p:inputText>
+                                                    <h:message for="@previous"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <p:outputLabel for="@next" value="Beschreibung"/>
+                                                <p:inputTextarea class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{jobEditFace.desc}" rows="6" cols="33" 
+                                                                 readonly="true" disabled="true">
+                                                    <p:clientValidator event="keyup"/>
+                                                </p:inputTextarea>
+                                                <h:message for="@previous" class="small text-danger"/>
+                                            </div>
+
+                                            <div class="form-row">
+                                                <div class="col-sm-9 form-group">
+                                                    <p:outputLabel for="@next" value="Straße"/>
+                                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{jobEditFace.street}" required="true" 
+                                                                 readonly="true" disabled="true">
+                                                        <p:clientValidator event="keyup"/>
+                                                    </p:inputText>
+                                                    <h:message for="@previous" class="small text-danger"/>
+                                                </div>
+                                                <div class="col-sm-3 form-group">
+                                                    <p:outputLabel for="@next" value="Hausnummer"/>
+                                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{jobEditFace.housenumber}"
+                                                                 readonly="true" disabled="true">
+                                                        <p:clientValidator event="keyup"/>
+                                                    </p:inputText> 
+                                                    <h:message for="@previous" class="small text-danger"/>
+                                                </div> 
+                                            </div>
+
+                                            <div class="form-row">
+                                                <div class="col-sm-4 form-group">
+                                                    <p:outputLabel for="@next" value="PLZ"/>
+                                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{jobEditFace.postalcode}" required="true"
+                                                                 readonly="true" disabled="true">
+                                                        <p:clientValidator event="keyup"/>
+                                                    </p:inputText>
+                                                    <h:message for="@previous" class="small text-danger"/>
+                                                </div>
+                                                <div class="col-sm-4 form-group">
+                                                    <p:outputLabel for="@next" value="Stadt"/>
+                                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{jobEditFace.city}" 
+                                                                 readonly="true" disabled="true">
+                                                        <p:clientValidator event="keyup"/>
+                                                    </p:inputText>  
+                                                    <h:message for="@previous" class="small text-danger"/>
+                                                </div> 
+                                                <div class="col-sm-4 form-group">
+                                                    <p:outputLabel for="@next" value="Land"/>
+                                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{jobEditFace.country}"
+                                                                 readonly="true" disabled="true">
+                                                        <p:clientValidator event="keyup"/>
+                                                    </p:inputText>  
+                                                    <h:message for="@previous" class="small text-danger"/>
+                                                </div> 
+                                            </div>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <h5 class="mb-3">Details</h5>
+                                            <div class="form-row">
+                                                <div class="col-sm-6 form-group">
+                                                    <p:outputLabel for="@next" value="Bezahlung pro Stunde"/>
+                                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{jobEditFace.salary}"
+                                                                 readonly="true" disabled="true">
+                                                        <p:clientValidator event="keyup"/>
+                                                    </p:inputText>  
+                                                    <h:message for="@previous" class="small text-danger"/>
+                                                </div> 
+
+                                                <div class="col-sm-6">
+                                                    <p:outputLabel for="@next" value="Stellentyp"/>
+                                                    <h:selectOneMenu class="custom-select" value="#{jobEditFace.relation}" 
+                                                                     readonly="true" disabled="true">
+                                                        <f:selectItems value="#{jobEditFace.relations}" var="relation"
+                                                                       itemValue="#{relation}" itemLabel="#{relation.desc}" />
+                                                    </h:selectOneMenu>
+                                                    <h:message for="@previous" class="small text-danger"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <p:outputLabel for="@next" value="Branche des Jobs:"/>
+                                                <p:selectOneMenu class="custom-select" value="#{jobEditFace.jobfield}" 
+                                                                 converter="JobFieldConverter" filter="true" filterMatchMode="contains"
+                                                                 disabled="true">
+                                                    <f:selectItems value="#{jobEditFace.jobfields}" var="jobField"
+                                                                   itemValue="#{jobField}" itemLabel="#{jobField.name}" />
+                                                </p:selectOneMenu>
+                                            </div>
+
+
+                                        </div>
+                                        <div class="list-group-item">
+                                            <h5 class="mb-3">Vorraussetzungen</h5>
+                                            <div class="form-group">
+                                                <p:repeat value="#{jobEditFace.weightedRequirements}" var="req">
+                                                    <h:panelGrid columns="2" cellpadding="5">
+                                                        <h:outputText value="#{req.requirement.name}:" />
+                                                        <p:rating value="#{req.weight}" readonly="true"/>
+                                                    </h:panelGrid>
+                                                </p:repeat>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <p:commandButton class="btn btn-light" value="Zurück" onclick="PF('wiz').back();"></p:commandButton>
+                                    <p:commandButton class="btn btn-primary" value="Weiter" action="#{jobEditFace.updateJob()}" ajax="true" validateClient="true"></p:commandButton>
+                                    <h:messages globalOnly="true" />
+                                </p:tab>
+                            </p:wizard>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </ui:define>
+    </ui:composition>   
+
+
+
+
+</html>
+

@@ -11,12 +11,10 @@ import de.hsos.kbse.jobboerse.enums.Salutation;
 import de.hsos.kbse.jobboerse.enums.Title;
 import de.hsos.kbse.jobboerse.enums.WorkerCount;
 import de.hsos.kbse.jobboerse.repositories.BenefitRepository;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Base64;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -27,46 +25,42 @@ import javax.persistence.Enumerated;
 import javax.security.enterprise.SecurityContext;
 import javax.transaction.Transactional;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 /**
  *
- * @author lennartwoltering
+ * @author lennartwoltering, nilsgeschwinde
  */
 @Named("CompanyRegisterFace")
 @ViewScoped
-public class CompanyRegisterFace implements Serializable{
-    @NotEmpty
-    @Email(message = "Es muss eine gültige Email sein")
-    private String email;
-    @Min(value = 5, message = "Passwort muss länger als 5 Zeichen sein.")
-    private String pw, pw2;
-    @NotEmpty
+public class CompanyRegisterFace implements Serializable {
+
+    @NotBlank
     private String firmname;
-    @NotEmpty
+    @NotBlank
     private String firstname;
-    @NotEmpty
+    @NotBlank
     private String lastname;
-    @NotEmpty
-    @Pattern(regexp= "^[^a-zA-Z]+$")
+    @NotBlank
+    @Pattern(regexp = "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*$", message = "{de.hsos.kbse.util.validation.invalidPhoneNumber}")
     private String telefon;
-    @NotEmpty
+    @NotBlank
+    @Email(message = "Es muss eine gültige Email sein")
+    private String contactEmail;
+    @NotBlank
     private String desc;
-    @Pattern(regexp= "^[^0-9]+$")
-    @NotEmpty
+    @Pattern(regexp = "^[^0-9]+$")
+    @NotBlank
     private String street;
-    @NotEmpty
+    @NotBlank
     private String housenumber;
-    @NotEmpty
-    @Pattern(regexp= "^[^0-9]+$")
+    @NotBlank
+    @Pattern(regexp = "^[^0-9]+$")
     private String city;
-    @NotEmpty
+    @NotBlank
     private String postalcode, country;
 
     private byte[] pictureData;
@@ -83,30 +77,26 @@ public class CompanyRegisterFace implements Serializable{
     private Title titles;
     @Enumerated(EnumType.STRING)
     private WorkerCount workercount;
-    
-    
+
     @Inject
     BenefitRepository benefitRepo;
-    
+
     @Inject
     CompanyRegistrationController companyRegCntrl;
-    
-    @Inject
-    SecurityContext context;
-   
 
+    @Inject
+    private SecurityContext context;
+    
     public void handleFileUpload(FileUploadEvent event) {
         pictureData = event.getFile().getContents();
         dataType = event.getFile().getContentType();
+        this.file = event.getFile();
     }
-
-    public StreamedContent getProfileImage() {
-        if(pictureData != null){
-        return new DefaultStreamedContent(new ByteArrayInputStream(pictureData), dataType);
-        }
-        return null;
+    
+    public String getBase64 (){
+        return Base64.getEncoder().encodeToString(file.getContents());
     }
-
+    
     public UploadedFile getFile() {
         return file;
     }
@@ -116,67 +106,24 @@ public class CompanyRegisterFace implements Serializable{
     }
 
     @Transactional
-    public void registerLogin() {
-        if (pw.equals(pw2)) {
-            if(companyRegCntrl.createLogin(email, pw)){
-                 FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, "Du kannst dich nun anmelden!", null));
-            }
-        }
-         FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Registrierung fehlgeschlagen, überprüfe deine Eingaben", null));
-    }
-    
-    @Transactional
     public void registerUser() {
         if (companyRegCntrl.createProfile(firmname, desc, workercount, pictureData, dataType)
                 .createAddress(street, housenumber, city, postalcode, country)
-                .createContact(salutation, titles,firstname, lastname, telefon)
-                .finishRegistration(fullfilledBenefits, context.getCallerPrincipal().getName())){
-            try{
+                .createContact(salutation, titles, firstname, lastname, telefon, contactEmail)
+                .finishRegistration(fullfilledBenefits, context.getCallerPrincipal().getName())) {
+            try {
                 FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/dashboard");
             } catch (IOException ex) {
                 FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, "Register failed", null));
-                Logger.getLogger(CompanyRegisterFace.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }else{
+        } else {
             FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Register failed", null));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Register failed", null));
         }
     }
-    
-    
-    
-    
-    
-    
+
     //-------------------
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPw() {
-        return pw;
-    }
-
-    public void setPw(String pw) {
-        this.pw = pw;
-    }
-
-    public String getPw2() {
-        return pw2;
-    }
-
-    public void setPw2(String pw2) {
-        this.pw2 = pw2;
-    }
-
     public String getFirstname() {
         return firstname;
     }
@@ -304,17 +251,17 @@ public class CompanyRegisterFace implements Serializable{
     public Salutation[] getSalutationValues() {
         return Salutation.values();
     }
-    
-    public WorkerCount[] getWorkerValues(){
+
+    public WorkerCount[] getWorkerValues() {
         return WorkerCount.values();
+    }
+
+    public String getDataType() {
+        return dataType;
     }
 
     public byte[] getPictureData() {
         return pictureData;
-    }
-
-    public void setPictureData(byte[] pictureData) {
-        this.pictureData = pictureData;
     }
 
 }

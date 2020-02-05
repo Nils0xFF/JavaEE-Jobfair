@@ -7,6 +7,7 @@ package de.hsos.kbse.util.converter;
 
 import de.hsos.kbse.jobboerse.entity.facades.RequirementFacade;
 import de.hsos.kbse.jobboerse.entity.shared.Requirement;
+import de.hsos.kbse.jobboerse.repositories.RequirementRepository;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -19,11 +20,11 @@ import org.primefaces.model.DualListModel;
  *
  * @author lennartwoltering
  */
-@FacesConverter(value = "RequirementConverter")
+@FacesConverter(value = "RequirementConverter", managed = true)
 public class RequirementConverter implements Converter {
 
     @Inject
-    RequirementFacade requirementRepo;
+    private RequirementRepository requirementRepo;
 
     @Override
     public Object getAsObject(FacesContext fc, UIComponent uic, String string) {
@@ -47,12 +48,25 @@ public class RequirementConverter implements Converter {
                     }
                 }
             }
+        } else {
+            
+            if (string != null && string.trim().length() > 0) {
+                System.out.println(Long.parseLong(string.trim()));
+                System.out.println(requirementRepo);
+                return requirementRepo.find(Long.parseLong(string.trim()));
+
+            }
+           
         }
-        return ret;
+        return null;
+
     }
 
     @Override
     public String getAsString(FacesContext fc, UIComponent uic, Object t) {
+        if (t == null) {
+            return "";
+        }
         return ((Requirement) t).getId().toString(); //To change body of generated methods, choose Tools | Templates.
     }
 

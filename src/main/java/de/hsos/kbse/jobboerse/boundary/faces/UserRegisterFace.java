@@ -6,89 +6,112 @@
 package de.hsos.kbse.jobboerse.boundary.faces;
 
 import de.hsos.kbse.jobboerse.controllers.UserRegistrationController;
+import de.hsos.kbse.jobboerse.entity.company.JobField;
+import de.hsos.kbse.jobboerse.entity.shared.Benefit;
 import de.hsos.kbse.jobboerse.entity.shared.Requirement;
 import de.hsos.kbse.jobboerse.enums.Graduation;
 import de.hsos.kbse.jobboerse.enums.Salutation;
 import de.hsos.kbse.jobboerse.enums.Title;
+import de.hsos.kbse.jobboerse.repositories.BenefitRepository;
+import de.hsos.kbse.jobboerse.repositories.JobFieldRepository;
+import de.hsos.kbse.jobboerse.repositories.RequirementRepository;
+import java.io.IOException;
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.security.enterprise.SecurityContext;
+import javax.transaction.Transactional;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
 
 /**
  *
- * @author lennartwoltering
+ * @author lennartwoltering, nilsgeschwinde
  */
-@RequestScoped
-public class UserRegisterFace {
-    private String email, pw;
-    private String firstname, lastname,telefon,desc;
+@Named("UserRegisterFace")
+@ViewScoped
+public class UserRegisterFace implements Serializable {
+
+    @NotBlank
+    private String firstname;
+    @NotBlank
+    private String lastname;
+    @NotBlank
+    @Pattern(regexp = "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*$", message = "{de.hsos.kbse.util.validation.invalidPhoneNumber}")
+    private String telefon;
+    @NotBlank
+    private String desc;
+    @NotNull
+    @Past
     private Date birthday;
-    private String street, housenumber, city, postalcode, country;
+    @Pattern(regexp = "^[^0-9]+$")
+    @NotBlank
+    private String street;
+    @NotBlank
+    private String housenumber;
+    @NotBlank
+    @Pattern(regexp = "^[^0-9]+$")
+    private String city;
+    @NotBlank
+    private String postalcode, country;
     private List<Requirement> fullfilledRequirements;
-    
-    @Inject
-    UserRegistrationController userRegCntrl;
-    
+    private List<Benefit> wishedBenefits;
+    private List<JobField> wishedJobFields;
     @Enumerated(EnumType.STRING)
     private Salutation salutation;
-
-    public Salutation[] getSalutationValues() {
-        return Salutation.values();
-    }
-    
     @Enumerated(EnumType.STRING)
     private Title titles;
-
-    public Title[] getTitleValues() {
-        return Title.values();
-    } 
-    
     @Enumerated(EnumType.STRING)
     private Graduation grades;
 
-    public Graduation[] getGraduationValues() {
-        return Graduation.values();
-    }
+    private final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+
+    @Inject
+    UserRegistrationController userRegCntrl;
+
+    @Inject
+    RequirementRepository requirementRepo;
+
+    @Inject
+    BenefitRepository benefitRepo;
+
+    @Inject
+    JobFieldRepository jobFieldRepo;
+
+    @Inject
+    SecurityContext context;
 
     @Transactional
-    public boolean registerLogin() {
-        if (pw.equals(pw2)) {
-            return userRegCntrl.createLogin(email, pw);
-        }
-        return false;
-    }
-
-    @Transactional
-    public boolean registerUser() {
-        return userRegCntrl
+    public void registerUser() {
+        userRegCntrl
                 .createUserProfile(salutation, titles, firstname, lastname, telefon, birthday)
                 .createAddress(street, housenumber, city, postalcode, country)
                 .createQualifications(grades, fullfilledRequirements, desc)
                 .setupSearchParameters(wishedBenefits, wishedJobFields)
                 .finishRegistration(context.getCallerPrincipal().getName());
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/dashboard");
+        } catch (IOException ex) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Register failed", null));
+            Logger.getLogger(CompanyRegisterFace.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     //GETTER / SETTER
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPw() {
-        return pw;
-    }
-
-    public void setPw(String pw) {
-        this.pw = pw;
-    }
-
     public String getFirstname() {
         return firstname;
     }
@@ -192,7 +215,53 @@ public class UserRegisterFace {
     public void setGrades(Graduation grades) {
         this.grades = grades;
     }
-    
-    
+
+    public List<Requirement> getFullfilledRequirements() {
+        return fullfilledRequirements;
+    }
+
+    public void setFullfilledRequirements(List<Requirement> fullfilledRequirements) {
+        this.fullfilledRequirements = fullfilledRequirements;
+    }
+
+    public List<Benefit> getWishedBenefits() {
+        return wishedBenefits;
+    }
+
+    public void setWishedBenefits(List<Benefit> wishedBenefits) {
+        this.wishedBenefits = wishedBenefits;
+    }
+
+    public List<JobField> getWishedJobField() {
+        return wishedJobFields;
+    }
+
+    public void setWishedJobField(List<JobField> wishedJobFields) {
+        this.wishedJobFields = wishedJobFields;
+    }
+
+    public List<JobField> getJobfields() {
+        return jobFieldRepo.findAll();
+    }
+
+    public List<Benefit> getAllBenefits() {
+        return benefitRepo.findAll();
+    }
+
+    public SimpleDateFormat getSdf() {
+        return sdf;
+    }
+
+    public Graduation[] getGraduationValues() {
+        return Graduation.values();
+    }
+
+    public Title[] getTitleValues() {
+        return Title.values();
+    }
+
+    public Salutation[] getSalutationValues() {
+        return Salutation.values();
+    }
 
 }

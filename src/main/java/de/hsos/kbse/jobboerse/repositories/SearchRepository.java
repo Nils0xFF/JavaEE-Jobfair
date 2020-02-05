@@ -29,7 +29,7 @@ public class SearchRepository {
     @Inject
     private GeneralUserRepository users;
     
-    public boolean createSearchRequirements(String email, List<Benefit> wishedBenefits, List<JobField> jobfield){
+    public boolean createSearchRequirements(String email, List<Benefit> wishedBenefits, List<JobField> jobfield) {
         SeekingUser foundUser = users.getUserByEmail(email);
         if(foundUser != null){
             SearchRequest toInsert = SearchRequest.builder()
@@ -44,7 +44,18 @@ public class SearchRepository {
         return false;
     }
     
-    public SearchRequest getSearchRequest(String email){
+    public void createSearchRequirements(String email, SearchRequest search) throws IllegalArgumentException {
+        SeekingUser foundUser = users.getUserByEmail(email);
+        if (foundUser != null) {
+            foundUser.setSearchrequest(search);
+            foundUser.setCompleted(true);
+            users.edit(foundUser);
+        } else {
+            throw new IllegalArgumentException("User not found!");
+        }
+    }
+    
+    public SearchRequest getSearchRequest(String email) {
         SeekingUser foundUser = users.getUserByEmail(email);
         if(foundUser != null){
             return foundUser.getSearchrequest();
@@ -52,7 +63,7 @@ public class SearchRepository {
         return null;
     }
     
-    public List<JobField> getJobField(String email){
+    public List<JobField> getJobField(String email) {
         SeekingUser foundUser = users.getUserByEmail(email);
         if(foundUser != null){
             return foundUser.getSearchrequest().getJobfield();
@@ -60,7 +71,7 @@ public class SearchRepository {
         return null;
     }
     
-    public List<Benefit> getWishedBenefits(String email){
+    public List<Benefit> getWishedBenefits(String email) {
         SeekingUser foundUser = users.getUserByEmail(email);
         if(foundUser != null){
             return foundUser.getSearchrequest().getWishedBenefits();
@@ -68,7 +79,7 @@ public class SearchRepository {
         return null;
     }
     
-    public void updateRequest(String email, List<Benefit> wishedBenefits, List<JobField> wishedJobfield){
+    public void updateRequest(String email, List<Benefit> wishedBenefits, List<JobField> wishedJobfield) {
         SearchRequest request = getSearchRequest(email);
         if(request != null){
             request.setJobfield(wishedJobfield);

@@ -16,9 +16,6 @@ import de.hsos.kbse.jobboerse.enums.Salutation;
 import de.hsos.kbse.jobboerse.enums.Title;
 import de.hsos.kbse.jobboerse.enums.WorkerCount;
 import de.hsos.kbse.jobboerse.repositories.CompanyRepository;
-import de.hsos.kbse.jobboerse.repositories.GeneralUserRepository;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -86,6 +83,7 @@ public class CompanyRegistrationController {
                 .title(title)
                 .firstname(firstname)
                 .lastname(lastname)
+                .email(contactEmail)
                 .phone(phone)
                 .email(contactEmail)
                 .build();
@@ -119,4 +117,5 @@ public class CompanyRegistrationController {
         profile.setBenefits(benefits);
         return companyRepo.updateCompany(profile, email);
     }
+
 }

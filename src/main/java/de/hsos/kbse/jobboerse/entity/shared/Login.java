@@ -9,6 +9,7 @@ import de.hsos.kbse.jobboerse.entity.company.Company;
 import de.hsos.kbse.jobboerse.entity.user.SeekingUser;
 import java.io.Serializable;
 import javax.enterprise.inject.Vetoed;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,11 +41,13 @@ public class Login implements Serializable {
     @OneToOne(cascade = CascadeType.ALL,
             orphanRemoval = true)
     @CascadeOnDelete
+    @JsonbTransient
     private SeekingUser seekingUser;
 
     @OneToOne(cascade = CascadeType.ALL,
             orphanRemoval = true)
     @CascadeOnDelete
+    @JsonbTransient
     private Company company;
 
     public static class Builder {

@@ -49,9 +49,11 @@ public class WeightedMatchingAlgorithm implements MatchingAlgorithm, Serializabl
         List<WeightedJob> suitableJobs = new ArrayList<>();
         Set<Job> availableJobs = new HashSet<>();
         for (JobField jobfield : userRequest.getJobfield()) {
-            List<Job> jobs = jobRepo.findJobsByJobField(jobfield.getName());
-            if (jobs != null) {
+            try {
+                List<Job> jobs = jobRepo.findJobsByJobField(jobfield.getName());
                 availableJobs.addAll(jobs);
+            } catch (Exception ex) {
+                
             }
         }
         //Arquillian Test Suite kann nicht mit Lambda Funktionen umgehen
@@ -78,22 +80,18 @@ public class WeightedMatchingAlgorithm implements MatchingAlgorithm, Serializabl
                         break;
                     }
                 }
-                if (!foundBenefit) {
-                    percentageBenefits -= initPercentageBenfits / userRequest.getWishedBenefits().size();
-                }
+                if(!foundBenefit) percentageBenefits -=  initPercentageBenfits / userRequest.getWishedBenefits().size();
             }
             for (NeededRequirement cmpyRequirement : available.getNeeded()) {
                 boolean foundRequirement = false;
                 for (Requirement userRequirement : fullfilledRequirements) {
                     if (cmpyRequirement.getRequirement().getName().equals(userRequirement.getName())) {
                         foundRequirement = true;
-                        break;
+                        break; 
                     }
                 }
-                if (!foundRequirement) {
-                    percentageRequirements -= initPercentageRequirements / (available.getNeeded().size() * cmpyRequirement.getWeight());
-                }
-
+                if(!foundRequirement) percentageRequirements -= initPercentageRequirements / (available.getNeeded().size() * cmpyRequirement.getWeight());
+                
             }
             foundJob.setJob(available);
             foundJob.setBenefitPercentage(percentageBenefits);

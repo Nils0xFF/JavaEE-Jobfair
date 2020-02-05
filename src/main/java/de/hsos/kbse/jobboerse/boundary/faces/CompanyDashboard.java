@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.security.enterprise.SecurityContext;
@@ -69,7 +68,7 @@ public class CompanyDashboard implements Serializable {
     }
     
     public String requirementToString(Job job){
-        return job.getNeeded().stream().map(req -> req.getRequirement().getName()).collect(Collectors.joining(","));
+        return job.getNeeded().stream().map(req -> req.getRequirement().getName() + " (" + req.getWeight() + ")" ).collect(Collectors.joining(", "));
     }
 
 }

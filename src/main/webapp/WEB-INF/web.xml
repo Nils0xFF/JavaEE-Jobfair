@@ -5,14 +5,14 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
     
     <filter>
-<filter-name>PrimeFaces FileUpload Filter</filter-name>
-<filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
-</filter>
-<filter-mapping>
-<filter-name>PrimeFaces FileUpload Filter</filter-name>
-<servlet-name>Faces Servlet</servlet-name>
-<dispatcher>FORWARD</dispatcher>
-</filter-mapping>
+        <filter-name>PrimeFaces FileUpload Filter</filter-name>
+        <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>PrimeFaces FileUpload Filter</filter-name>
+        <servlet-name>Faces Servlet</servlet-name>
+        <dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
     <context-param>
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
@@ -32,8 +32,8 @@
     </context-param>
     
     <context-param>
-    <param-name>primefaces.UPLOADER</param-name>
-    <param-value>commons</param-value>
+        <param-name>primefaces.UPLOADER</param-name>
+        <param-value>commons</param-value>
     </context-param>
     
     
@@ -69,15 +69,6 @@
         <role-name>ADMIN</role-name>
     </security-role>
 
-    <context-param>
-        <param-name>com.ocpsoft.pretty.DEVELOPMENT</param-name>
-        <param-value>true</param-value>
-    </context-param>
-    <context-param>
-        <param-name>primefaces.THEME</param-name>
-        <param-value>luna-blue</param-value>
-    </context-param>
-
 
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
@@ -99,6 +90,10 @@
     </welcome-file-list>
     
     <mime-mapping>
+        <extension>map</extension>
+        <mime-type>css/map</mime-type>
+    </mime-mapping>
+    <mime-mapping>
         <extension>ttf</extension>
         <mime-type>css/fonts</mime-type>
     </mime-mapping>
@@ -118,6 +113,5 @@
         <extension>eot</extension>
         <mime-type>application/vnd.ms-fontobject</mime-type>
     </mime-mapping>
-    
-    
+
 </web-app>

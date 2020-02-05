@@ -5,6 +5,7 @@
  */
 package de.hsos.kbse.jobboerse.algorithm;
 
+import de.hsos.kbse.jobboerse.algorithm.qualifiers.Basic;
 import de.hsos.kbse.jobboerse.entity.company.Job;
 import de.hsos.kbse.jobboerse.entity.company.JobField;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
@@ -13,19 +14,24 @@ import de.hsos.kbse.jobboerse.entity.shared.Requirement;
 import de.hsos.kbse.jobboerse.entity.user.WeightedJob;
 import de.hsos.kbse.jobboerse.repositories.SearchRepository;
 import de.hsos.kbse.jobboerse.entity.shared.SearchRequest;
+import de.hsos.kbse.jobboerse.entity.user.SeekingUser;
 import de.hsos.kbse.jobboerse.repositories.JobRepository;
 import de.hsos.kbse.jobboerse.repositories.GeneralUserRepository;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 /**
  *
  * @author lennartwoltering
  */
-public class BasicMatchingAlgorithm implements MatchingAlgorithm {
+@Basic
+public class BasicMatchingAlgorithm implements MatchingAlgorithm, Serializable {
 
     @Inject
     private SearchRepository searchRepo;
@@ -36,6 +42,7 @@ public class BasicMatchingAlgorithm implements MatchingAlgorithm {
 
     
     @Override
+    @Transactional
     public List<WeightedJob> findSuitableJobs(String email) {
         SeekingUser user = userRepo.getUserByEmail(email);
         SearchRequest userRequest = user.getSearchrequest();
@@ -43,9 +50,11 @@ public class BasicMatchingAlgorithm implements MatchingAlgorithm {
         List<WeightedJob> suitableJobs = new ArrayList<>();
         Set<Job> availableJobs = new HashSet<>();
         for(JobField jobfield : userRequest.getJobfield()){
-            List<Job> jobs = jobRepo.findJobsByJobField(jobfield.getName());
-            if(jobs != null){
+            try {
+                List<Job> jobs = jobRepo.findJobsByJobField(jobfield.getName());
                 availableJobs.addAll(jobs);
+            } catch (Exception ex) {
+                
             }
         }
         //Arquillian Test Suite kann nicht mit Lambda Funktionen umgehen
@@ -55,6 +64,8 @@ public class BasicMatchingAlgorithm implements MatchingAlgorithm {
             if(jobs != null){
                 availableJobs.addAll(jobs);
             }
+            
+            System.out.println(availableJobs.size());
         });
         */
         float initPercentageBenfits = 100.0f;
@@ -71,7 +82,7 @@ public class BasicMatchingAlgorithm implements MatchingAlgorithm {
                         break;
                     }
                 }
-                if(!foundBenefit) percentageBenefits -= userRequest.getWishedBenefits().size() / initPercentageBenfits;
+                if(!foundBenefit) percentageBenefits -=  initPercentageBenfits / userRequest.getWishedBenefits().size();
             }
             for (NeededRequirement cmpyRequirement : available.getNeeded()) {
                 boolean foundRequirement = false;
@@ -81,7 +92,7 @@ public class BasicMatchingAlgorithm implements MatchingAlgorithm {
                         break; 
                     }
                 }
-                if(!foundRequirement) percentageRequirements -=  available.getNeeded().size() / initPercentageRequirements;
+                if(!foundRequirement) percentageRequirements -=   initPercentageRequirements / available.getNeeded().size();
                 
             }
             foundJob.setJob(available);

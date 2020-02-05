@@ -15,15 +15,20 @@
     
     <url-mapping id="createJob">
         <pattern value="/createJob" />
-        <view-id value="/faces/pages/members/jobCreation.xhtml" />
+        <view-id value="/faces/pages/members/company/jobCreation.xhtml" />
     </url-mapping>
     
+    <url-mapping id="editJob">
+        <pattern value="/editJob/#{ id : jobEditFace.id }" />
+        <view-id value="/faces/pages/members/company/jobEdit.xhtml" />
+    </url-mapping>
+            
     <url-mapping id="profile">
         <pattern value="/profile" />
         <view-id value="/faces/pages/members/profile.xhtml" />
     </url-mapping>
     
-        <url-mapping id="setup">
+    <url-mapping id="setup">
         <pattern value="/setup" />
         <view-id value="/faces/pages/members/setup.xhtml" />
     </url-mapping>
@@ -37,5 +42,5 @@
         <pattern value="/registerEmployee" />
         <view-id value="/faces/pages/public/registerEmployee.xhtml" />
     </url-mapping>
-
+    
 </pretty-config>

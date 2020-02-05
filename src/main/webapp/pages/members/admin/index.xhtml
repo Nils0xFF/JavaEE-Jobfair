@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!-- Author: Nils Geschwinde -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+    <div class="container mt-5">
+
+        <ul class="nav nav-tabs" jsf:id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="jobField-tab" data-toggle="tab" href="#jobField" role="tab" aria-controls="jobField" aria-selected="true">Branchen</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="benefit-tab" data-toggle="tab" href="#benefit" role="tab" aria-controls="benefit" aria-selected="false">Benefits</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#requirement" role="tab" aria-controls="contact" aria-selected="false">Qualifikationen</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+
+            <div class="tab-pane fade show active" id="jobField" jsf:id="jobField" role="tabpanel" aria-labelledby="home-tab">
+                <div jsf:id="jobField-content">
+                    <h:form >
+                        <div class="row mt-3">
+                            <div class="col-9 form-group">
+                                <p:inputText class="form-control" placeholder="Name" value="#{ adminDashboardFace.jobFieldName }" />
+                            </div>
+                            <div class="col-3">
+                                <p:commandButton styleClass="btn bg-info btn-block" action="#{ adminDashboardFace.createJobField() }" 
+                                                 value="Hinzfügen" ajax="true" update="jobField-content" onsuccess="#{ adminDashboardFace.init() }"/>
+                            </div>
+                        </div>
+                    </h:form >
+                    <p:dataList var="jobField" value="#{ adminDashboardFace.jobFields }" rows="20" paginator="true" type="none" class="list-group">
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h:form>
+                                        <p:inplace id="ajax" editor="true">
+                                            <p:ajax event="save" listener="#{ adminDashboardFace.updateJobField(jobField.id, jobField.name) }" update="@parent" />
+                                            <p:inputText value="#{jobField.name}" required="true" label="text" />
+                                        </p:inplace>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </li>
+                    </p:dataList>
+                </div>
+            </div>
+
+            <div class="tab-pane fade show" id="benefit" jsf:id="benefit" role="tabpanel" aria-labelledby="profile-tab">
+                <div jsf:id="benefit-content">
+                    <h:form>
+                        <div class="row mt-3">
+                            <div class="col-9 form-group">
+                                <p:inputText class="form-control" placeholder="Name" value="#{ adminDashboardFace.benefitName }" />
+                            </div>
+                            <div class="col-3">
+                                <p:commandButton styleClass="btn bg-info btn-block" action="#{ adminDashboardFace.createBenefit() }" 
+                                                 value="Hinzfügen" ajax="true" update="benefit-content" onsuccess="#{ adminDashboardFace.init() }" />
+                            </div>
+                        </div>
+                    </h:form>
+                    <p:dataList var="benefit" value="#{ adminDashboardFace.benefits }" rows="20" paginator="true" type="none" class="list-group">
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h:form>
+                                        <p:inplace id="ajax" editor="true">
+                                            <p:ajax event="save" listener="#{ adminDashboardFace.updateBenefit(benefit.id, benefit.name) }" update="@parent" />
+                                            <p:inputText value="#{benefit.name}" required="true" label="text" />
+                                        </p:inplace>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </li>
+                    </p:dataList>
+                </div>  
+            </div>
+            <div class="tab-pane fade show" id="requirement" jsf:id="requirement" role="tabpanel" aria-labelledby="contact-tab" p:id="">
+                <div jsf:id="requirement-content">
+                    <h:form>
+                        <div class="row mt-3">
+                            <div class="col-9 form-group">
+                                <p:inputText class="form-control" placeholder="Name" value="#{ adminDashboardFace.requirementName }" />
+                            </div>
+                            <div class="col-3">
+                                <p:commandButton styleClass="btn bg-info btn-block" action="#{ adminDashboardFace.createRequirement() }" 
+                                                 value="Hinzfügen" ajax="true" update="requirement-content" onsuccess="#{ adminDashboardFace.init() }"/>
+                            </div>
+                        </div>
+                    </h:form>
+                    <p:dataList var="req" value="#{ adminDashboardFace.requirements }" rows="20" paginator="true" type="none" class="list-group">
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h:form>
+                                        <p:inplace id="ajax" editor="true">
+                                            <p:ajax event="save" listener="#{ adminDashboardFace.updateRequirement(req.id, req.name) }" update="@form" />
+                                            <p:inputText value="#{req.name}" required="true" label="text" />
+                                        </p:inplace>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </li>
+                    </p:dataList>
+                </div>
+            </div>
+        </div>
+    </div>
+</html>
+

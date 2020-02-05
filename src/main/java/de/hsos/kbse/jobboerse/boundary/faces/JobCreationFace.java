@@ -5,7 +5,6 @@
  */
 package de.hsos.kbse.jobboerse.boundary.faces;
 
-import de.hsos.kbse.jobboerse.repositories.JobRepository;
 import de.hsos.kbse.jobboerse.controllers.JobCreationController;
 import de.hsos.kbse.jobboerse.entity.company.JobField;
 import de.hsos.kbse.jobboerse.entity.shared.NeededRequirement;
@@ -13,10 +12,13 @@ import de.hsos.kbse.jobboerse.entity.shared.Requirement;
 import de.hsos.kbse.jobboerse.enums.Sal_Relation;
 import de.hsos.kbse.jobboerse.repositories.JobFieldRepository;
 import de.hsos.kbse.jobboerse.repositories.RequirementRepository;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -24,60 +26,67 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.security.enterprise.SecurityContext;
 import javax.transaction.Transactional;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.PositiveOrZero;
 
 /**
  *
- * @author lennartwoltering
+ * @author lennartwoltering, nilsgeschwinde
  */
 @Named("JobCreation")
 @ViewScoped
 public class JobCreationFace implements Serializable {
 
-    @NotEmpty
+    @NotBlank
     private String jobname;
-    @NotEmpty
+    @NotBlank
     private String desc;
     @Pattern(regexp = "^[^0-9]+$")
-    @NotEmpty
+    @NotBlank
     private String street;
-    @NotEmpty
+    @NotBlank
     private String housenumber;
-    @NotEmpty
+    @NotBlank
     @Pattern(regexp = "^[^0-9]+$")
     private String city;
-    @NotEmpty
+    @NotBlank
     private String postalcode, country;
-    @Pattern(regexp = "^[^a-zA-Z]+$")
-    private String salary;
+    @PositiveOrZero
+    private Double salary;
     @Enumerated(EnumType.STRING)
     private Sal_Relation relation;
     private List<Requirement> wishedRequirement;
-    private List<NeededRequirement> weightedRequirements;
+    private List<NeededRequirement> finishedWeightedRequirements = new ArrayList<>();
+    private List<NeededRequirement> newWeightedRequirements = new ArrayList<>();
+
     private JobField jobfield;
-    
 
     @Inject
     JobFieldRepository jobFieldRepo;
 
     @Inject
     RequirementRepository requirementRepo;
-    
+
     @Inject
     JobCreationController jobCntrl;
-    
+
     @Inject
     SecurityContext context;
 
     @Transactional
-    public void createJob(){
-        jobCntrl.createInfo(jobname, desc, jobfield, weightedRequirements, salary, relation)
+    public void createJob() {
+        jobCntrl.createInfo(jobname, desc, jobfield, finishedWeightedRequirements, salary, relation)
                 .createAddress(street, housenumber, city, postalcode, country)
                 .finishCreation(context.getCallerPrincipal().getName());
+
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/dashboard");
+        } catch (IOException ex) {
+            Logger.getLogger(CompanyRegisterFace.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    
-    
+
     public String getDesc() {
         return desc;
     }
@@ -126,11 +135,11 @@ public class JobCreationFace implements Serializable {
         this.country = country;
     }
 
-    public String getSalary() {
+    public Double getSalary() {
         return salary;
     }
 
-    public void setSalary(String salary) {
+    public void setSalary(Double salary) {
         this.salary = salary;
     }
 
@@ -173,25 +182,42 @@ public class JobCreationFace implements Serializable {
     public void setRelation(Sal_Relation relation) {
         this.relation = relation;
     }
-    
-    public Sal_Relation[] getRelations(){
+
+    public Sal_Relation[] getRelations() {
         return Sal_Relation.values();
     }
 
     public List<NeededRequirement> getWeightedRequirements() {
-        weightedRequirements = new ArrayList<>();
-        for (Requirement req : this.wishedRequirement) {
-            NeededRequirement toInsert = NeededRequirement.builder()
-                    .requirement(req)
-                    .weight(1)
-                    .build();
-            weightedRequirements.add(toInsert);
+        newWeightedRequirements = new ArrayList<>();
+        if (this.wishedRequirement != null) {
+            for (Requirement req : this.wishedRequirement) {
+                boolean found = false;
+                for (NeededRequirement old : this.finishedWeightedRequirements) {
+                    if (req.equals(old.getRequirement())) {
+                        newWeightedRequirements.add(old);
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    NeededRequirement toInsert = NeededRequirement.builder()
+                            .requirement(req)
+                            .weight(1)
+                            .build();
+                    newWeightedRequirements.add(toInsert);
+                }
+            }
         }
-        return weightedRequirements;
+        finishedWeightedRequirements = newWeightedRequirements;
+        return newWeightedRequirements;
     }
 
     public void setWeightedRequirements(List<NeededRequirement> weightedRequirements) {
-        this.weightedRequirements = weightedRequirements;
+        this.newWeightedRequirements = weightedRequirements;
+    }
+
+    public List<NeededRequirement> getFinishedRequirements() {
+        return finishedWeightedRequirements;
     }
 
 }

@@ -3,6 +3,93 @@
     Author     : nilsgeschwinde
 */
 
-#content{
-    min-height: 95vh;
+#page{
+    position: relative;
+    min-height: 100vh;
+    padding-bottom: 150px;
+}
+
+#footer{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+@media (min-width: 1400px){
+    .container.wide{
+        min-width: 1340px;
+    }
+}
+
+@media (min-width: 1600px){
+    .container.wide{
+        min-width: 1540px;
+    }
+}
+
+@media (min-width: 1800px){
+    .container.wide{
+        min-width: 1740px;
+    }
+}
+
+.ui-autocomplete-multiple-container{
+    width: 100%;
+}
+
+.ui-password-panel{
+    margin-top: 10px;
+    border: none;
+    width: 100%;
+    background: transparent;
+    color: black;
+}
+
+.ui-selectonemenu-label{
+    background: none;
+}
+
+.ui-selectonemenu{
+    -webkit-appearance: none;
+    background: none;
+}
+
+.ui-selectonemenu::-ms-expand{
+    display: none;
+}
+
+.ui-selectonemenu-filter-container{
+    width: 100%;
+}
+
+.btn{
+    border: none !important;
+}
+
+.ui-selectmanymenu{
+    padding: 0;
+}
+
+.ui-selectlistbox-filter-container{
+    margin: 0;
+    padding: 10px 10px;
+    background: rgba(0,0,0,.03);
+}
+
+.ui-selectlistbox-filter-container .ui-icon{
+    display: none;
+}
+
+.ui-selectlistbox-filter.ui-inputfield{
+    width: 100%;
+}
+
+.ui-selectlistbox-listcontainer{
+    padding: 0px 10px;
+}
+
+.profileImage{
+    clear: both;
+    max-height: 20vh;    
 }

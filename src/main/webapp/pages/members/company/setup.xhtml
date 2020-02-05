@@ -1,24 +1,28 @@
 <?xml version='1.0' encoding='UTF-8' ?>
+<!-- Author: Nils Geschwinde -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
 
     <div class="container mt-5">
         <div class="card">
             <h5 class="card-header">Erstmalige Einrichtung</h5>
             <div class="card-body">
-                <h:form enctype="multipart/form-data">
+                <h:form enctype="multipart/form-data" onkeypress="if (event.keyCode === 13) {
+                            PF('wiz').next();
+                            return false;
+                        }" >
                     <p:wizard showNavBar="false" showStepStatus="true" widgetVar="wiz">
                         <p:tab id="personal" title="Allgemeines">
                             <p:separator/>
                             <div class="form-row">
                                 <div class="col-sm-8 form-group">
                                     <p:outputLabel for="@next" value="Name der Firma"/>
-                                    <p:inputText class="form-control #{firmName.valid ? '' : 'is-invalid'}" binding="#{firmName}" value="#{CompanyRegisterFace.firmname}" required="true">
+                                    <p:inputText class="form-control #{firmName.valid ? '' : 'is-invalid'}" binding="#{firmName}" value="#{CompanyRegisterFace.firmname}">
                                         <p:clientValidator event="keyup"/>
                                     </p:inputText>
                                     <h:message for="@previous" class="small text-danger"/>
@@ -33,10 +37,17 @@
                                 </div>
                             </div>
 
-                            <p:outputLabel for="@next" value="Dein Firmenfoto: "/>
-                
-                                <p:fileUpload fileUploadListener="#{CompanyRegisterFace.handleFileUpload}" mode="advanced" dragDropSupport="true"
-                                              sizeLimit="5242880" fileLimit="1" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                            <div class="form-group">
+                                <p:outputLabel for="@next" value="Dein Firmenfoto: "/>
+                                <div class="col-12 text-center" jsf:id="image">
+                                    <ui:fragment rendered="#{CompanyRegisterFace.file != null}">
+                                        <img src="data:#{CompanyRegisterFace.dataType};base64,#{CompanyRegisterFace.base64}" class="profileImage img-fluid text-center" />
+                                    </ui:fragment>
+                                    <p jsf:id="fileName">#{ CompanyRegisterFace.file.fileName }</p>
+                                    <p:fileUpload fileUploadListener="#{CompanyRegisterFace.handleFileUpload}" mode="advanced" dragDropSupport="true"
+                                                  sizeLimit="5242880" fileLimit="1" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" update="image"/>
+                                </div>
+                            </div>
 
                             <div class="form-group">
                                 <p:outputLabel for="@next" value="Beschreibung"/>
@@ -45,20 +56,24 @@
                                 </p:inputTextarea>
                                 <h:message for="@previous" class="small text-danger"/>
                             </div>
-                            <p:outputLabel value="Vorteile, die ihre Firma bietet: " for="@next" />
-                            <p:autoComplete multiple="true" value="#{CompanyRegisterFace.fullfilledBenefits}" completeMethod="#{Autocomplete.completeBenefitData}"
-                                            var="benefit" itemLabel="#{benefit.name}" itemValue="#{benefit}"  forceSelection="true"
-                                            class="form-control h-auto" converter="BenefitConverter" unique="true">
 
-                                <p:column>
-                                    <h:outputText value="#{benefit.name}" />
-                                </p:column>
-                            </p:autoComplete>
+                            <div class="form-group">
+                                <p:outputLabel value="Vorteile, die ihre Firma bietet: " for="@next" />
+                                <p:autoComplete multiple="true" value="#{CompanyRegisterFace.fullfilledBenefits}" completeMethod="#{Autocomplete.completeBenefitData}"
+                                                var="benefit" itemLabel="#{benefit.name}" itemValue="#{benefit}"  forceSelection="true"
+                                                class="form-control h-auto" converter="BenefitConverter" unique="true">
+
+                                    <p:column>
+                                        <h:outputText value="#{benefit.name}" />
+                                    </p:column>
+                                </p:autoComplete>
+                                <h:message for="@previous" class="small text-danger"/>
+                            </div>
 
                             <div class="form-row">
                                 <div class="col-sm-9 form-group">
                                     <p:outputLabel for="@next" value="Straße"/>
-                                    <p:inputText class="form-control #{streetName.valid ? '' : 'is-invalid'}" binding="#{streetName}" value="#{CompanyRegisterFace.street}" required="true">
+                                    <p:inputText class="form-control #{streetName.valid ? '' : 'is-invalid'}" binding="#{streetName}" value="#{CompanyRegisterFace.street}">
                                         <p:clientValidator event="keyup"/>
                                     </p:inputText>
                                     <h:message for="@previous" class="small text-danger"/>
@@ -75,7 +90,7 @@
                             <div class="form-row">
                                 <div class="col-sm-4 form-group">
                                     <p:outputLabel for="@next" value="PLZ"/>
-                                    <p:inputText class="form-control #{postalCode.valid ? '' : 'is-invalid'}" binding="#{postalCode}" value="#{CompanyRegisterFace.postalcode}" required="true">
+                                    <p:inputText class="form-control #{postalCode.valid ? '' : 'is-invalid'}" binding="#{postalCode}" value="#{CompanyRegisterFace.postalcode}">
                                         <p:clientValidator event="keyup"/>
                                     </p:inputText>
                                     <h:message for="@previous" class="small text-danger"/>
@@ -87,7 +102,7 @@
                                     </p:inputText>  
                                     <h:message for="@previous" class="small text-danger"/>
                                 </div> 
-                                 <div class="col-sm-4 form-group">
+                                <div class="col-sm-4 form-group">
                                     <p:outputLabel for="@next" value="Land"/>
                                     <p:inputText class="form-control #{country.valid ? '' : 'is-invalid'}" binding="#{country}" value="#{CompanyRegisterFace.country}">
                                         <p:clientValidator event="keyup"/>
@@ -96,8 +111,11 @@
                                 </div> 
                             </div>
 
-                            <p:commandButton class="btn btn-light" value="Abbrechen" onclick="PF('wiz').back();"></p:commandButton>
-                            <p:commandButton class="btn btn-primary" value="Weiter" onclick="PF('wiz').next();" validateClient="true"></p:commandButton>
+                            <div class="form-row">
+                                <p:commandButton class="btn bg-light text-dark" value="Zurück" onclick="PF('wiz').back();"></p:commandButton>
+                                <p:commandButton class="btn bg-primary" value="Weiter" onclick="PF('wiz').next();" validateClient="true"></p:commandButton>
+                            </div>
+
                         </p:tab>
 
                         <p:tab id="contact" title="Kontaktperson">
@@ -122,7 +140,7 @@
                             <div class="form-row">
                                 <div class="col-sm-6 form-group">
                                     <p:outputLabel for="@next" value="Vorname"/>
-                                    <p:inputText class="form-control #{firstName.valid ? '' : 'is-invalid'}" binding="#{firstName}" value="#{CompanyRegisterFace.firstname}" required="true">
+                                    <p:inputText class="form-control #{firstName.valid ? '' : 'is-invalid'}" binding="#{firstName}" value="#{CompanyRegisterFace.firstname}">
                                         <p:clientValidator event="keyup"/>
                                     </p:inputText>
                                     <h:message for="@previous" class="small text-danger"/>
@@ -140,20 +158,31 @@
                                         <p:clientValidator event="keyup"/>
                                     </p:inputText>  
                                     <h:message for="@previous" class="small text-danger"/>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <p:outputLabel for="@next" value="Email"/>
+                                    <p:inputText class="form-control" value="#{CompanyRegisterFace.contactEmail}" >
+                                        <p:clientValidator event="keyup"/>
+                                    </p:inputText>  
+                                    <h:message for="@previous" class="small text-danger"/>
                                 </div> 
                             </div>
-
-                            <p:commandButton class="btn btn-light" value="Zurück" onclick="PF('wiz').back();"></p:commandButton>
-                            <p:commandButton class="btn btn-primary" value="Weiter" onclick="PF('wiz').next();" ></p:commandButton>
+                            <div class="form-row">
+                                <p:commandButton class="btn bg-light text-dark" value="Zurück" onclick="PF('wiz').back();"></p:commandButton>
+                                <p:commandButton class="btn bg-primary" value="Weiter" onclick="PF('wiz').next();" validateClient="true"></p:commandButton>
+                            </div>
                         </p:tab>
 
                         <p:tab id="overview" title="Übersicht">
                             <div class="list-group">
                                 <div class="list-group-item">
                                     <h5 class="mb-3">Generelle Informationen</h5>
+                                    <ui:fragment rendered="#{CompanyRegisterFace.file != null}">
+                                        <img src="data:#{CompanyRegisterFace.dataType};base64,#{CompanyRegisterFace.base64}" class="profileImage img-fluid text-center" />
+                                    </ui:fragment>
+                                    <p>#{ CompanyRegisterFace.file.fileName }</p>
                                     <div class="form-row">
                                         <div class="col-sm-8 form-group">
-                                            <p:graphicImage value="#{CompanyRegisterFace.profileImage}"/>
                                             <p:outputLabel for="@next" value="Name der Firma"/>
                                             <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{CompanyRegisterFace.firmname}"
                                                          readonly="true" disabled="true">
@@ -260,7 +289,7 @@
                                     <div class="form-row">
                                         <div class="col-sm-6 form-group">
                                             <p:outputLabel for="@next" value="Vorname"/>
-                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{CompanyRegisterFace.firstname}" required="true"
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{CompanyRegisterFace.firstname}"
                                                          readonly="true" disabled="true">
                                                 <p:clientValidator event="keyup"/>
                                             </p:inputText>
@@ -284,16 +313,17 @@
                                         </div>
                                         <div class="col-sm-6 form-group">
                                             <p:outputLabel for="@next" value="Email"/>
-                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{CompanyRegisterFace.email}" 
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{CompanyRegisterFace.contactEmail}" 
                                                          readonly="true" disabled="true">
                                                 <p:clientValidator event="keyup"/>
                                             </p:inputText>  
                                             <h:message for="@previous" class="small text-danger"/>
                                         </div> 
                                     </div>
-                                </div></div>
+                                </div>
+                            </div>
 
-                            <p:commandButton class="btn btn-light" value="Zurück" onclick="PF('wiz').back();"></p:commandButton>
+                            <p:commandButton class="btn bg-light text-dark" value="Zurück" onclick="PF('wiz').back();"></p:commandButton>
                             <p:commandButton class="btn btn-primary" value="Weiter" action="#{CompanyRegisterFace.registerUser()}" ajax="true" validateClient="true"></p:commandButton>
                             <h:messages globalOnly="true" />
                         </p:tab>

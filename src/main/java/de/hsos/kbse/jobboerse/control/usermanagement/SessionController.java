@@ -2,20 +2,22 @@ package de.hsos.kbse.jobboerse.control.usermanagement;
 
 import de.hsos.kbse.jobboerse.repositories.CompanyRepository;
 import de.hsos.kbse.jobboerse.repositories.GeneralUserRepository;
-import java.io.Serializable;
-import javax.enterprise.context.SessionScoped;
+import java.io.IOException;
+import javax.enterprise.context.RequestScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.security.enterprise.SecurityContext;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
  * @author nilsgeschwinde
  */
 @Named("sessionController")
-@SessionScoped
-public class SessionController implements Serializable {
+@RequestScoped
+public class SessionController {
 
     @Inject
     private SecurityContext context;
@@ -26,14 +28,10 @@ public class SessionController implements Serializable {
     @Inject
     private GeneralUserRepository userRepo;
 
-    private boolean isLoggedIn = false;
-
-    private boolean isAdmin = false;
-
-    private boolean isCompany = true;
-
-    public void logout() {
+    public void logout() throws IOException {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
     }
 
     public boolean userHasSetup() {
@@ -49,11 +47,11 @@ public class SessionController implements Serializable {
     }
 
     public boolean userIsLoggedIn() {
-        return (context.isCallerInRole("USER") || context.isCallerInRole("COMPANY"));
+        return (context.isCallerInRole("USER") || context.isCallerInRole("COMPANY") || context.isCallerInRole("ADMIN"));
     }
 
     public boolean userIsAdmin() {
-        return isAdmin;
+        return context.isCallerInRole("ADMIN");
     }
 
     public boolean userIsCompany() {
