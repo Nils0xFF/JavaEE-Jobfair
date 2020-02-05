@@ -96,7 +96,6 @@ public class UserDashboard implements Serializable{
         this.wishedBenefits = wishedBenefits;
     }
     
-    
    public void updateAvailableJobs(){
        availableJobs = matching.findSuitableJobs(context.getCallerPrincipal().getName());
    }
