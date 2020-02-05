@@ -133,7 +133,7 @@ public class CompanyProfileFace implements Serializable {
         companyCntrl
                 .createProfile(firmname, desc, workercount, comPicture != null ? comPicture.getData() : null, comPicture != null ? comPicture.getDataType() : null)
                 .createAddress(street, housenumber, city, postalcode, country)
-                .createContact(salutation, titles, firstname, lastname, email, contactEmail)
+                .createContact(salutation, titles, firstname, lastname, telefon, contactEmail)
                 .finishUpdating(fullfilledBenefits, context.getCallerPrincipal().getName());
 
         editMode = false;
