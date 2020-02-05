@@ -33,8 +33,8 @@ public class RequirementFacade extends AbstractFacade<Requirement> {
     }
     
     public Requirement findByName(String name) throws IllegalArgumentException {
-        String queryString = "SELECT bf FROM Benefit bf "
-                + "WHERE bf.name = :name";
+        String queryString = "SELECT req FROM Requirement req "
+                + "WHERE req.name = :name";
 
         TypedQuery<Requirement> query = em.createQuery(queryString, Requirement.class);
         query.setParameter("name", name);
