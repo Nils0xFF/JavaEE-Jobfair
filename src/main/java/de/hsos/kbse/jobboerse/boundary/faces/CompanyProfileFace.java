@@ -6,6 +6,7 @@
 package de.hsos.kbse.jobboerse.boundary.faces;
 
 import de.hsos.kbse.jobboerse.controllers.CompanyRegistrationController;
+import de.hsos.kbse.jobboerse.controllers.ImageService;
 import de.hsos.kbse.jobboerse.entity.company.Company;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
 import de.hsos.kbse.jobboerse.entity.shared.Picture;
@@ -42,9 +43,12 @@ public class CompanyProfileFace implements Serializable {
 
     @Inject
     private CompanyRepository compRepository;
-    
+
     @Inject
     private CompanyRegistrationController companyCntrl;
+
+    @Inject
+    private ImageService imageService;
 
     private boolean editMode = false;
 
@@ -103,7 +107,7 @@ public class CompanyProfileFace implements Serializable {
         city = companyDetails.getProfile().getAddress().getCity();
         postalcode = companyDetails.getProfile().getAddress().getPostalcode();
         country = companyDetails.getProfile().getAddress().getCountry();
-        
+
         fullfilledBenefits = companyDetails.getProfile().getBenefits();
 
         salutation = companyDetails.getProfile().getContact().getSalutation();
@@ -114,21 +118,25 @@ public class CompanyProfileFace implements Serializable {
         contactEmail = companyDetails.getProfile().getContact().getEmail();
 
     }
-    
+
     @Transactional
-    public void handleFileUpload(FileUploadEvent event){
-        System.out.println("ADD");
+    public void handleFileUpload(FileUploadEvent event) {
         Picture toInsert = Picture.builder().data(event.getFile().getContents()).dataType(event.getFile().getContentType()).build();
         compRepository.addPicture(context.getCallerPrincipal().getName(), toInsert);
+        companyDetails.getProfile().setProfilePicture(toInsert);
     }
-    
+
     @Transactional
-    public void updateProfile(){
-        companyCntrl.createProfile(firmname, desc, workercount, null, null)
+    public void updateProfile() {
+
+        Picture comPicture = companyDetails.getProfile().getProfilePicture();
+
+        companyCntrl
+                .createProfile(firmname, desc, workercount, comPicture != null ? comPicture.getData() : null, comPicture != null ? comPicture.getDataType() : null)
                 .createAddress(street, housenumber, city, postalcode, country)
                 .createContact(salutation, titles, firstname, lastname, email, contactEmail)
                 .finishUpdating(fullfilledBenefits, context.getCallerPrincipal().getName());
-                
+
         editMode = false;
     }
 

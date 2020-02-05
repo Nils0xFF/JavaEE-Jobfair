@@ -48,10 +48,11 @@
                                     <h:message for="@previous" class="small text-danger"/>
                                 </div> 
                                 <div class="col-sm-6">
-                                    <p:outputLabel for="@next" value="Geburtsdatum"/> 
-                                    <p:datePicker class="#{component.valid ? '' : 'is-invalid'}" view="month" value="#{UserRegisterFace.birthday}" pattern="MM/yyyy" yearNavigator="true" yearRange="1890:2002">
+                                    <p:outputLabel for="@next" value="Geburtsdatum (DD.MM.YYYY)"/> 
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{UserRegisterFace.birthday}">
+                                        <f:convertDateTime pattern="dd.MM.yyyy" />
                                         <p:clientValidator event="keyup"/>
-                                    </p:datePicker>
+                                    </p:inputText>
                                     <h:message for="@previous" class="small text-danger"/>
                                 </div> 
                                 <div class="col-sm-6">
@@ -215,10 +216,11 @@
                                         </div> 
                                         <div class="col-sm-6">
                                             <p:outputLabel for="@next" value="Geburtsdatum"/> 
-                                            <p:datePicker class="#{component.valid ? '' : 'is-invalid'}" view="month" value="#{UserRegisterFace.birthday}" pattern="MM/yyyy" yearNavigator="true" yearRange="1890:2002"
-                                                          readonly="true" disabled="true" >
+                                            <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{UserRegisterFace.birthday}"
+                                                         readonly="true" disabled="true" >
+                                                <f:convertDateTime pattern="dd.MM.yyyy" />
                                                 <p:clientValidator event="keyup"/>
-                                            </p:datePicker>
+                                            </p:inputText>
                                             <h:message for="@previous" class="small text-danger"/>
                                         </div> 
                                         <div class="col-sm-6">

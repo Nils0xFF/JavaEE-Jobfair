@@ -3,8 +3,17 @@
     Author     : nilsgeschwinde
 */
 
-#content{
-    min-height: 92.5vh;
+#page{
+    position: relative;
+    min-height: 100vh;
+    padding-bottom: 150px;
+}
+
+#footer{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 @media (min-width: 1400px){
@@ -56,4 +65,26 @@
 
 .btn{
     border: none !important;
+}
+
+.ui-selectmanymenu{
+    padding: 0;
+}
+
+.ui-selectlistbox-filter-container{
+    margin: 0;
+    padding: 10px 10px;
+    background: rgba(0,0,0,.03);
+}
+
+.ui-selectlistbox-filter-container .ui-icon{
+    display: none;
+}
+
+.ui-selectlistbox-filter.ui-inputfield{
+    width: 100%;
+}
+
+.ui-selectlistbox-listcontainer{
+    padding: 0px 10px;
 }

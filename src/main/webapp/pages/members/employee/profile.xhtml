@@ -60,10 +60,11 @@
                                 </div> 
                                 <div class="col-sm-6">
                                     <p:outputLabel for="@next" value="Geburtsdatum"/> 
-                                    <p:datePicker class="#{component.valid ? '' : 'is-invalid'}" view="month" value="#{userProfileFace.birthday}" pattern="MM/yyyy" yearNavigator="true" yearRange="1890:2002"
-                                                  readonly="#{!userProfileFace.editMode}" disabled="#{!userProfileFace.editMode}" >
+                                    <p:inputText class="form-control #{component.valid ? '' : 'is-invalid'}" value="#{userProfileFace.birthday}"
+                                                 readonly="#{!userProfileFace.editMode}" disabled="#{!userProfileFace.editMode}">
+                                        <f:convertDateTime pattern="dd.MM.yyyy" />
                                         <p:clientValidator event="keyup"/>
-                                    </p:datePicker>
+                                    </p:inputText>
                                     <h:message for="@previous" class="small text-danger"/>
                                 </div> 
                                 <div class="col-sm-6">

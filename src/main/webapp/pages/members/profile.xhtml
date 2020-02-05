@@ -5,11 +5,11 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
     <ui:composition template="../templates/template.xhtml">
-        <ui:param name="stylesheet" value="dashboard.css"/>
+        <ui:param name="stylesheet" value="profile.css"/>
         <ui:param name="transparentNav" value="false" />
         <ui:param name="title" value="Dashboard" />
         <ui:define name="content">
-            <ui:include src="#{sessionController.userIsCompany() ? 'company/profile.xhtml' : 'employee/profile.xhtml'}" rendered="false">
+            <ui:include src="#{ sessionController.userIsAdmin() ? 'admin/profile.xhtml' : sessionController.userIsCompany() ? 'company/profile.xhtml' : 'employee/profile.xhtml'}" rendered="false">
             </ui:include>
         </ui:define>
 

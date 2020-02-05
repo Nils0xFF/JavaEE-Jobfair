@@ -13,10 +13,15 @@ import de.hsos.kbse.jobboerse.entity.shared.Requirement;
 import de.hsos.kbse.jobboerse.enums.Sal_Relation;
 import de.hsos.kbse.jobboerse.repositories.JobFieldRepository;
 import de.hsos.kbse.jobboerse.repositories.RequirementRepository;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -29,7 +34,7 @@ import javax.validation.constraints.Pattern;
 
 /**
  *
- * @author lennartwoltering
+ * @author lennartwoltering, nilsgeschwinde
  */
 @Named("JobCreation")
 @ViewScoped
@@ -56,7 +61,7 @@ public class JobCreationFace implements Serializable {
     private List<Requirement> wishedRequirement;
     private List<NeededRequirement> finishedWeightedRequirements = new ArrayList<>();
     private List<NeededRequirement> newWeightedRequirements = new ArrayList<>();
-    ;
+
     private JobField jobfield;
 
     @Inject
@@ -72,12 +77,16 @@ public class JobCreationFace implements Serializable {
     SecurityContext context;
 
     @Transactional
-    public String createJob() {
+    public void createJob() {
         jobCntrl.createInfo(jobname, desc, jobfield, finishedWeightedRequirements, salary, relation)
                 .createAddress(street, housenumber, city, postalcode, country)
                 .finishCreation(context.getCallerPrincipal().getName());
-        
-        return "pages/members/index.xhtml?faces-redirect=true";
+
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/dashboard");
+        } catch (IOException ex) {
+            Logger.getLogger(CompanyRegisterFace.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public String getDesc() {
