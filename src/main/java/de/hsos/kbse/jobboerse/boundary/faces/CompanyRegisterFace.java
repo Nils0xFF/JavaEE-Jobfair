@@ -11,15 +11,12 @@ import de.hsos.kbse.jobboerse.enums.Salutation;
 import de.hsos.kbse.jobboerse.enums.Title;
 import de.hsos.kbse.jobboerse.enums.WorkerCount;
 import de.hsos.kbse.jobboerse.repositories.BenefitRepository;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Base64;
 import java.util.List;
 import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -31,8 +28,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 /**
@@ -90,21 +85,19 @@ public class CompanyRegisterFace implements Serializable {
     CompanyRegistrationController companyRegCntrl;
 
     @Inject
-    SecurityContext context;
-
+    private SecurityContext context;
+    
     public void handleFileUpload(FileUploadEvent event) {
         System.out.println("UPLOAD");
         pictureData = event.getFile().getContents();
         dataType = event.getFile().getContentType();
+        this.file = event.getFile();
     }
-
-    public StreamedContent getProfileImage() {
-        if(pictureData != null){
-        return new DefaultStreamedContent(new ByteArrayInputStream(pictureData), dataType);
-        }
-        return null;
+    
+    public String getBase64 (){
+        return Base64.getEncoder().encodeToString(file.getContents());
     }
-
+    
     public UploadedFile getFile() {
         return file;
     }
@@ -112,7 +105,7 @@ public class CompanyRegisterFace implements Serializable {
     public void setFile(UploadedFile file) {
         this.file = file;
     }
-    
+
     @Transactional
     public void registerUser() {
         if (companyRegCntrl.createProfile(firmname, desc, workercount, pictureData, dataType)
@@ -128,22 +121,6 @@ public class CompanyRegisterFace implements Serializable {
         } else {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "Register failed", null));
-        }
-    }
-
-    public void validatePasswordRepeat(FacesContext context, UIComponent component, Object value) {
-        
-        // Get Password Conformation
-        String confirmPassword = (String) value;
-        
-        // Get Value of Input Field
-        UIInput passwordInput = (UIInput) component.findComponent("password");
-        String password = (String) passwordInput.getLocalValue();
-        
-        if (password == null ||confirmPassword == null || !password.equals(confirmPassword)) {
-            String message = context.getApplication().evaluateExpressionGet(context, "Passwort muss übereinstimmen", String.class);
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message);
-            throw new ValidatorException(msg);
         }
     }
 
@@ -280,12 +257,12 @@ public class CompanyRegisterFace implements Serializable {
         return WorkerCount.values();
     }
 
-    public byte[] getPictureData() {
-        return pictureData;
+    public String getDataType() {
+        return dataType;
     }
 
-    public void setPictureData(byte[] pictureData) {
-        this.pictureData = pictureData;
+    public byte[] getPictureData() {
+        return pictureData;
     }
 
 }

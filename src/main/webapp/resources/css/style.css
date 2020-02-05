@@ -88,3 +88,8 @@
 .ui-selectlistbox-listcontainer{
     padding: 0px 10px;
 }
+
+.profileImage{
+    clear: both;
+    max-height: 20vh;    
+}
