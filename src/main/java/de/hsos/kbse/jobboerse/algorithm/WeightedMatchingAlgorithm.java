@@ -48,9 +48,11 @@ public class WeightedMatchingAlgorithm implements MatchingAlgorithm, Serializabl
         List<WeightedJob> suitableJobs = new ArrayList<>();
         Set<Job> availableJobs = new HashSet<>();
         userRequest.getJobfield().forEach((jobfield) -> {
-            List<Job> jobs = jobRepo.findJobsByJobField(jobfield.getName());
-            if(jobs != null){
+            try {
+                List<Job> jobs = jobRepo.findJobsByJobField(jobfield.getName());
                 availableJobs.addAll(jobs);
+            } catch (Exception ex) {
+                
             }
             System.out.println(availableJobs.size());
         });
