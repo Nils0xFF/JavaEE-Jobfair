@@ -7,21 +7,19 @@ package de.hsos.kbse.jobboerse.repositories;
 
 import de.hsos.kbse.jobboerse.entity.company.JobField;
 import de.hsos.kbse.jobboerse.entity.facades.JobFieldFacade;
+import de.hsos.kbse.jobboerse.entity.shared.Requirement;
 import java.io.Serializable;
-import java.sql.SQLException;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.persistence.EntityExistsException;
-import javax.transaction.Transactional;
+import javax.inject.Named;
+import javax.transaction.RollbackException;
 
 /**
  *
  * @author soere
  */
-
 @RequestScoped
-@Transactional (rollbackOn = SQLException.class)
 public class JobFieldRepository implements Serializable {
     
     @Inject
@@ -29,17 +27,17 @@ public class JobFieldRepository implements Serializable {
     
     public JobFieldRepository() {}
 
-    public JobField create(String name) throws EntityExistsException {
+    public JobField create(String name) throws Exception {
         JobField jobfield = JobField.builder().name(name).build();
         jff.create(jobfield);
         return jff.findByName(name);
     }
     
-    public JobField findById(Long id) throws IllegalArgumentException {
+    public JobField findById(Long id) {
         return jff.find(id);
     }
     
-    public JobField findByName(String name) throws IllegalArgumentException {
+    public JobField findByName(String name) throws Exception {
         return jff.findByName(name);
     }
     
@@ -47,35 +45,35 @@ public class JobFieldRepository implements Serializable {
         return jff.findAll();
     }
     
-    public void update(Long id, JobField jobfield) throws IllegalArgumentException {
+    public void update(Long id, JobField jobfield) throws Exception {
         JobField old = jff.find(id);
         jobfield.setId(old.getId());
         jff.edit(jobfield);
     }
     
-    public void update(String name, JobField jobfield) throws IllegalArgumentException {
+    public void update(String name, JobField jobfield) throws Exception {
         JobField old = jff.findByName(name);
         jobfield.setId(old.getId());
         jff.edit(jobfield);
     }
     
-    public void updateName(Long id, String name) throws IllegalArgumentException {
+    public void updateName(Long id, String name) throws Exception {
         JobField old = jff.find(id);
         old.setName(name);
         jff.edit(old);
     }
     
-    public void updateName(String name, String sub) throws IllegalArgumentException {
+    public void updateName(String name, String sub) throws Exception {
         JobField old = jff.findByName(name);
         old.setName(sub);
         jff.edit(old);
     }
     
-    public void delete(Long id) throws IllegalArgumentException {
+    public void delete(Long id) throws Exception {
         jff.remove(jff.find(id));
     }
     
-    public void delete(String name) throws IllegalArgumentException {
+    public void delete(String name) throws Exception {
         jff.remove(jff.findByName(name));
     }    
 }

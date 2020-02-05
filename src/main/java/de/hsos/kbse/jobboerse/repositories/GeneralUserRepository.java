@@ -18,7 +18,6 @@ import de.hsos.kbse.jobboerse.entity.user.User_Profile;
 import de.hsos.kbse.jobboerse.enums.Graduation;
 import de.hsos.kbse.jobboerse.enums.Salutation;
 import de.hsos.kbse.jobboerse.enums.Title;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
@@ -26,16 +25,13 @@ import java.util.List;
 import java.util.Map;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.persistence.EntityExistsException;
 import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
-import javax.transaction.Transactional;
 
 /**
  *
  * @author lennartwoltering
  */
 @RequestScoped
-@Transactional(rollbackOn = {SQLException.class})
 public class GeneralUserRepository {
 
     @Inject
@@ -46,7 +42,7 @@ public class GeneralUserRepository {
 
     @Inject
     private User_ProfileFacade userprofiles;
-
+    
     @Inject
     private AddressFacade addresses;
 
@@ -54,43 +50,31 @@ public class GeneralUserRepository {
     private Pbkdf2PasswordHash passwordHash;
 
     public boolean checkEmailExists(String email) {
-        try {
-            Login login = logins.findByEmail(email);
-            if (login != null) {
-                return true;
-            }
-            return false;
-        } catch (Exception ex) {
-            return false;
-        }        
+        return logins.findByEmail(email) != null;
     }
-
-    public boolean createUser(User_Profile toInsert, SearchRequest searchInsert, String email) throws EntityExistsException {
+    
+    public boolean createUser(User_Profile toInsert, SearchRequest searchInsert, String email){
         Login login = logins.findByEmail(email);
         if (login != null) {
             login.getSeekingUser().setProfile(toInsert);
             login.getSeekingUser().setSearchrequest(searchInsert);
             login.getSeekingUser().setLogin(login);
             login.getSeekingUser().setCompleted(true);
-            try {
-                logins.edit(login);
-            } catch (IllegalArgumentException ex) {
-                throw new EntityExistsException("User already exists!");
-            }
+            logins.edit(login);
             return true;
         }
         return false;
     }
-
-    public void createUser(Login toInsert) throws EntityExistsException {
+    
+    public boolean createUser(Login toInsert) throws Exception {
         if (!checkEmailExists(toInsert.getEmail())) {
             logins.create(toInsert);
-        } else {
-            throw new EntityExistsException("User already exists!");
+            return true;
         }
+        return false;
     }
-
-    public boolean updateUser(User_Profile toInsert, String email) throws IllegalArgumentException {
+    
+    public boolean updateUser(User_Profile toInsert, String email){
         Login login = logins.findByEmail(email);
         if (login != null) {
             login.getSeekingUser().setProfile(toInsert);
@@ -99,13 +83,16 @@ public class GeneralUserRepository {
         }
         return false;
     }
-
-    public void createLogin(Login login) throws EntityExistsException {
+    
+    
+    
+    public void createLogin(Login login){
         logins.create(login);
     }
-
+    
+    
     //Erster Ansatz; Überarbeitet. Registration Controller übernimmt das Erstellen der Klassen.
-    public boolean createLogin(String email, String password) throws EntityExistsException {
+    public boolean createLogin(String email, String password) {
         if (!checkEmailExists(email)) {
             Map<String, String> parameters = new HashMap<>();
             parameters.put("Pbkdf2PasswordHash.Iterations", "3072");
@@ -121,11 +108,12 @@ public class GeneralUserRepository {
         }
         return false;
     }
-
-    public boolean createUserProfile(String email, Salutation salutation, Title title, String firstname,
-            String lastname, String description, String telefon, LocalDate birthday,
-            Graduation grad, String street, String housenumber, String city,
-            String postalcode, String country, List<Requirement> fullfilledRequirements) throws EntityExistsException {
+    
+    
+    public boolean createUserProfile(String email, Salutation salutation, Title title, String firstname, 
+            String lastname, String description, String telefon, LocalDate birthday, 
+            Graduation grad, String street, String housenumber, String city, 
+            String postalcode, String country, List<Requirement> fullfilledRequirements) {
         Login login = logins.findByEmail(email);
         if (login != null) {
             User_Profile profileToInsert = User_Profile.builder()
@@ -152,20 +140,9 @@ public class GeneralUserRepository {
             return true;
         }
         return false;
-    }
+    }    
 
-    public void createUserProfile(String email, User_Profile profile) throws IllegalArgumentException {
-        Login login = logins.findByEmail(email);
-        if (login != null) {
-            login.getSeekingUser().setProfile(profile);
-            login.getSeekingUser().setLogin(login);
-            logins.edit(login);
-        } else {
-            throw new IllegalArgumentException("User not found!");
-        }
-    }
-
-    public void editUserProfile(String email, Salutation salutation, Title title, String firstname, String lastname, String description, String telefon) throws IllegalArgumentException {
+    public boolean editUserProfile(String email, Salutation salutation, Title title, String firstname, String lastname, String description, String telefon) {
         Login login = logins.findByEmail(email);
         if (login != null) {
             User_Profile toEdit = login.getSeekingUser().getProfile();
@@ -175,12 +152,12 @@ public class GeneralUserRepository {
             toEdit.setLastname(lastname);
             toEdit.setTelefon(telefon);
             userprofiles.edit(toEdit);
-        } else {
-            throw new IllegalArgumentException("User not found!");
+            return true;
         }
+        return false;
     }
 
-    public boolean editUserProfile(String email, User_Profile profile) throws IllegalArgumentException {
+    public boolean editUserProfile(String email, User_Profile profile) {
         Login login = logins.findByEmail(email);
         if (login != null) {
             User_Profile toEdit = login.getSeekingUser().getProfile();
@@ -190,27 +167,36 @@ public class GeneralUserRepository {
         }
         return false;
     }
-
-    public void editUserAddress(String email, String street, String housenumber, String city, String postalcode, String country) throws IllegalArgumentException {
+    
+    public boolean editUserAddress(String email, String street, String housenumber, String city, String postalcode, String country){
         Login login = logins.findByEmail(email);
-        Address toEdit = login.getSeekingUser().getProfile().getAddress();
-        toEdit.setStreet(street);
-        toEdit.setHousenumber(housenumber);
-        toEdit.setCity(city);
-        toEdit.setPostalcode(postalcode);
-        toEdit.setCountry(country);
-        addresses.edit(toEdit);
+        if (login != null) {
+            Address toEdit = login.getSeekingUser().getProfile().getAddress();
+            toEdit.setStreet(street);
+            toEdit.setHousenumber(housenumber);
+            toEdit.setCity(city);
+            toEdit.setPostalcode(postalcode);
+            toEdit.setCountry(country);
+            addresses.edit(toEdit);
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean editUserQualifications(String email, Graduation grad, List<Requirement> fullfiledRequirements){
+        Login login = logins.findByEmail(email);
+        if (login != null) {
+            User_Profile toEdit = login.getSeekingUser().getProfile();
+            toEdit.setGrad(grad);
+            toEdit.setFullfiledRequirements(fullfiledRequirements);
+            userprofiles.edit(toEdit);
+            return true;
+        }
+        return false;
     }
 
-    public void editUserQualifications(String email, Graduation grad, List<Requirement> fullfiledRequirements) throws IllegalArgumentException {
-        Login login = logins.findByEmail(email);
-        User_Profile toEdit = login.getSeekingUser().getProfile();
-        toEdit.setGrad(grad);
-        toEdit.setFullfiledRequirements(fullfiledRequirements);
-        userprofiles.edit(toEdit);
-    }
-
-    public void editUserCredentials(String oldEmail, String newEmail, String newPassword) throws IllegalArgumentException {
+    
+    public boolean editUserCredentials(String oldEmail, String newEmail, String newPassword) {
         Login login = logins.findByEmail(oldEmail);
         if (login != null) {
             Map<String, String> parameters = new HashMap<>();
@@ -221,31 +207,42 @@ public class GeneralUserRepository {
             login.setEmail(newEmail);
             login.setPassword(passwordHash.generate(newPassword.toCharArray()));
             logins.edit(login);
-        } else {
-            throw new IllegalArgumentException("User not found!");
+            return true;
         }
+        return false;
     }
 
-    public void deleteUser(String email) throws IllegalArgumentException {
+    public boolean deleteUser(String email) {
         Login login = logins.findByEmail(email);
-        logins.remove(login);
+        if (login != null) {
+            logins.remove(login);
+            return true;
+        }
+        return false;
     }
 
     public Collection<SeekingUser> getAllUsers() {
         return users.findAll();
     }
 
-    public SeekingUser getUser(Long id) throws IllegalArgumentException {
+    public SeekingUser getUser(Long id) {
         Login login = logins.find(id);
-        return login.getSeekingUser();
+        if (login != null) {
+            return login.getSeekingUser();
+        }
+        return null;
     }
 
-    public SeekingUser getUserByEmail(String email) throws IllegalArgumentException {
-        return logins.findByEmail(email).getSeekingUser();
+    public SeekingUser getUserByEmail(String email) {
+        Login login = logins.findByEmail(email);
+        if (login != null) {
+            return login.getSeekingUser();
+        }
+        return null;
     }
 
-    public void edit(SeekingUser value) throws IllegalArgumentException {
+    public void edit(SeekingUser value) {
         users.edit(value);
     }
-
+    
 }

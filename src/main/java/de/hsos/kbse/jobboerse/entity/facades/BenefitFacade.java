@@ -30,15 +30,13 @@ public class BenefitFacade extends AbstractFacade<Benefit> {
         super(Benefit.class);
     }
     
-    public Benefit findByName(String name) throws IllegalArgumentException {
+    public Benefit findByName(String name) {
         String queryString = "SELECT bf FROM Benefit bf "
                 + "WHERE bf.name = :name";
 
         TypedQuery<Benefit> query = em.createQuery(queryString, Benefit.class);
         query.setParameter("name", name);
-        Benefit benefit = query.getSingleResult();
-        if (benefit == null) throw new IllegalArgumentException("Benefit not found!");
-        return benefit;
+        return query.getSingleResult();
     } 
     
 }

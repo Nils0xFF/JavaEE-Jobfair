@@ -7,12 +7,9 @@ package de.hsos.kbse.jobboerse.repositories;
 
 import de.hsos.kbse.jobboerse.entity.facades.BenefitFacade;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
-import java.sql.SQLException;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.persistence.EntityExistsException;
-import javax.transaction.Transactional;
 
 /**
  *
@@ -20,7 +17,6 @@ import javax.transaction.Transactional;
  */
 
 @RequestScoped
-@Transactional(rollbackOn = SQLException.class)
 public class BenefitRepository {
     
     @Inject
@@ -29,17 +25,16 @@ public class BenefitRepository {
     public BenefitRepository() { }
     
     
-    public Benefit find(Long id) throws IllegalArgumentException {
+    public Benefit find(Long id){
         return bf.find(id);
     }
     
-    public Benefit create(String name, String desc) throws EntityExistsException {
+    public void create(String name, String desc) {
         Benefit benefit = Benefit.builder().name(name).description(desc).build();
         bf.create(benefit);
-        return bf.findByName(name);
     }
     
-    public Benefit findByName(String name) throws IllegalArgumentException {
+    public Benefit findByName(String name) throws Exception {
         return bf.findByName(name);
     }
     
@@ -47,49 +42,49 @@ public class BenefitRepository {
         return bf.findAll();
     }
     
-    public void update(Long id, String name, String desc) throws IllegalArgumentException {
+    public void update(Long id, String name, String desc) throws Exception {
         Benefit old = bf.find(id);
         old.setName(name);
         old.setDescription(desc);
         bf.edit(old);
     }
     
-    public void update(String name, String sub, String desc) throws IllegalArgumentException {
+    public void update(String name, String sub, String desc) throws Exception {
         Benefit old = bf.findByName(name);
         old.setName(name);
         old.setDescription(desc);
         bf.edit(old);
     }
     
-    public void updateName(Long id, String name) throws IllegalArgumentException {
+    public void updateName(Long id, String name) throws Exception {
         Benefit old = bf.find(id);
         old.setName(name);
         bf.edit(old);
     }
     
-    public void updateName(String name, String sub) throws IllegalArgumentException {
+    public void updateName(String name, String sub) throws Exception {
         Benefit old = bf.findByName(name);
         old.setName(name);
         bf.edit(old);
     }
     
-    public void updateDescription(Long id, String desc) throws IllegalArgumentException {
+    public void updateDescription(Long id, String desc) throws Exception {
         Benefit old = bf.find(id);
         old.setDescription(desc);
         bf.edit(old);
     }
     
-    public void updateDescription(String name, String desc) throws IllegalArgumentException {
+    public void updateDescription(String name, String desc) throws Exception {
         Benefit old = bf.findByName(name);
         old.setDescription(desc);
         bf.edit(old);
     }
     
-    public void delete(Long id) throws IllegalArgumentException {
+    public void delete(Long id) throws Exception {
         bf.remove(bf.find(id));
     }
     
-    public void delete(String name) throws IllegalArgumentException {
+    public void delete(String name) throws Exception {
         bf.remove(bf.findByName(name));
     }
 }

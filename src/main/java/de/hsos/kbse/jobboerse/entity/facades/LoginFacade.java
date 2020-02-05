@@ -33,13 +33,13 @@ public class LoginFacade extends AbstractFacade<Login> {
         super(Login.class);
     }
     
-    public Login findByEmail(String email) throws IllegalArgumentException {
+    public Login findByEmail(String email){
         String queryString = "SELECT l from Login l "+
                 "WHERE l.email = :email";
         TypedQuery<Login> query = em.createQuery(queryString, Login.class);
         query.setParameter("email", email);
         List results = query.getResultList();
-        if(results.isEmpty()) throw new IllegalArgumentException("Login not found!");
+        if(results.isEmpty()) return null;
         if(results.size() == 1) return (Login) results.get(0);
         throw new NonUniqueResultException();
     }
