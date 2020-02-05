@@ -9,8 +9,6 @@ import de.hsos.kbse.jobboerse.annotations.Identificate;
 import java.io.IOException;
 import java.util.Base64;
 import javax.annotation.Priority;
-import javax.inject.Inject;
-import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.HttpHeaders;
@@ -46,9 +44,10 @@ public class IdentificationFilter implements ContainerRequestFilter {
         // Extract the token from the Authorization header
         String credentials = authorizationHeader
                 .substring(AUTHENTICATION_SCHEME.length()).trim();
-        String email = new String(Base64.getDecoder().decode(credentials)).split(":")[0];
+        String[] uap = new String(Base64.getDecoder().decode(credentials)).split(":");
         
-        requestContext.getHeaders().add("user", email);
+        requestContext.getHeaders().add("user", uap[0]);
+        requestContext.getHeaders().add("password", uap[1]);
     }
 
     public void abort(ContainerRequestContext requestContext) {

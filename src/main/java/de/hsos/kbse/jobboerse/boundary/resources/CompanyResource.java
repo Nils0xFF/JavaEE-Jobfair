@@ -20,6 +20,7 @@ import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.json.bind.Jsonb;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -46,12 +47,15 @@ public class CompanyResource {
     @Inject
     private CompanyRepository companyRepo;
     
+    @Inject
+    private Jsonb jsonb;
+    
     @GET
-    @Path("id/{id}")
+    @Path("{id}")
     @RolesAllowed({"ADMIN"})
     public Response getCompany(@PathParam("id") Long id) {
         try {
-            return Response.ok(companyRepo.getCompany(id)).build();
+            return Response.ok(jsonb.toJson(companyRepo.getCompany(id))).build();
         } catch (Exception ex) {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build(); 
         }
@@ -62,7 +66,7 @@ public class CompanyResource {
     @RolesAllowed({"ADMIN"})
     public Response getCompany(@PathParam("email") String email) {
         try {
-            return Response.ok(companyRepo.getCompanyByEmail(email)).build();
+            return Response.ok(jsonb.toJson(companyRepo.getCompanyByEmail(email))).build();
         } catch (Exception ex) {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
         }
@@ -77,45 +81,9 @@ public class CompanyResource {
                 return Response.noContent().build();
             }
             
-            return Response.ok(all).build();
+            return Response.ok(jsonb.toJson(all)).build();
         } catch (Exception ex) {
             return Response.status(Response.Status.BAD_REQUEST.getStatusCode(), ex.getMessage()).build();
-        }
-    }
-    
-    @PUT
-    @Path("update/id/{id}")
-    @RolesAllowed({"ADMIN"})
-    public Response updateCompany(@PathParam("id") Long id, Company comp) {
-        try {
-            companyRepo.update(comp);
-            return Response.ok(companyRepo.getCompany(id)).build();
-        } catch (Exception ex) {
-            return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
-        }
-    }
-    
-    @PUT
-    @Path("update/email/{email}")
-    @RolesAllowed({"ADMIN"})
-    public Response updateCompany(@PathParam("email") String email, Company comp) {
-        try {
-            companyRepo.update(comp);
-            return Response.ok(companyRepo.getCompanyByEmail(email)).build();
-        } catch (Exception ex) {
-            return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
-        }
-    }
-    
-    @PUT
-    @Path("update/login")
-    @Identificate
-    public Response updateCompanyCredentials(@HeaderParam("user") String email, Login newLogin) {
-        try {
-            companyRepo.updateCompanyCredentials(email, newLogin.getEmail(), newLogin.getPassword());
-            return Response.ok(newLogin).build();
-        } catch (Exception ex) {
-            return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
         }
     }
     
@@ -125,7 +93,7 @@ public class CompanyResource {
     public Response updateCompanyProfile(@HeaderParam("user") String email, CompanyProfile profile) {
         try {
             companyRepo.updateCompanyProfile(email, profile);
-            return Response.ok(companyRepo.getCompanyByEmail(email).getProfile()).build();
+            return Response.ok(jsonb.toJson(companyRepo.getCompanyByEmail(email).getProfile())).build();
         } catch (Exception ex) {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
         }
@@ -137,7 +105,7 @@ public class CompanyResource {
     public Response updateCompanyAddress(@HeaderParam("user") String email, Address address) {
         try {
             companyRepo.updateCompanyAddress(email, address);
-            return Response.ok(companyRepo.getCompanyByEmail(email).getProfile().getAddress()).build();
+            return Response.ok(jsonb.toJson(companyRepo.getCompanyByEmail(email).getProfile().getAddress())).build();
         } catch (Exception ex) {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
         }
@@ -149,7 +117,7 @@ public class CompanyResource {
     public Response updateCompanyContact(@HeaderParam("user") String email, Contact contact) {
         try {
             companyRepo.updateCompanyContact(email, contact);
-            return Response.ok(companyRepo.getCompanyByEmail(email).getProfile().getContact()).build();
+            return Response.ok(jsonb.toJson(companyRepo.getCompanyByEmail(email).getProfile().getContact())).build();
         } catch (Exception ex) {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
         }
@@ -162,7 +130,7 @@ public class CompanyResource {
     public Response updateCompanyQualifications(@HeaderParam("user") String email, List<Benefit> benefits) {
         try {
             companyRepo.updateCompanyQualifications(email, benefits);
-            return Response.ok(companyRepo.getCompanyByEmail(email).getProfile().getBenefits()).build();
+            return Response.ok(jsonb.toJson(companyRepo.getCompanyByEmail(email).getProfile().getBenefits())).build();
         } catch (Exception ex) {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
         }
@@ -174,7 +142,7 @@ public class CompanyResource {
     public Response addCompanyBenefit(@HeaderParam("user") String email, Benefit benefit) {
         try {
             companyRepo.addCompanyBenefit(email, benefit);
-            return Response.ok(companyRepo.getCompanyByEmail(email).getProfile().getBenefits()).build();
+            return Response.ok(jsonb.toJson(companyRepo.getCompanyByEmail(email).getProfile().getBenefits())).build();
         } catch (Exception ex) {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
         }        
@@ -186,7 +154,7 @@ public class CompanyResource {
     public Response removeCompanyBenefit(@HeaderParam("user") String email, Benefit benefit) {
         try {
             companyRepo.removeCompanyBenefit(email, benefit);
-            return Response.ok(companyRepo.getCompanyByEmail(email).getProfile().getBenefits()).build();
+            return Response.ok(jsonb.toJson(companyRepo.getCompanyByEmail(email).getProfile().getBenefits())).build();
         } catch (Exception ex) {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
         }
@@ -195,39 +163,15 @@ public class CompanyResource {
     @POST
     @Path("create/profile")
     @Identificate
+    @RolesAllowed({"COMPANY"})
     public Response createCompanyProfile(@HeaderParam("user") String email, CompanyProfile profile) {
-        try {
+        try {            
             companyRepo.createCompanyProfile(email, profile);
-            return Response.ok(companyRepo.getCompanyByEmail(email).getProfile()).build();
+            return Response.ok(jsonb.toJson(companyRepo.getCompanyByEmail(email).getProfile())).build();
         } catch (Exception ex) {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
         }
-    }
-    
-    @DELETE
-    @Path("delete/id/{id}")
-    @RolesAllowed({"ADMIN"})
-    public Response deleteCompany(@PathParam("id") Long id) {
-        try {
-            companyRepo.deleteCompany(id);
-            return Response.ok("Company deleted!").build();
-        } catch (Exception ex) {
-            return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
-        }
-    }
-    
-    @DELETE
-    @Path("delete")
-    @Identificate
-    public Response deleteCompany(@HeaderParam("email") String email) {
-        try {
-            companyRepo.deleteCompany(email);
-            return Response.ok("Company deleted!").build();
-        } catch (Exception ex) {
-            return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
-        }
-    }
-    
+    }    
     
     @POST
     @Path("create/job")

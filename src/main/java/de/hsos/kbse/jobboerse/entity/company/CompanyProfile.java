@@ -7,6 +7,7 @@ import de.hsos.kbse.jobboerse.enums.WorkerCount;
 import java.io.Serializable;
 import java.util.List;
 import javax.enterprise.inject.Vetoed;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,6 +33,7 @@ public class CompanyProfile implements Serializable {
     @Lob
     private String description;
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonbTransient
     private Picture profilePicture;
     
     private WorkerCount workercount;

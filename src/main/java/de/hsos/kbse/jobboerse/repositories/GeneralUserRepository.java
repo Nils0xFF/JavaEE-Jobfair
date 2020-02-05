@@ -62,7 +62,7 @@ public class GeneralUserRepository {
             return false;
         } catch (Exception ex) {
             return false;
-        }        
+        }
     }
 
     public boolean createUser(User_Profile toInsert, SearchRequest searchInsert, String email) throws EntityExistsException {
@@ -212,18 +212,18 @@ public class GeneralUserRepository {
 
     public void editUserCredentials(String oldEmail, String newEmail, String newPassword) throws IllegalArgumentException {
         Login login = logins.findByEmail(oldEmail);
-        if (login != null) {
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put("Pbkdf2PasswordHash.Iterations", "3072");
-            parameters.put("Pbkdf2PasswordHash.Algorithm", "PBKDF2WithHmacSHA512");
-            parameters.put("Pbkdf2PasswordHash.SaltSizeBytes", "64");
-            passwordHash.initialize(parameters);
-            login.setEmail(newEmail);
-            login.setPassword(passwordHash.generate(newPassword.toCharArray()));
-            logins.edit(login);
-        } else {
-            throw new IllegalArgumentException("User not found!");
+        if (this.checkEmailExists(newEmail)) {
+            throw new IllegalArgumentException("E-Mail already exists!");
         }
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("Pbkdf2PasswordHash.Iterations", "3072");
+        parameters.put("Pbkdf2PasswordHash.Algorithm", "PBKDF2WithHmacSHA512");
+        parameters.put("Pbkdf2PasswordHash.SaltSizeBytes", "64");
+        passwordHash.initialize(parameters);
+        login.setEmail(newEmail);
+        login.setPassword(passwordHash.generate(newPassword.toCharArray()));
+        logins.edit(login);
+
     }
 
     public void deleteUser(String email) throws IllegalArgumentException {

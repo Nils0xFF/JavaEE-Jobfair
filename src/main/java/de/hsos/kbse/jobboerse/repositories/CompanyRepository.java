@@ -17,6 +17,7 @@ import de.hsos.kbse.jobboerse.entity.shared.Address;
 import de.hsos.kbse.jobboerse.entity.shared.Login;
 import de.hsos.kbse.jobboerse.entity.company.CompanyProfile;
 import de.hsos.kbse.jobboerse.entity.company.Job;
+import de.hsos.kbse.jobboerse.entity.facades.BenefitFacade;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
 import de.hsos.kbse.jobboerse.entity.shared.Picture;
 import de.hsos.kbse.jobboerse.enums.Salutation;
@@ -56,7 +57,9 @@ public class CompanyRepository {
     @Inject
     private AddressFacade addressf;
     @Inject
-    private ContactFacade contactf;
+    private ContactFacade contactf;    
+    @Inject
+    private BenefitFacade benefitf;
 
     public CompanyRepository() {
     }
@@ -165,7 +168,7 @@ public class CompanyRepository {
 
     public boolean createCompanyProfile(/* General Information */String email, String name, String description, WorkerCount workercount,
             /* Address */ String street, String housenumber, String city, String postalcode, String country,
-            /* Contact */ Salutation salutation, Title title, String firstname, String lastname, String contactemail, String phone) throws Exception {
+            /* Contact */ Salutation salutation, Title title, String firstname, String lastname, String contactemail, String phone) throws IllegalArgumentException {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             Address addressToInsert = Address.builder()
@@ -205,7 +208,7 @@ public class CompanyRepository {
         loginf.edit(login);
     }
 
-    public boolean updateCompanyProfile(String email, String name, String description, WorkerCount workercount, Address address, Contact contact) throws Exception {
+    public boolean updateCompanyProfile(String email, String name, String description, WorkerCount workercount, Address address, Contact contact) throws IllegalArgumentException {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             CompanyProfile toEdit = login.getCompany().getProfile();
@@ -220,7 +223,7 @@ public class CompanyRepository {
         return false;
     }
 
-    public boolean updateCompanyProfile(String email, String name, String description, WorkerCount workercount) {
+    public boolean updateCompanyProfile(String email, String name, String description, WorkerCount workercount) throws IllegalArgumentException {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             CompanyProfile toEdit = login.getCompany().getProfile();
@@ -236,11 +239,22 @@ public class CompanyRepository {
     public void updateCompanyProfile(String email, CompanyProfile profile) throws IllegalArgumentException {
         Login login = loginf.findByEmail(email);
         CompanyProfile toEdit = login.getCompany().getProfile();
-        profile.setId(toEdit.getId());
+        if (profile.getAddress() != null)
+            toEdit.setAddress(profile.getAddress());
+        if (profile.getBenefits() != null)
+            toEdit.setBenefits(profile.getBenefits());
+        if (profile.getContact() != null)
+            toEdit.setContact(profile.getContact());
+        if (profile.getDescription() != null)
+            toEdit.setDescription(profile.getDescription());
+        if (profile.getName() != null)
+            toEdit.setName(profile.getName());
+        if (profile.getWorkercount() != null)
+            toEdit.setWorkercount(profile.getWorkercount());
         companyprofilef.edit(profile);
     }
 
-    public boolean updateCompanyAddress(String email, String street, String housenumber, String city, String postalcode, String country) throws Exception {
+    public boolean updateCompanyAddress(String email, String street, String housenumber, String city, String postalcode, String country) throws IllegalArgumentException {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             Address toEdit = login.getCompany().getProfile().getAddress();
@@ -258,7 +272,16 @@ public class CompanyRepository {
     public void updateCompanyAddress(String email, Address address) throws IllegalArgumentException {
         Login login = loginf.findByEmail(email);
         Address toEdit = login.getCompany().getProfile().getAddress();
-        address.setId(toEdit.getId());
+        if (address.getCity() != null)
+            toEdit.setCity(address.getCity());
+        if (address.getCountry() != null)
+            toEdit.setCountry(address.getCountry());
+        if (address.getHousenumber() != null)
+            toEdit.setHousenumber(address.getHousenumber());
+        if (address.getPostalcode() != null)
+            toEdit.setPostalcode(address.getPostalcode());
+        if (address.getStreet() != null)
+            toEdit.setStreet(address.getStreet());
         addressf.edit(address);
     }
 
@@ -281,7 +304,18 @@ public class CompanyRepository {
     public void updateCompanyContact(String email, Contact contact) throws IllegalArgumentException {
         Login login = loginf.findByEmail(email);
         Contact toEdit = login.getCompany().getProfile().getContact();
-        contact.setId(toEdit.getId());
+        if (contact.getEmail() != null)
+            toEdit.setEmail(toEdit.getEmail());
+        if (contact.getFirstname() != null)
+            toEdit.setFirstname(contact.getFirstname());
+        if (contact.getLastname() != null)
+            toEdit.setLastname(contact.getLastname());
+        if (contact.getPhone() != null)
+            toEdit.setPhone(contact.getPhone());
+        if (contact.getSalutation() != null)
+            toEdit.setSalutation(contact.getSalutation());
+        if (contact.getTitle() != null)
+            toEdit.setTitle(contact.getTitle());
         contactf.edit(contact);
     }
 
@@ -292,11 +326,11 @@ public class CompanyRepository {
         companyprofilef.edit(toEdit);
     }
 
-    public boolean addCompanyBenefit(String email, Benefit benefit) {
+    public boolean addCompanyBenefit(String email, Benefit benefit) throws IllegalArgumentException {
         Login login = loginf.findByEmail(email);
         if (login != null) {
-            CompanyProfile toEdit = login.getCompany().getProfile();
-            toEdit.addBenefit(benefit);
+            CompanyProfile toEdit = login.getCompany().getProfile();            
+            toEdit.addBenefit(benefitf.findByName(benefit.getName()));
             companyprofilef.edit(toEdit);
             return true;
         }
