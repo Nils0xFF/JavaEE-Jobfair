@@ -96,7 +96,6 @@ public class CompanyRegisterFace implements Serializable{
    
 
     public void handleFileUpload(FileUploadEvent event) {
-        System.out.println("UPLOAD");
         pictureData = event.getFile().getContents();
         dataType = event.getFile().getContentType();
     }

@@ -20,6 +20,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PreRemove;
+import org.eclipse.persistence.annotations.CascadeOnDelete;
 
 /**
  *
@@ -31,26 +33,40 @@ public class SeekingUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
     private boolean completed;
     
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL,
+            orphanRemoval=true)
+    @CascadeOnDelete
     private Login login;
     
     @OneToOne(cascade = CascadeType.ALL,
             orphanRemoval=true)
+    @CascadeOnDelete
     private User_Profile profile;
     
     @OneToOne(cascade = CascadeType.ALL,
             orphanRemoval=true)
+    
     private SearchRequest searchrequest; 
     
     @OneToMany(cascade = CascadeType.ALL,
             orphanRemoval=true)
+    @CascadeOnDelete
     private List<Job> favorites;
 
+    
+    @PreRemove
+    public void prepareRemove(){
+        if(login != null){
+        login.setSeekingUser(null);
+        login = null;
+        }
+        
+    }
     public static class Builder {
 
         private boolean completed;

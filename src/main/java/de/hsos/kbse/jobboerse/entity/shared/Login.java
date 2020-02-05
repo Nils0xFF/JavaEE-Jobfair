@@ -10,11 +10,14 @@ import de.hsos.kbse.jobboerse.entity.user.SeekingUser;
 import java.io.Serializable;
 import javax.enterprise.inject.Vetoed;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.PreRemove;
+import org.eclipse.persistence.annotations.CascadeOnDelete;
 
 /**
  *
@@ -26,18 +29,22 @@ public class Login implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String password;
     private String group_name;
+
+    @Column(unique = true)
     private String email;
-    
+
     @OneToOne(cascade = CascadeType.ALL,
-    orphanRemoval = true)
+            orphanRemoval = true)
+    @CascadeOnDelete
     private SeekingUser seekingUser;
-    
+
     @OneToOne(cascade = CascadeType.ALL,
-    orphanRemoval = true)
+            orphanRemoval = true)
+    @CascadeOnDelete
     private Company company;
 
     public static class Builder {
@@ -55,10 +62,10 @@ public class Login implements Serializable {
             this.seekingUser = value;
             return this;
         }
-        
-        public Builder company(final Company value){
+
+        public Builder company(final Company value) {
             this.company = value;
-            return this;            
+            return this;
         }
 
         public Builder password(final String value) {
@@ -81,13 +88,27 @@ public class Login implements Serializable {
         }
     }
 
-    public Login() { }
+    @PreRemove
+    private void prepareRemove() {
+        if (this.company != null) {
+            this.company.setLogin(null);
+        }
+
+        if (this.seekingUser != null) {
+
+            this.seekingUser.setLogin(null);
+            this.seekingUser = null;
+        }
+    }
+
+    public Login() {
+    }
 
     public static Login.Builder builder() {
         return new Login.Builder();
     }
 
-    private Login(final SeekingUser seekingUser, final Company company , final String password, final String group_name, final String email) {
+    private Login(final SeekingUser seekingUser, final Company company, final String password, final String group_name, final String email) {
         this.seekingUser = seekingUser;
         this.company = company;
         this.password = password;
@@ -126,8 +147,6 @@ public class Login implements Serializable {
     public void setCompany(Company company) {
         this.company = company;
     }
-    
-    
 
     public String getEmail() {
         return email;
@@ -136,7 +155,7 @@ public class Login implements Serializable {
     public void setEmail(String name) {
         this.email = name;
     }
-    
+
     public Long getId() {
         return id;
     }
@@ -169,5 +188,5 @@ public class Login implements Serializable {
     public String toString() {
         return "de.hsos.kbse.jobboerse.entity.shared.Login[ id=" + id + " ]";
     }
-    
+
 }

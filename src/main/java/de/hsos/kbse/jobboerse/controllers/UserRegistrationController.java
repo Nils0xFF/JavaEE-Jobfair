@@ -109,7 +109,6 @@ public class UserRegistrationController implements Serializable{
     }
     
     public boolean finishRegistration(String email){
-        System.out.println(userProfile.getFirstname());
         return userRepo.createUser(userProfile,searchrequest, email);
     }
     

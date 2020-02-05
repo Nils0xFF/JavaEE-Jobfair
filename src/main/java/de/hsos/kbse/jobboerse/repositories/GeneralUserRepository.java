@@ -59,6 +59,10 @@ public class GeneralUserRepository {
         return false;
     }
     
+    public void createLogin(Login login){
+        logins.create(login);
+    }
+    
     
     //Erster Ansatz; Überarbeitet. Registration Controller übernimmt das Erstellen der Klassen.
     public boolean createLogin(String email, String password) {

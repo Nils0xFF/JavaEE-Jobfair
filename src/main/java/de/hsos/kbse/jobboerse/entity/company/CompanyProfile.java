@@ -15,6 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PreRemove;
+import org.eclipse.persistence.annotations.CascadeOnDelete;
 
 /**
  *
@@ -26,7 +28,7 @@ public class CompanyProfile implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     @Lob
@@ -35,13 +37,23 @@ public class CompanyProfile implements Serializable {
     private Picture profilePicture;
     
     private WorkerCount workercount;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @CascadeOnDelete
     private Address address;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @CascadeOnDelete
     private Contact contact;
     @ManyToMany
     private List<Benefit> benefits;
 
+    @PreRemove
+    private void prepareRemove(){
+        this.setAddress(null);
+        this.setContact(null);
+        this.setProfilePicture(null);
+        this.setBenefits(null);
+    }
+    
     public static class Builder {
 
         private String name;
@@ -112,7 +124,6 @@ public class CompanyProfile implements Serializable {
     public CompanyProfile() {
     }
 
-    
     
     public String getName() {
         return name;

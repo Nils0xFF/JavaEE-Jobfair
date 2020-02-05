@@ -7,6 +7,7 @@ package de.hsos.kbse.jobboerse.entity.facades;
 
 import de.hsos.kbse.jobboerse.entity.shared.Picture;
 import javax.ejb.Stateless;
+import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -14,7 +15,7 @@ import javax.persistence.PersistenceContext;
  *
  * @author soere
  */
-@Stateless
+@RequestScoped
 public class PictureFacade extends AbstractFacade<Picture> {
 
     @PersistenceContext(unitName = "JobPU")

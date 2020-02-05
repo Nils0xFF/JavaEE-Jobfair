@@ -88,6 +88,8 @@ public class CompanyProfileFace implements Serializable {
     private Title titles;
     @Enumerated(EnumType.STRING)
     private WorkerCount workercount;
+    
+    private Picture toInsert;
 
     @PostConstruct
     private void init() {
@@ -117,14 +119,13 @@ public class CompanyProfileFace implements Serializable {
     
     @Transactional
     public void handleFileUpload(FileUploadEvent event){
-        System.out.println("ADD");
-        Picture toInsert = Picture.builder().data(event.getFile().getContents()).dataType(event.getFile().getContentType()).build();
+        toInsert = Picture.builder().data(event.getFile().getContents()).dataType(event.getFile().getContentType()).build();
         compRepository.addPicture(context.getCallerPrincipal().getName(), toInsert);
     }
     
     @Transactional
     public void updateProfile(){
-        companyCntrl.createProfile(firmname, desc, workercount, null, null)
+        companyCntrl.createProfile(firmname, desc, workercount, toInsert.getData(), toInsert.getDataType())
                 .createAddress(street, housenumber, city, postalcode, country)
                 .createContact(salutation, titles, firstname, lastname, email, contactEmail)
                 .finishUpdating(fullfilledBenefits, context.getCallerPrincipal().getName());

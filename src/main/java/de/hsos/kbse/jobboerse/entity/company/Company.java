@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PreRemove;
 import org.eclipse.persistence.annotations.CascadeOnDelete;
 
 /**
@@ -24,19 +25,25 @@ public class Company implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @CascadeOnDelete
     private Login login;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @CascadeOnDelete
     private List<Job> jobs;
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval=true)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @CascadeOnDelete
-    private CompanyProfile profile; 
-    
+    private CompanyProfile profile;
+
     private boolean completed = false;
 
+    @PreRemove
+    public void prepareRemove() {
+        if(login != null)
+        login.setCompany(null);
+    }
 
     public static class Builder {
 
@@ -51,8 +58,8 @@ public class Company implements Serializable {
             this.jobs = value;
             return this;
         }
-        
-        public Builder completed(final boolean value){
+
+        public Builder completed(final boolean value) {
             this.completed = value;
             return this;
         }
@@ -67,7 +74,8 @@ public class Company implements Serializable {
         }
     }
 
-    public Company() { }
+    public Company() {
+    }
 
     public static Company.Builder builder() {
         return new Company.Builder();
@@ -79,7 +87,6 @@ public class Company implements Serializable {
         this.completed = completed;
     }
 
-    
     public Login getLogin() {
         return login;
     }
@@ -87,7 +94,7 @@ public class Company implements Serializable {
     public void setLogin(Login login) {
         this.login = login;
     }
-    
+
     public List<Job> getJobs() {
         return jobs;
     }
@@ -102,8 +109,8 @@ public class Company implements Serializable {
 
     public void setProfile(CompanyProfile profile) {
         this.profile = profile;
-    }   
-    
+    }
+
     public Long getId() {
         return id;
     }
@@ -119,7 +126,6 @@ public class Company implements Serializable {
     public void setCompleted(boolean completed) {
         this.completed = completed;
     }
-    
 
     @Override
     public int hashCode() {
@@ -145,5 +151,5 @@ public class Company implements Serializable {
     public String toString() {
         return "de.hsos.kbse.jobboerse.entity.company.Company[ id=" + id + " ]";
     }
-    
+
 }

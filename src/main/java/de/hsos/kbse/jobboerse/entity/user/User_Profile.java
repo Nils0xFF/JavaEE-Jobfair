@@ -25,6 +25,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.eclipse.persistence.annotations.CascadeOnDelete;
 
 /**
  *
@@ -36,7 +37,7 @@ public class User_Profile implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Salutation salutation;
     private Title title;
@@ -50,6 +51,7 @@ public class User_Profile implements Serializable {
 
     @OneToOne(cascade = CascadeType.ALL,
             orphanRemoval = true)
+    @CascadeOnDelete
     private Address address;
     
     @ManyToMany

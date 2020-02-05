@@ -36,19 +36,15 @@ public class ImageService {
 
     public StreamedContent getImage() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
-        System.out.println("1");
         if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
             // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
-            System.out.println("2");
             return new DefaultStreamedContent();
         }
         else {
-            System.out.println("3");
             // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
             String JobID = context.getExternalContext().getRequestParameterMap().get("jobID");
             Company company = jobRepo.find(Long.parseLong(JobID)).getCompany();
             if(company.getProfile().getProfilePicture()!= null){
-                System.out.println("4");
             return new DefaultStreamedContent(new ByteArrayInputStream(company.getProfile().getProfilePicture().getData()),company.getProfile().getProfilePicture().getDataType());
         }
             return new DefaultStreamedContent();
@@ -57,7 +53,6 @@ public class ImageService {
     
     public StreamedContent getImagefromEmail() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
-        System.out.println("1");
         if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
             // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
             return new DefaultStreamedContent();
@@ -66,9 +61,7 @@ public class ImageService {
             // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
             String email = context.getExternalContext().getRequestParameterMap().get("email");
             Company company = companyRepo.getCompanyByEmail(email);
-            System.out.println("3");
             if(company.getProfile().getProfilePicture()!= null){
-                System.out.println("4");
             return new DefaultStreamedContent(new ByteArrayInputStream(company.getProfile().getProfilePicture().getData()),company.getProfile().getProfilePicture().getDataType());
             }
            }return new DefaultStreamedContent();

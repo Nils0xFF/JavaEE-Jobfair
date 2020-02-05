@@ -103,6 +103,7 @@ public class JobRepository {
     }
     
     public List<Job> findJobsByJobField(String name){
+        System.out.println(name);
         return jf.findJobsByJobField(name);
     }
     
