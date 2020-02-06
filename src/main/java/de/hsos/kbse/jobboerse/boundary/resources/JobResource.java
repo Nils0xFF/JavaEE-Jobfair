@@ -15,7 +15,6 @@ import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -58,10 +57,20 @@ public class JobResource implements Serializable {
     }
     
     @GET
-    @Path("id/{id}")
+    @Path("{id}")
     public Response getJob(@PathParam("id") Long id) {
         try {
             return Response.ok(jobRepo.find(id)).build();
+        } catch (Exception ex) {
+            return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
+        }
+    }
+    
+    @GET
+    @Path("jobfield/{name}")
+    public Response getJobsByJobfield(@PathParam("name") String name) {
+        try {
+            return Response.ok(jobRepo.findJobsByJobField(name)).build();
         } catch (Exception ex) {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
         }
@@ -91,56 +100,8 @@ public class JobResource implements Serializable {
         }
     }
     
-    @PUT
-    @Path("update/address/{id}")
-    @RolesAllowed({"ADMIN"})
-    public Response updateAddress(@PathParam("id") Long id, Address address) {
-        try {
-            jobRepo.updateAddress(id, address);
-            return Response.ok(jobRepo.find(id)).build();
-        } catch (Exception ex) {
-            return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
-        }
-    }
-    
-    @PUT
-    @Path("update/requirements/{id}")
-    @RolesAllowed({"ADMIN"})
-    public Response updateRequirements(@PathParam("id") Long id, List<NeededRequirement> needed) {
-        try {
-            jobRepo.updateNeededRequirements(id, needed);
-            return Response.ok(jobRepo.find(id)).build();
-        } catch (Exception ex) {
-            return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
-        }
-    }
-    
-    @PUT
-    @Path("update/requirements/add/{id}")
-    @RolesAllowed({"ADMIN"})
-    public Response addRequirement(@PathParam("id") Long id, NeededRequirement needed) {
-        try {
-            jobRepo.addNeededRequirement(id, needed);
-            return Response.ok(jobRepo.find(id)).build();
-        } catch (Exception ex) {
-            return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
-        }
-    }
-    
     @DELETE
-    @Path("update/requirements/add/{id}")
-    @RolesAllowed({"ADMIN"})
-    public Response removeRequirement(@PathParam("id") Long id, NeededRequirement needed) {
-        try {
-            jobRepo.removeNeededRequirement(id, needed);
-            return Response.ok(jobRepo.find(id)).build();
-        } catch (Exception ex) {
-            return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
-        }
-    }
-    
-    @DELETE
-    @Path("delete/{id}")
+    @Path("remove/{id}")
     @RolesAllowed({"ADMIN"})
     public Response deleteJob(@PathParam("id") Long id) {
         try {

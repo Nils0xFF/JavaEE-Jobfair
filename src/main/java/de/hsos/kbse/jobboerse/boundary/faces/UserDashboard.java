@@ -68,12 +68,8 @@ public class UserDashboard implements Serializable{
     }
     
     @Transactional
-    public void updateSearchRequest() throws IOException{
+    public void updateSearchRequest(){
         searchRepo.updateRequest(context.getCallerPrincipal().getName(), wishedBenefits, wishedJobfiels);
-        updateAvailableJobs();
-        
-        //ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        //ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
     }
 
     public List<JobField> getWishedJobfiels() {

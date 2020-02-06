@@ -5,7 +5,6 @@
  */
 package de.hsos.kbse.jobboerse.boundary.resources;
 
-import de.hsos.kbse.jobboerse.annotations.Identificate;
 import de.hsos.kbse.jobboerse.entity.shared.Address;
 import de.hsos.kbse.jobboerse.entity.shared.Login;
 import de.hsos.kbse.jobboerse.entity.shared.Requirement;
@@ -83,7 +82,6 @@ public class UserResource {
     
     @POST
     @Path("create/profile")
-    @Identificate
     public Response createUserProfile(@HeaderParam("user") String email, User_Profile profile) {
         try {
             userRepo.createUserProfile(email, profile);
@@ -95,7 +93,6 @@ public class UserResource {
     
     @POST
     @Path("create/search")
-    @Identificate
     public Response createSearchRequest(@HeaderParam("user") String email, SearchRequest search) {
         try {
             searchRepo.createSearchRequirements(email, search);
@@ -131,7 +128,6 @@ public class UserResource {
     
     @PUT
     @Path("update/login")
-    @Identificate
     public Response updateUserCredentials(@HeaderParam("user") String email, Login newLogin) {
         try {
             userRepo.editUserCredentials(email, newLogin.getEmail(), newLogin.getPassword());

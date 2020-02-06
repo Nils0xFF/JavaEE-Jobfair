@@ -8,10 +8,11 @@ package de.hsos.kbse.jobboerse.boundary.resources;
 import de.hsos.kbse.jobboerse.entity.shared.Requirement;
 import de.hsos.kbse.jobboerse.repositories.RequirementRepository;
 import java.util.Collection;
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.transaction.Transactional;
+import javax.json.bind.Jsonb;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -37,8 +38,12 @@ public class RequirementResource {
 
     @Inject
     private RequirementRepository reqRepo;
+    
+    @Inject
+    private Jsonb jsonb;
 
     @GET
+    @PermitAll
     public Response getAllRequirements() {
         try {
             Collection<Requirement> all = reqRepo.findAll();
@@ -46,17 +51,18 @@ public class RequirementResource {
                 return Response.noContent().build();
             }
             
-            return Response.ok(all).build();
+            return Response.ok(jsonb.toJson(all)).build();
         } catch (Exception ex) {
             return Response.status(Response.Status.BAD_REQUEST.getStatusCode(), ex.getMessage()).build();
         }
     }
 
     @GET
-    @Path("id/{id}")
+    @Path("{id}")
+    @PermitAll
     public Response getRequirement(@PathParam("id") Long id) {
         try {
-            return Response.ok(reqRepo.find(id)).build();
+            return Response.ok(jsonb.toJson(reqRepo.find(id))).build();
         } catch (Exception ex) {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
         }
@@ -64,9 +70,10 @@ public class RequirementResource {
     
     @GET
     @Path("name/{name}")
+    @PermitAll
     public Response getRequirement(@PathParam("name") String name) {
         try {
-            return Response.ok(reqRepo.findByName(name)).build();
+            return Response.ok(jsonb.toJson(reqRepo.findByName(name))).build();
         } catch (Exception ex) {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
         }
@@ -76,7 +83,7 @@ public class RequirementResource {
     @Path("create")
     public Response createRequirement(Requirement req) {
         try {
-            return Response.ok(reqRepo.create(req.getName(), req.getDescription())).build();
+            return Response.ok(jsonb.toJson(reqRepo.create(req.getName(), req.getDescription()))).build();
         } catch (Exception ex) {
             return Response.status(Response.Status.BAD_REQUEST.getStatusCode(), ex.getMessage()).build();
         }
@@ -87,43 +94,10 @@ public class RequirementResource {
     public Response updateRequirement(@PathParam("id") Long id, Requirement req) {
         try {
             reqRepo.update(id, req.getName(), req.getDescription());
-            return Response.ok(reqRepo.find(id)).build();
+            return Response.ok(jsonb.toJson(reqRepo.find(id))).build();
         } catch (Exception ex) {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
         }        
-    }
-    
-    @PUT
-    @Path("update/name/{name}")
-    public Response updateRequirement(@PathParam("name") String name, Requirement req) {
-        try {
-            reqRepo.update(name, req.getName(), req.getDescription());
-            return Response.ok(reqRepo.findByName(name)).build();
-        } catch (Exception ex) {
-            return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
-        }        
-    }
-    
-    @DELETE
-    @Path("delete/{id}")
-    public Response deleteRequirement(@PathParam("id") Long id, Requirement req) {
-        try {
-            reqRepo.delete(id);
-            return Response.ok("Requirement deleted!").build();
-        } catch (Exception ex) {
-            return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
-        }
-    }
-
-    @DELETE
-    @Path("delete/name/{name}")
-    public Response deleteRequirement(@PathParam("name") String name, Requirement req) {
-        try {
-            reqRepo.delete(name);
-            return Response.ok("Requirement deleted!").build();
-        } catch (Exception ex) {
-            return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
-        }
     }
     
 }

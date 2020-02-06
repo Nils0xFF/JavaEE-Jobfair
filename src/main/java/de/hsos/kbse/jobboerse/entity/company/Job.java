@@ -6,6 +6,7 @@ import de.hsos.kbse.jobboerse.enums.Sal_Relation;
 import java.io.Serializable;
 import java.util.List;
 import javax.enterprise.inject.Vetoed;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -42,6 +43,7 @@ public class Job implements Serializable {
     private Address address;
     
     @OneToOne
+    @JsonbTransient
     private Company company;
     
     @ManyToMany(cascade = CascadeType.ALL)

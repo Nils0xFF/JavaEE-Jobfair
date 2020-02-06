@@ -5,7 +5,6 @@
  */
 package de.hsos.kbse.jobboerse.boundary.resources;
 
-import de.hsos.kbse.jobboerse.annotations.Identificate;
 import de.hsos.kbse.jobboerse.entity.company.Company;
 import de.hsos.kbse.jobboerse.entity.shared.Login;
 import de.hsos.kbse.jobboerse.entity.user.SeekingUser;
@@ -16,9 +15,9 @@ import java.util.Map;
 import javax.annotation.security.PermitAll;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.security.enterprise.SecurityContext;
 import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -43,25 +42,23 @@ public class LoginResource {
 
     @Inject
     private Pbkdf2PasswordHash passwordHash;
+    
+    @Inject
+    private SecurityContext securityContext;
+    
 
     // TO BE DELETED : Testing
     @POST
     @Path("register/admin")
     public Response registerAdmin(Login login) {
-        Map<String, String> parameters = new HashMap<>();
-        parameters.put("Pbkdf2PasswordHash.Iterations", "3072");
-        parameters.put("Pbkdf2PasswordHash.Algorithm", "PBKDF2WithHmacSHA512");
-        parameters.put("Pbkdf2PasswordHash.SaltSizeBytes", "64");
-        passwordHash.initialize(parameters);
         login = Login.builder()
                 .email(login.getEmail())
-                .password(passwordHash.generate(login.getPassword().toCharArray()))
+                .password(hashPassword(login.getPassword()))
                 .group_name("ADMIN")
                 .build();
-
         try {
             userRepo.createUser(login);
-            return Response.ok().build();                        
+            return Response.ok().build();
         } catch (Exception ex) {
             return Response.status(Response.Status.BAD_REQUEST.getStatusCode(), ex.getMessage()).build();
         }
@@ -70,14 +67,9 @@ public class LoginResource {
     @POST
     @Path("register/user")
     public Response registerUser(Login login) {
-        Map<String, String> parameters = new HashMap<>();
-        parameters.put("Pbkdf2PasswordHash.Iterations", "3072");
-        parameters.put("Pbkdf2PasswordHash.Algorithm", "PBKDF2WithHmacSHA512");
-        parameters.put("Pbkdf2PasswordHash.SaltSizeBytes", "64");
-        passwordHash.initialize(parameters);
         login = Login.builder()
                 .email(login.getEmail())
-                .password(passwordHash.generate(login.getPassword().toCharArray()))
+                .password(hashPassword(login.getPassword()))
                 .seekingUser(new SeekingUser())
                 .group_name("USER")
                 .build();
@@ -92,40 +84,42 @@ public class LoginResource {
     @POST
     @Path("register/company")
     public Response registerCompany(Login login) {
-        Map<String, String> parameters = new HashMap<>();
-        parameters.put("Pbkdf2PasswordHash.Iterations", "3072");
-        parameters.put("Pbkdf2PasswordHash.Algorithm", "PBKDF2WithHmacSHA512");
-        parameters.put("Pbkdf2PasswordHash.SaltSizeBytes", "64");
-        passwordHash.initialize(parameters);
         login = Login.builder()
                 .email(login.getEmail())
-                .password(passwordHash.generate(login.getPassword().toCharArray()))
+                .password(hashPassword(login.getPassword()))
                 .company(new Company())
                 .group_name("COMPANY")
                 .build();
         try {
             companyRepo.createCompany(login);
             return Response.ok().build();
-        } catch (Exception ex) {            
+        } catch (Exception ex) {
             return Response.status(Response.Status.BAD_REQUEST.getStatusCode(), ex.getMessage()).build();
         }
     }
 
     @PUT
     @Path("update")
-    @Identificate
     @PermitAll
-    public Response update(@HeaderParam("user") String email, Login login) {
-        Map<String, String> parameters = new HashMap<>();
-        parameters.put("Pbkdf2PasswordHash.Iterations", "3072");
-        parameters.put("Pbkdf2PasswordHash.Algorithm", "PBKDF2WithHmacSHA512");
-        parameters.put("Pbkdf2PasswordHash.SaltSizeBytes", "64");
-        passwordHash.initialize(parameters);
+    public Response update(Login login) {
+        String email = securityContext.getCallerPrincipal().getName();
+        System.out.println(email);
         try {
-            userRepo.editUserCredentials(email, login.getEmail(), passwordHash.generate(login.getPassword().toCharArray()));
+            userRepo.editUserCredentials(email, login.getEmail(), login.getPassword());
             return Response.ok(userRepo.getUserByEmail(login.getEmail())).build();
         } catch (Exception ex) {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
         }
     }
+    
+    // Utils
+    private String hashPassword(String pw) {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("Pbkdf2PasswordHash.Iterations", "3072");
+        parameters.put("Pbkdf2PasswordHash.Algorithm", "PBKDF2WithHmacSHA512");
+        parameters.put("Pbkdf2PasswordHash.SaltSizeBytes", "64");
+        passwordHash.initialize(parameters);
+        return passwordHash.generate(pw.toCharArray());
+    }
+    
 }

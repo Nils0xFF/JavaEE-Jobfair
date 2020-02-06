@@ -1,6 +1,5 @@
 package de.hsos.kbse.jobboerse.entity.company;
 
-import de.hsos.kbse.jobboerse.entity.shared.Benefit;
 import de.hsos.kbse.jobboerse.entity.shared.Login;
 import java.io.Serializable;
 import java.util.List;

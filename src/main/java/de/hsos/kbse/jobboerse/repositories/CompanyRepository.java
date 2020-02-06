@@ -17,6 +17,8 @@ import de.hsos.kbse.jobboerse.entity.shared.Address;
 import de.hsos.kbse.jobboerse.entity.shared.Login;
 import de.hsos.kbse.jobboerse.entity.company.CompanyProfile;
 import de.hsos.kbse.jobboerse.entity.company.Job;
+import de.hsos.kbse.jobboerse.entity.company.JobField;
+import de.hsos.kbse.jobboerse.entity.facades.BenefitFacade;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
 import de.hsos.kbse.jobboerse.entity.shared.Picture;
 import de.hsos.kbse.jobboerse.enums.Salutation;
@@ -38,26 +40,34 @@ import javax.transaction.Transactional;
  * @author soere
  */
 @RequestScoped
-@Transactional (rollbackOn = SQLException.class)
+@Transactional(rollbackOn = SQLException.class)
 public class CompanyRepository {
+
+    @Inject
+    private Pbkdf2PasswordHash passwordHash;
 
     @Inject
     private LoginFacade loginf;
     @Inject
-    private Pbkdf2PasswordHash passwordHash;
-    @Inject
     private CompanyFacade companyf;
     @Inject
     private CompanyProfileFacade companyprofilef;
-    @Inject
-    private JobRepository jobRepo;
     @Inject
     private PictureFacade picturef;
     @Inject
     private AddressFacade addressf;
     @Inject
     private ContactFacade contactf;
+    @Inject
+    private BenefitFacade benefitf;
 
+    @Inject
+    private JobRepository jobRepo;
+    @Inject
+    private JobFieldRepository jobfieldRepo;
+    @Inject
+    private BenefitRepository benefitRepo;
+    
     public CompanyRepository() {
     }
 
@@ -70,7 +80,7 @@ public class CompanyRepository {
             return false;
         } catch (Exception ex) {
             return false;
-        }    
+        }
     }
 
     public void addPicture(String email, Picture toInsert) {
@@ -118,15 +128,15 @@ public class CompanyRepository {
         return null;
     }
 
-    public boolean addJobtoCompany(String email, Job toInsert) {
+    public boolean addJobtoCompany(String email, Job toInsert) throws IllegalArgumentException {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             toInsert.setCompany(login.getCompany());
             login.getCompany().getJobs().add(toInsert);
+            loginf.edit(login);
             return true;
         }
         return false;
-
     }
 
     public void removeJobFromCompany(String email, Long Id) {
@@ -135,6 +145,60 @@ public class CompanyRepository {
             login.getCompany().getJobs().remove(jobRepo.find(Id));
             loginf.edit(login);
         }
+    }
+
+    public void updateJobOfCompany(String email, Long id, Job job) throws IllegalArgumentException {
+        Login login = loginf.findByEmail(email);
+        Job toEdit = jobRepo.find(id);
+        if (toEdit.getDescription() != null) {
+            toEdit.setDescription(toEdit.getDescription());
+        }
+        if (toEdit.getName() != null) {
+            toEdit.setName(toEdit.getName());
+        }
+        if (toEdit.getRelation() != null) {
+            toEdit.setRelation(toEdit.getRelation());
+        }
+        if (toEdit.getSalary() != null) {
+            toEdit.setSalary(toEdit.getSalary());
+        }
+        jobRepo.update(id, job);
+    }
+
+    public void updateJobAddressOfCompany(String email, Long id, Address address) throws IllegalArgumentException {
+        Login login = loginf.findByEmail(email);
+        Job job = jobRepo.find(id);
+        Address toEdit = job.getAddress();
+        if (toEdit != null) {
+            if (address.getCity() != null) {
+                toEdit.setCity(address.getCity());
+            }
+            if (address.getCountry() != null) {
+                toEdit.setCountry(address.getCountry());
+            }
+            if (address.getHousenumber() != null) {
+                toEdit.setHousenumber(address.getHousenumber());
+            }
+            if (address.getPostalcode() != null) {
+                toEdit.setPostalcode(address.getPostalcode());
+            }
+            if (address.getStreet() != null) {
+                toEdit.setStreet(address.getStreet());
+            }
+        } else {
+            job.setAddress(address);
+        }
+        jobRepo.update(id, job);
+    }
+
+    public void updateJobJobFieldOfCompany(String email, Long id, JobField jobfield) throws IllegalArgumentException {
+        Login login = loginf.findByEmail(email);
+        Job job = jobRepo.find(id);
+        JobField toEdit = job.getJobfield();
+        if (jobfield.getName() != null) {
+            job.setJobfield(jobfieldRepo.findByName(jobfield.getName()));            
+        }
+        jobRepo.update(id, job);
     }
 
     //Erster Ansatz; Überarbeitet. Registration Controller übernimmt das Erstellen der Klassen.
@@ -165,7 +229,7 @@ public class CompanyRepository {
 
     public boolean createCompanyProfile(/* General Information */String email, String name, String description, WorkerCount workercount,
             /* Address */ String street, String housenumber, String city, String postalcode, String country,
-            /* Contact */ Salutation salutation, Title title, String firstname, String lastname, String contactemail, String phone) throws Exception {
+            /* Contact */ Salutation salutation, Title title, String firstname, String lastname, String contactemail, String phone) throws IllegalArgumentException {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             Address addressToInsert = Address.builder()
@@ -200,12 +264,18 @@ public class CompanyRepository {
 
     public void createCompanyProfile(String email, CompanyProfile profile) throws IllegalArgumentException {
         Login login = loginf.findByEmail(email);
+        if (profile.getAddress() == null) {
+            profile.setAddress(new Address());
+        }
+        if (profile.getContact() == null) {
+            profile.setContact(new Contact());
+        }
         login.getCompany().setProfile(profile);
         login.getCompany().setLogin(login);
         loginf.edit(login);
     }
 
-    public boolean updateCompanyProfile(String email, String name, String description, WorkerCount workercount, Address address, Contact contact) throws Exception {
+    public boolean updateCompanyProfile(String email, String name, String description, WorkerCount workercount, Address address, Contact contact) throws IllegalArgumentException {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             CompanyProfile toEdit = login.getCompany().getProfile();
@@ -220,7 +290,7 @@ public class CompanyRepository {
         return false;
     }
 
-    public boolean updateCompanyProfile(String email, String name, String description, WorkerCount workercount) {
+    public boolean updateCompanyProfile(String email, String name, String description, WorkerCount workercount) throws IllegalArgumentException {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             CompanyProfile toEdit = login.getCompany().getProfile();
@@ -236,11 +306,19 @@ public class CompanyRepository {
     public void updateCompanyProfile(String email, CompanyProfile profile) throws IllegalArgumentException {
         Login login = loginf.findByEmail(email);
         CompanyProfile toEdit = login.getCompany().getProfile();
-        profile.setId(toEdit.getId());
+        if (profile.getDescription() != null) {
+            toEdit.setDescription(profile.getDescription());
+        }
+        if (profile.getName() != null) {
+            toEdit.setName(profile.getName());
+        }
+        if (profile.getWorkercount() != null) {
+            toEdit.setWorkercount(profile.getWorkercount());
+        }
         companyprofilef.edit(profile);
     }
 
-    public boolean updateCompanyAddress(String email, String street, String housenumber, String city, String postalcode, String country) throws Exception {
+    public boolean updateCompanyAddress(String email, String street, String housenumber, String city, String postalcode, String country) throws IllegalArgumentException {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             Address toEdit = login.getCompany().getProfile().getAddress();
@@ -258,7 +336,21 @@ public class CompanyRepository {
     public void updateCompanyAddress(String email, Address address) throws IllegalArgumentException {
         Login login = loginf.findByEmail(email);
         Address toEdit = login.getCompany().getProfile().getAddress();
-        address.setId(toEdit.getId());
+        if (address.getCity() != null) {
+            toEdit.setCity(address.getCity());
+        }
+        if (address.getCountry() != null) {
+            toEdit.setCountry(address.getCountry());
+        }
+        if (address.getHousenumber() != null) {
+            toEdit.setHousenumber(address.getHousenumber());
+        }
+        if (address.getPostalcode() != null) {
+            toEdit.setPostalcode(address.getPostalcode());
+        }
+        if (address.getStreet() != null) {
+            toEdit.setStreet(address.getStreet());
+        }
         addressf.edit(address);
     }
 
@@ -281,7 +373,24 @@ public class CompanyRepository {
     public void updateCompanyContact(String email, Contact contact) throws IllegalArgumentException {
         Login login = loginf.findByEmail(email);
         Contact toEdit = login.getCompany().getProfile().getContact();
-        contact.setId(toEdit.getId());
+        if (contact.getEmail() != null) {
+            toEdit.setEmail(contact.getEmail());
+        }
+        if (contact.getFirstname() != null) {
+            toEdit.setFirstname(contact.getFirstname());
+        }
+        if (contact.getLastname() != null) {
+            toEdit.setLastname(contact.getLastname());
+        }
+        if (contact.getPhone() != null) {
+            toEdit.setPhone(contact.getPhone());
+        }
+        if (contact.getSalutation() != null) {
+            toEdit.setSalutation(contact.getSalutation());
+        }
+        if (contact.getTitle() != null) {
+            toEdit.setTitle(contact.getTitle());
+        }
         contactf.edit(contact);
     }
 
@@ -292,21 +401,26 @@ public class CompanyRepository {
         companyprofilef.edit(toEdit);
     }
 
-    public boolean addCompanyBenefit(String email, Benefit benefit) {
+    public boolean addCompanyBenefit(String email, Benefit benefit) throws IllegalArgumentException {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             CompanyProfile toEdit = login.getCompany().getProfile();
-            toEdit.addBenefit(benefit);
+            for (Benefit bene : toEdit.getBenefits()) {
+                if (benefit.getName().equals(bene.getName())) {
+                    throw new IllegalArgumentException("\"" + benefit.getName() + "\" already exists in Companybenefits!");
+                }
+            }
+            toEdit.addBenefit(benefitf.findByName(benefit.getName()));
             companyprofilef.edit(toEdit);
             return true;
         }
         return false;
     }
 
-    public void removeCompanyBenefit(String email, Benefit benefit) throws IllegalArgumentException {
+    public void removeCompanyBenefit(String email, Long id) throws IllegalArgumentException {
         Login login = loginf.findByEmail(email);
         CompanyProfile toEdit = login.getCompany().getProfile();
-        toEdit.removeBenefit(benefit);
+        toEdit.removeBenefit(benefitRepo.find(id));        
         companyprofilef.edit(toEdit);
     }
 
@@ -342,6 +456,14 @@ public class CompanyRepository {
 
     public Company getCompanyByEmail(String email) throws IllegalArgumentException {
         return loginf.findByEmail(email).getCompany();
+    }
+
+    public Collection<Benefit> getAllCompanyBenefits(String email) {
+        return loginf.findByEmail(email).getCompany().getProfile().getBenefits();
+    }
+
+    public Collection<Job> getAllCompanyJobs(String email) {
+        return loginf.findByEmail(email).getCompany().getJobs();
     }
 
     public void update(Company value) throws IllegalArgumentException {
