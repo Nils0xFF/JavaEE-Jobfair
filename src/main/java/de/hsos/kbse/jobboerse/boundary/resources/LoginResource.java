@@ -5,6 +5,8 @@
  */
 package de.hsos.kbse.jobboerse.boundary.resources;
 
+import de.hsos.kbse.jobboerse.controllers.CompanyRegistrationController;
+import de.hsos.kbse.jobboerse.controllers.UserRegistrationController;
 import de.hsos.kbse.jobboerse.entity.company.Company;
 import de.hsos.kbse.jobboerse.entity.shared.Login;
 import de.hsos.kbse.jobboerse.entity.user.SeekingUser;
@@ -39,6 +41,10 @@ public class LoginResource {
     private GeneralUserRepository userRepo;
     @Inject
     private CompanyRepository companyRepo;
+    @Inject
+    private UserRegistrationController userReg;
+    @Inject 
+    private CompanyRegistrationController compReg;
 
     @Inject
     private Pbkdf2PasswordHash passwordHash;
@@ -67,34 +73,22 @@ public class LoginResource {
     @POST
     @Path("register/user")
     public Response registerUser(Login login) {
-        login = Login.builder()
-                .email(login.getEmail())
-                .password(hashPassword(login.getPassword()))
-                .seekingUser(new SeekingUser())
-                .group_name("USER")
-                .build();
-        try {
-            userRepo.createUser(login);
+        if (userReg.createLogin(login.getEmail(), login.getPassword())) {
+            userRepo.createUser(login.getEmail());
             return Response.ok().build();
-        } catch (Exception ex) {
-            return Response.status(Response.Status.BAD_REQUEST.getStatusCode(), ex.getMessage()).build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST.getStatusCode(), "User already exists!").build();
         }
     }
 
     @POST
     @Path("register/company")
     public Response registerCompany(Login login) {
-        login = Login.builder()
-                .email(login.getEmail())
-                .password(hashPassword(login.getPassword()))
-                .company(new Company())
-                .group_name("COMPANY")
-                .build();
-        try {
-            companyRepo.createCompany(login);
+        if (compReg.createLogin(login.getEmail(), login.getPassword())) {
+            companyRepo.createCompany(login.getEmail());
             return Response.ok().build();
-        } catch (Exception ex) {
-            return Response.status(Response.Status.BAD_REQUEST.getStatusCode(), ex.getMessage()).build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST.getStatusCode(), "Company already exists!").build();
         }
     }
 
@@ -103,10 +97,9 @@ public class LoginResource {
     @PermitAll
     public Response update(Login login) {
         String email = securityContext.getCallerPrincipal().getName();
-        System.out.println(email);
         try {
             userRepo.editUserCredentials(email, login.getEmail(), login.getPassword());
-            return Response.ok(userRepo.getUserByEmail(login.getEmail())).build();
+            return Response.ok().build();
         } catch (Exception ex) {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
         }

@@ -42,6 +42,7 @@ public class Company implements Serializable {
         private List<Job> jobs;
         private CompanyProfile profile;
         private boolean completed;
+        private Login login;
 
         private Builder() {
         }
@@ -60,9 +61,14 @@ public class Company implements Serializable {
             this.profile = value;
             return this;
         }
+        
+        public Builder login(final Login value) {
+            this.login = value;
+            return this;
+        }
 
         public Company build() {
-            return new Company(jobs, profile, completed);
+            return new Company(jobs, profile, completed, login);
         }
     }
 
@@ -72,10 +78,11 @@ public class Company implements Serializable {
         return new Company.Builder();
     }
 
-    private Company(final List<Job> jobs, final CompanyProfile profile, final boolean completed) {
+    private Company(final List<Job> jobs, final CompanyProfile profile, final boolean completed, final Login login) {
         this.jobs = jobs;
         this.profile = profile;
         this.completed = completed;
+        this.login = login;
     }
 
     

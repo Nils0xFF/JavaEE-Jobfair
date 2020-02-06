@@ -63,12 +63,11 @@ public class UserResource {
     }
     
     @GET
-    @Path("id/{id}")
+    @Path("{id}")
     @RolesAllowed({"ADMIN"})
     public Response getUser(@PathParam("id") Long id) {
         try {
-            SeekingUser user = userRepo.getUser(id);
-            return Response.ok(user).build();
+            return Response.ok(userRepo.getUser(id)).build();
         } catch (Exception ex) {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();        
         }
