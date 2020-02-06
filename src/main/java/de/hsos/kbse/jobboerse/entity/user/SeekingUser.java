@@ -51,11 +51,6 @@ public class SeekingUser implements Serializable {
             orphanRemoval=true)
     
     private SearchRequest searchrequest; 
-    
-    @OneToMany(cascade = CascadeType.ALL,
-            orphanRemoval=true)
-    @CascadeOnDelete
-    private List<Job> favorites;
 
     
     @PreRemove
@@ -107,7 +102,6 @@ public class SeekingUser implements Serializable {
 
     private SeekingUser(final boolean completed, final User_Profile profile, final Login login) {
         this.completed = completed;
-        this.favorites = new ArrayList<>();
         this.searchrequest = new SearchRequest();
         if (profile == null){
             this.profile = new User_Profile();

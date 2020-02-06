@@ -5,7 +5,7 @@
  */
 package de.hsos.kbse.jobboerse.boundary.faces;
 
-import de.hsos.kbse.jobboerse.controllers.CompanyRegistrationController;
+import de.hsos.kbse.jobboerse.controllers.CompanyCreationController;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
 import de.hsos.kbse.jobboerse.enums.Salutation;
 import de.hsos.kbse.jobboerse.enums.Title;
@@ -82,7 +82,7 @@ public class CompanyRegisterFace implements Serializable {
     private BenefitRepository benefitRepo;
 
     @Inject
-    private CompanyRegistrationController companyRegCntrl;
+    private CompanyCreationController companyRegCntrl;
 
     @Inject
     private SecurityContext context;

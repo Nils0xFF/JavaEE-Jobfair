@@ -31,7 +31,7 @@ import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
  * @author lennartwoltering
  */
 @RequestScoped
-public class UserRegistrationController implements Serializable{
+public class UserCreationController implements Serializable{
     
     
     @Inject
@@ -94,7 +94,7 @@ public class UserRegistrationController implements Serializable{
      * @param birthday Represents the date of birth of the user
      * @return returns a reference to itself
      */
-    public UserRegistrationController createUserProfile(Salutation salutation, Title title, String firstname, 
+    public UserCreationController createUserProfile(Salutation salutation, Title title, String firstname, 
             String lastname, String telefon, Date birthday){
             userProfile = User_Profile.builder()
                     .salutation(salutation)
@@ -117,7 +117,7 @@ public class UserRegistrationController implements Serializable{
      * @param country Reprensents the country of the city
      * @return returns a reference to itself
      */
-    public UserRegistrationController createAddress(String street, String housenumber, String city, 
+    public UserCreationController createAddress(String street, String housenumber, String city, 
             String postalcode, String country){
             userAddress = Address.builder()
                     .street(street)
@@ -138,7 +138,7 @@ public class UserRegistrationController implements Serializable{
      * @param description Represents a description of the user
      * @return returns a reference to itself
      */
-    public UserRegistrationController createQualifications(Graduation grad, List<Requirement> fullfilledRequirements, String description){
+    public UserCreationController createQualifications(Graduation grad, List<Requirement> fullfilledRequirements, String description){
         userProfile.setGrad(grad);
         userProfile.setDescription(description);
         userProfile.setFullfiledRequirements(fullfilledRequirements);
@@ -152,7 +152,7 @@ public class UserRegistrationController implements Serializable{
      * @param jobfields Represents the jobfields where the User wants to work
      * @return returns a reference to itself
      */
-    public UserRegistrationController setupSearchParameters(List<Benefit> wishedBenefits, List<JobField> jobfields){
+    public UserCreationController setupSearchParameters(List<Benefit> wishedBenefits, List<JobField> jobfields){
         searchrequest = SearchRequest.builder()
                 .benefits(wishedBenefits)
                 .jobField(jobfields)

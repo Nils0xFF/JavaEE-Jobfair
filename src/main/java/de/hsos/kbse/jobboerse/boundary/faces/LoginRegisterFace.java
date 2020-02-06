@@ -5,8 +5,8 @@
  */
 package de.hsos.kbse.jobboerse.boundary.faces;
 
-import de.hsos.kbse.jobboerse.controllers.CompanyRegistrationController;
-import de.hsos.kbse.jobboerse.controllers.UserRegistrationController;
+import de.hsos.kbse.jobboerse.controllers.CompanyCreationController;
+import de.hsos.kbse.jobboerse.controllers.UserCreationController;
 import de.hsos.kbse.jobboerse.repositories.GeneralUserRepository;
 import java.io.Serializable;
 import javax.faces.application.FacesMessage;
@@ -40,10 +40,10 @@ public class LoginRegisterFace implements Serializable {
     private boolean successful = false;
 
     @Inject
-    private CompanyRegistrationController companyRegCntrl;
+    private CompanyCreationController companyRegCntrl;
 
     @Inject
-    private UserRegistrationController userRegCntrl;
+    private UserCreationController userRegCntrl;
 
     @Inject
     private GeneralUserRepository generalUserRepository;

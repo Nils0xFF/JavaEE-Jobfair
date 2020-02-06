@@ -28,7 +28,7 @@ import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
  * @author lennartwoltering
  */
 @RequestScoped
-public class CompanyRegistrationController {
+public class CompanyCreationController {
 
     @Inject
     private CompanyRepository companyRepo;
@@ -91,7 +91,7 @@ public class CompanyRegistrationController {
      * @param country country where the company is located
      * @return returns a reference to itself
      */
-    public CompanyRegistrationController createAddress(String street, String housenumber, String city,
+    public CompanyCreationController createAddress(String street, String housenumber, String city,
             String postalcode, String country) {
         address = Address.builder()
                 .street(street)
@@ -116,7 +116,7 @@ public class CompanyRegistrationController {
      * @param contactEmail Represents the email address of the contact
      * @return returns a reference to itself
      */
-    public CompanyRegistrationController createContact(Salutation salutation, Title title, String firstname, String lastname, String phone, String contactEmail) {
+    public CompanyCreationController createContact(Salutation salutation, Title title, String firstname, String lastname, String phone, String contactEmail) {
         contact = Contact.builder().salutation(salutation)
                 .title(title)
                 .firstname(firstname)
@@ -138,7 +138,7 @@ public class CompanyRegistrationController {
      * @param dataType Datatype of the companypicture
      * @return returns a reference to itself
      */
-    public CompanyRegistrationController createProfile(String name, String description, WorkerCount workercount, byte[] pictureData, String dataType) {
+    public CompanyCreationController createProfile(String name, String description, WorkerCount workercount, byte[] pictureData, String dataType) {
         if (pictureData != null) {
             picture = Picture.builder()
                     .data(pictureData)

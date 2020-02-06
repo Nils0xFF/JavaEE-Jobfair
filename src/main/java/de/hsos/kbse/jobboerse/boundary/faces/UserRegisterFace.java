@@ -5,7 +5,7 @@
  */
 package de.hsos.kbse.jobboerse.boundary.faces;
 
-import de.hsos.kbse.jobboerse.controllers.UserRegistrationController;
+import de.hsos.kbse.jobboerse.controllers.UserCreationController;
 import de.hsos.kbse.jobboerse.entity.company.JobField;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
 import de.hsos.kbse.jobboerse.entity.shared.Requirement;
@@ -79,7 +79,7 @@ public class UserRegisterFace implements Serializable {
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
     @Inject
-    private UserRegistrationController userRegCntrl;
+    private UserCreationController userRegCntrl;
 
     @Inject
     private RequirementRepository requirementRepo;

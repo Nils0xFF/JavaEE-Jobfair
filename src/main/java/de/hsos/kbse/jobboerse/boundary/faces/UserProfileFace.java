@@ -5,7 +5,7 @@
  */
 package de.hsos.kbse.jobboerse.boundary.faces;
 
-import de.hsos.kbse.jobboerse.controllers.UserRegistrationController;
+import de.hsos.kbse.jobboerse.controllers.UserCreationController;
 import de.hsos.kbse.jobboerse.entity.shared.Requirement;
 import de.hsos.kbse.jobboerse.entity.user.SeekingUser;
 import de.hsos.kbse.jobboerse.enums.Graduation;
@@ -43,7 +43,7 @@ public class UserProfileFace implements Serializable{
     private GeneralUserRepository userRepository;
     
     @Inject
-    private UserRegistrationController userCntrl;
+    private UserCreationController userCntrl;
 
     
     private boolean editMode = false;

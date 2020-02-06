@@ -5,8 +5,8 @@
  */
 package de.hsos.kbse.jobboerse.boundary.resources;
 
-import de.hsos.kbse.jobboerse.controllers.CompanyRegistrationController;
-import de.hsos.kbse.jobboerse.controllers.UserRegistrationController;
+import de.hsos.kbse.jobboerse.controllers.CompanyCreationController;
+import de.hsos.kbse.jobboerse.controllers.UserCreationController;
 import de.hsos.kbse.jobboerse.entity.shared.Login;
 import de.hsos.kbse.jobboerse.repositories.CompanyRepository;
 import de.hsos.kbse.jobboerse.repositories.GeneralUserRepository;
@@ -40,9 +40,9 @@ public class LoginResource {
     @Inject
     private CompanyRepository companyRepo;
     @Inject
-    private UserRegistrationController userReg;
+    private UserCreationController userReg;
     @Inject 
-    private CompanyRegistrationController compReg;
+    private CompanyCreationController compReg;
 
     @Inject
     private Pbkdf2PasswordHash passwordHash;

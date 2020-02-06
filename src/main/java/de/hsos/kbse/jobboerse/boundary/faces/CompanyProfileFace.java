@@ -5,7 +5,7 @@
  */
 package de.hsos.kbse.jobboerse.boundary.faces;
 
-import de.hsos.kbse.jobboerse.controllers.CompanyRegistrationController;
+import de.hsos.kbse.jobboerse.controllers.CompanyCreationController;
 import de.hsos.kbse.jobboerse.controllers.ImageService;
 import de.hsos.kbse.jobboerse.entity.company.Company;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
@@ -44,7 +44,7 @@ public class CompanyProfileFace implements Serializable {
     private CompanyRepository compRepository;
 
     @Inject
-    private CompanyRegistrationController companyCntrl;
+    private CompanyCreationController companyCntrl;
 
     @Inject
     private ImageService imageService;

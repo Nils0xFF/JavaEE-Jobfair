@@ -6,8 +6,8 @@
 package de.hsos.kbse.jobboerse.test;
 
 import de.hsos.kbse.jobboerse.ApplicationConfig;
-import de.hsos.kbse.jobboerse.controllers.CompanyRegistrationController;
-import de.hsos.kbse.jobboerse.controllers.UserRegistrationController;
+import de.hsos.kbse.jobboerse.controllers.CompanyCreationController;
+import de.hsos.kbse.jobboerse.controllers.UserCreationController;
 import de.hsos.kbse.jobboerse.entity.company.Company;
 import de.hsos.kbse.jobboerse.entity.facades.CompanyFacade;
 import de.hsos.kbse.jobboerse.entity.facades.LoginFacade;
@@ -52,7 +52,7 @@ public class UserBuilderTest {
         WebArchive war = ShrinkWrap.create(WebArchive.class)
                 .addPackage(Company.class.getPackage())
                 .addPackage(ApplicationConfig.class.getPackage())
-                .addPackage(CompanyRegistrationController.class.getPackage())
+                .addPackage(CompanyCreationController.class.getPackage())
                 .addPackage(CompanyFacade.class.getPackage())
                 .addPackage(Address.class.getPackage())
                 .addPackage(SeekingUser.class.getPackage())
@@ -73,7 +73,7 @@ public class UserBuilderTest {
     private UserTransaction utx;
 
     @Inject
-    private UserRegistrationController userRegCntrl;
+    private UserCreationController userRegCntrl;
 
     @Inject
     private GeneralUserRepository userRepo;

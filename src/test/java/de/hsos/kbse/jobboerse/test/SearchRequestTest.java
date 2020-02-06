@@ -6,9 +6,9 @@ import de.hsos.kbse.jobboerse.algorithm.BasicMatchingAlgorithm;
 import de.hsos.kbse.jobboerse.algorithm.MatchingAlgorithm;
 import de.hsos.kbse.jobboerse.algorithm.qualifiers.Basic;
 import de.hsos.kbse.jobboerse.algorithm.qualifiers.Weighted;
-import de.hsos.kbse.jobboerse.controllers.CompanyRegistrationController;
+import de.hsos.kbse.jobboerse.controllers.CompanyCreationController;
 import de.hsos.kbse.jobboerse.controllers.JobCreationController;
-import de.hsos.kbse.jobboerse.controllers.UserRegistrationController;
+import de.hsos.kbse.jobboerse.controllers.UserCreationController;
 import de.hsos.kbse.jobboerse.entity.company.Company;
 import de.hsos.kbse.jobboerse.entity.company.JobField;
 import de.hsos.kbse.jobboerse.entity.facades.CompanyFacade;
@@ -65,7 +65,7 @@ public class SearchRequestTest {
         WebArchive war = ShrinkWrap.create(WebArchive.class)
                 .addPackage(Company.class.getPackage())
                 .addPackage(ApplicationConfig.class.getPackage())
-                .addPackage(CompanyRegistrationController.class.getPackage())
+                .addPackage(CompanyCreationController.class.getPackage())
                 .addPackage(CompanyFacade.class.getPackage())
                 .addPackage(Address.class.getPackage())
                 .addPackage(SeekingUser.class.getPackage())
@@ -89,10 +89,10 @@ public class SearchRequestTest {
     private UserTransaction utx;
 
     @Inject
-    private CompanyRegistrationController cmpyRegCntrl;
+    private CompanyCreationController cmpyRegCntrl;
 
     @Inject
-    private UserRegistrationController userRegCntrl;
+    private UserCreationController userRegCntrl;
 
     @Inject
     private GeneralUserRepository userRepo;
