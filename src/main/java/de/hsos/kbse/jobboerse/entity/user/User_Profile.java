@@ -161,6 +161,14 @@ public class User_Profile implements Serializable {
     public void setFullfiledRequirements(List<Requirement> fullfiledRequirements) {
         this.fullfiledRequirements = fullfiledRequirements;
     }
+    
+    public void addRequirement(Requirement req) {
+        this.fullfiledRequirements.add(req);
+    }
+    
+    public void removeRequirement(Requirement req) {
+        this.fullfiledRequirements.remove(req);
+    }
 
     public Salutation getSalutation() {
         return salutation;
