@@ -71,6 +71,7 @@ public class SeekingUser implements Serializable {
 
         private boolean completed;
         private User_Profile profile;
+        private Login login;
 
         private Builder() {
         }
@@ -79,9 +80,14 @@ public class SeekingUser implements Serializable {
             this.profile = value;
             return this;
         }
+        
+        public Builder login(final Login value) {
+            this.login = value;
+            return this;
+        }
 
         public SeekingUser build() {
-            return new SeekingUser(false, profile);
+            return new SeekingUser(false, profile, login);
         }
     }
 
@@ -100,15 +106,16 @@ public class SeekingUser implements Serializable {
         this.login = login;
     }
 
-    private SeekingUser(final boolean completed, final User_Profile profile) {
+    private SeekingUser(final boolean completed, final User_Profile profile, final Login login) {
         this.completed = completed;
         this.favorites = new ArrayList<>();
         this.searchrequest = new SearchRequest();
-        if(profile == null){
+        if (profile == null){
             this.profile = new User_Profile();
-        }else{
+        } else {
             this.profile = profile;
         }
+        this.login = login;
     }
 
     public SearchRequest getSearchrequest() {

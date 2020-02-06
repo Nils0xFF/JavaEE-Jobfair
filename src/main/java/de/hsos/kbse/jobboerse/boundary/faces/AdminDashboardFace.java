@@ -18,6 +18,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.EntityExistsException;
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
 
@@ -62,7 +63,7 @@ public class AdminDashboardFace {
     public void updateRequirement(Long id, String newName) {
         try {
             requirementRepo.update(id, newName, newName);
-        } catch (Exception ex) {
+        } catch (IllegalArgumentException ex) {
             Logger.getLogger(AdminDashboardFace.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -77,7 +78,7 @@ public class AdminDashboardFace {
     public void updateBenefit(Long id, String newName) {
         try {
             benefitRepo.update(id, newName, newName);
-        } catch (Exception ex) {
+        } catch (IllegalArgumentException ex) {
             Logger.getLogger(AdminDashboardFace.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -87,7 +88,7 @@ public class AdminDashboardFace {
         try {
             jobFieldRepo.create(jobFieldName);
             init();
-        } catch (Exception ex) {
+        } catch (EntityExistsException ex) {
             Logger.getLogger(AdminDashboardFace.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -96,7 +97,7 @@ public class AdminDashboardFace {
     public void updateJobField(Long id, String newName) {
         try {
             jobFieldRepo.updateName(id, newName);
-        } catch (Exception ex) {
+        } catch (IllegalArgumentException ex) {
             Logger.getLogger(AdminDashboardFace.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
