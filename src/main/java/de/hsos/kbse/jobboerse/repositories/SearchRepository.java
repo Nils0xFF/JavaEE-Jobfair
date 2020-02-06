@@ -26,6 +26,13 @@ public class SearchRepository {
     @Inject
     private GeneralUserRepository users;
     
+    /**
+     * Creates new Search Requirements for a User
+     * @param email email of the user   
+     * @param wishedBenefits Represents the wishedBenefits
+     * @param jobfield Represents the wishedjobfields
+     * @return returns true if the request was successfully created
+     */
     public boolean createSearchRequirements(String email, List<Benefit> wishedBenefits, List<JobField> jobfield) {
         SeekingUser foundUser = users.getUserByEmail(email);
         if(foundUser != null){
@@ -41,6 +48,12 @@ public class SearchRepository {
         return false;
     }
     
+    /**
+     * Creates new Search Requirements for a User
+     * @param email email of the user
+     * @param search Search Request that should be saved
+     * @throws IllegalArgumentException 
+     */
     public void createSearchRequirements(String email, SearchRequest search) throws IllegalArgumentException {
         SeekingUser foundUser = users.getUserByEmail(email);
         if (foundUser != null) {
@@ -76,6 +89,12 @@ public class SearchRepository {
         return null;
     }
     
+    /**
+     * Updates a Search Request from a User
+     * @param email email of the User   
+     * @param wishedBenefits Represents the wished Benefits of the user
+     * @param wishedJobfield Represents the wished Jobfields of the user
+     */
     public void updateRequest(String email, List<Benefit> wishedBenefits, List<JobField> wishedJobfield) {
         SearchRequest request = getSearchRequest(email);
         if(request != null){

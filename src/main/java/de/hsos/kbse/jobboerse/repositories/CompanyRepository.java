@@ -37,7 +37,7 @@ import javax.transaction.Transactional;
 
 /**
  *
- * @author soere
+ * @author soere, lennartwoltering
  */
 @RequestScoped
 @Transactional(rollbackOn = SQLException.class)
@@ -71,6 +71,11 @@ public class CompanyRepository {
     public CompanyRepository() {
     }
 
+    /**
+     * Checks if a Company exists for this email
+     * @param email email to search
+     * @return true if there is a company with this email
+     */
     public boolean checkEmailExists(String email) {
         try {
             Login login = loginf.findByEmail(email);
@@ -83,6 +88,11 @@ public class CompanyRepository {
         }
     }
 
+    /**
+     * Adds a picture to a existing Company
+     * @param email email to the Company
+     * @param toInsert Picture that should be inserted
+     */
     public void addPicture(String email, Picture toInsert) {
         Login login = loginf.findByEmail(email);
         if (login != null) {
@@ -91,6 +101,12 @@ public class CompanyRepository {
         }
     }
 
+    /**
+     * Creates a Company to a login
+     * @param toInsert the Companyprofile that should be inserted
+     * @param email email to the Company
+     * @return returns true if the company was successfully created
+     */
     public boolean createCompany(CompanyProfile toInsert, String email) {
         Login login = loginf.findByEmail(email);
         if (login != null) {
@@ -109,6 +125,13 @@ public class CompanyRepository {
         login.getCompany().setLogin(login);
     }
 
+    /**
+     * Updates the Company with the given email
+     * @param toInsert CompanyProfile that should be inserted
+     * @param email email to the Company
+     * @return returns true if the company was successfully updated
+     */
+    
     public boolean updateCompany(CompanyProfile toInsert, String email) {
         Login login = loginf.findByEmail(email);
         if (login != null) {
@@ -120,10 +143,19 @@ public class CompanyRepository {
         return false;
     }
 
+    /**
+     * Creates a new Login
+     * @param login Login that should be created
+     */
     public void createLogin(Login login) {
         loginf.create(login);
     }
 
+    /**
+     * Finds all Jobs of a company
+     * @param email email to the company
+     * @return returns all Jobs of a company
+     */
     public List<Job> findJobsByCompany(String email) {
         Login login = loginf.findByEmail(email);
         if (login != null) {
@@ -132,6 +164,13 @@ public class CompanyRepository {
         return null;
     }
 
+    /**
+     * Adds a Job to a Company
+     * @param email email to the company
+     * @param toInsert Job that should be added
+     * @return returns true if the job was successfully added
+     * @throws IllegalArgumentException 
+     */
     public boolean addJobtoCompany(String email, Job toInsert) throws IllegalArgumentException {
         Login login = loginf.findByEmail(email);
         if (login != null) {
@@ -143,6 +182,11 @@ public class CompanyRepository {
         return false;
     }
 
+    /**
+     * Removes a Job from a Company
+     * @param email email to the company
+     * @param Id id of the job
+     */
     public void removeJobFromCompany(String email, Long Id) {
         Login login = loginf.findByEmail(email);
         if (login != null) {
@@ -151,6 +195,13 @@ public class CompanyRepository {
         }
     }
 
+    /**
+     * Updates a job of a company
+     * @param email email to the company
+     * @param id id of the job
+     * @param job new job that should be inserted
+     * @throws IllegalArgumentException 
+     */
     public void updateJobOfCompany(String email, Long id, Job job) throws IllegalArgumentException {
         Login login = loginf.findByEmail(email);
         Job toEdit = jobRepo.find(id);
@@ -169,6 +220,13 @@ public class CompanyRepository {
         jobRepo.update(id, job);
     }
 
+    /**
+     * Updates the JobAdress of a Company
+     * @param email email to the company
+     * @param id id of the job
+     * @param address new address that should be inserted
+     * @throws IllegalArgumentException 
+     */
     public void updateJobAddressOfCompany(String email, Long id, Address address) throws IllegalArgumentException {
         Login login = loginf.findByEmail(email);
         Job job = jobRepo.find(id);

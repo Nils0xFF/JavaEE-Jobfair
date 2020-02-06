@@ -25,6 +25,10 @@ public class RequirementRepository {
     @Inject
     private RequirementFacade rf;
 
+    /*
+    Funktionen haben sprechende Bezeichner
+    */
+    
     public boolean exists(String name) {
         try {
             findByName(name);

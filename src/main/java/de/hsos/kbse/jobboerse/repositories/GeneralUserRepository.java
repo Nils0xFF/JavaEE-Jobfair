@@ -37,7 +37,7 @@ import javax.transaction.Transactional;
 
 /**
  *
- * @author lennartwoltering
+ * @author lennartwoltering, snoere
  */
 @RequestScoped
 @Transactional(rollbackOn = {SQLException.class})
@@ -67,6 +67,11 @@ public class GeneralUserRepository {
     @Inject
     private Pbkdf2PasswordHash passwordHash;
 
+    /**
+     * Checks if a User exists for this email
+     * @param email email to search
+     * @return true if there is a user with this email
+     */
     public boolean checkEmailExists(String email) {
         try {
             Login login = logins.findByEmail(email);
@@ -79,6 +84,14 @@ public class GeneralUserRepository {
         }
     }
 
+    /**
+     * Creates a user and adds it to the login
+     * @param toInsert user profile that should be inserted
+     * @param searchInsert search request for the user profile  
+     * @param email email of the login
+     * @return returns true if a user was successfully added
+     * @throws EntityExistsException 
+     */
     public boolean createUser(User_Profile toInsert, SearchRequest searchInsert, String email) throws EntityExistsException {
         Login login = logins.findByEmail(email);
         if (login != null) {
@@ -96,6 +109,11 @@ public class GeneralUserRepository {
         return false;
     }
 
+    /**
+     * Creates a blank User
+     * @param email email of the login
+     * @throws IllegalArgumentException 
+     */
     public void createUser(String email) throws IllegalArgumentException {
         Login login = logins.findByEmail(email);
         login.getSeekingUser().setSearchrequest(new SearchRequest());
@@ -103,6 +121,11 @@ public class GeneralUserRepository {
         logins.edit(login);
     }
 
+    /**
+     * Duplicate of createLogin | Still there for Compatibility
+     * @param toInsert Login that should be created
+     * @throws EntityExistsException 
+     */
     public void createUser(Login toInsert) throws EntityExistsException {
         if (!checkEmailExists(toInsert.getEmail())) {
             logins.create(toInsert);
@@ -111,6 +134,13 @@ public class GeneralUserRepository {
         }
     }
 
+    /**
+     * Updates a User profile
+     * @param toInsert User Profile that should be edited
+     * @param email email of the login
+     * @return returns true if the User was successfully edited
+     * @throws IllegalArgumentException 
+     */
     public boolean updateUser(User_Profile toInsert, String email) throws IllegalArgumentException {
         Login login = logins.findByEmail(email);
         if (login != null) {
@@ -121,6 +151,11 @@ public class GeneralUserRepository {
         return false;
     }
 
+    /**
+     * Creates a new Login
+     * @param login login that should be saved
+     * @throws EntityExistsException 
+     */
     public void createLogin(Login login) throws EntityExistsException {
         logins.create(login);
     }

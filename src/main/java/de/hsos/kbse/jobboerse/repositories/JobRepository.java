@@ -32,6 +32,10 @@ public class JobRepository {
     
     public JobRepository() { }
     
+    /*
+    Funktionen haben sprechende Bezeichner
+    */
+    
     public void create(String name, Sal_Relation relation, Double salary, String description, Address address, Company company, List<NeededRequirement> needed) throws EntityExistsException {
         Job job = Job.builder()
                 .name(name)

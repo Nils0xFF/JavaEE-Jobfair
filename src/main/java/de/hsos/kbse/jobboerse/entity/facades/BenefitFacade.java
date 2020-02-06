@@ -30,6 +30,12 @@ public class BenefitFacade extends AbstractFacade<Benefit> {
         super(Benefit.class);
     }
     
+    /**
+     * Searches for a Benefit with the given name
+     * @param name name of the Benefit
+     * @return returns the found Benefit
+     * @throws IllegalArgumentException 
+     */
     public Benefit findByName(String name) throws IllegalArgumentException {
         String queryString = "SELECT bf FROM Benefit bf "
                 + "WHERE bf.name = :name";

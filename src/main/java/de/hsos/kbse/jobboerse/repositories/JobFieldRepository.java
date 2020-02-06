@@ -29,6 +29,9 @@ public class JobFieldRepository implements Serializable {
     public JobFieldRepository() {
     }
 
+    /*
+    Funktionen haben sprechende Bezeichner
+    */
     public boolean exists(String name) {
         try {
             findByName(name);

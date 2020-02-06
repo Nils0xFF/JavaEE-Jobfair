@@ -28,6 +28,12 @@ public class LoginFacade extends AbstractFacade<Login> {
         super(Login.class);
     }
     
+    /**
+     * Searches for a Login with the email
+     * @param email that should be searched
+     * @return returns the found Login
+     * @throws IllegalArgumentException 
+     */
     public Login findByEmail(String email) throws IllegalArgumentException {
         String queryString = "SELECT l from Login l "+
                 "WHERE l.email = :email";

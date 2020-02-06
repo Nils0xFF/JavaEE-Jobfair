@@ -26,6 +26,12 @@ public class JobFieldFacade extends AbstractFacade<JobField> {
         super(JobField.class);
     }
     
+    /**
+     * Searches for a Jobfield with the given name
+     * @param name that should be searched
+     * @return returns the found JobField
+     * @throws IllegalArgumentException 
+     */
     public JobField findByName(String name) throws IllegalArgumentException {
         String queryString = "SELECT jf FROM JobField jf "
                 + "WHERE jf.name = :name";

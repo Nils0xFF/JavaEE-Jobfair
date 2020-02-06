@@ -26,6 +26,13 @@ public class RequirementFacade extends AbstractFacade<Requirement> {
         super(Requirement.class);
     }
     
+    /**
+     * Searches for a Requirement in the Database
+     * 
+     * @param name represents the name of a Requirement
+     * @return returns the found Requirement
+     * @throws IllegalArgumentException 
+     */
     public Requirement findByName(String name) throws IllegalArgumentException {
         String queryString = "SELECT req FROM Requirement req "
                 + "WHERE req.name = :name";

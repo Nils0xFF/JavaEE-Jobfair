@@ -28,6 +28,11 @@ public class BenefitRepository {
     public BenefitRepository() {
     }
 
+    /**
+     * Checks if benefit exists
+     * @param name name of the benefit
+     * @return returns true if it exists
+     */
     public boolean exists(String name) {
         try {
             findByName(name);
@@ -37,10 +42,23 @@ public class BenefitRepository {
         }
     }
 
+    /**
+     * Finds the Benefit with id
+     * @param id id that should be searched
+     * @return returns found Benefit
+     * @throws IllegalArgumentException 
+     */
     public Benefit find(Long id) throws IllegalArgumentException {
         return bf.find(id);
     }
 
+    /**
+     * Creates a benefit
+     * @param name name of the benefit
+     * @param desc description of the benefit
+     * @return returns Benefit with this name
+     * @throws EntityExistsException 
+     */
     public Benefit create(String name, String desc) throws EntityExistsException {
         Benefit benefit = Benefit.builder().name(name).description(desc).build();
         if (!exists(name)) {
@@ -51,10 +69,20 @@ public class BenefitRepository {
         return bf.findByName(name);
     }
 
+    /**
+     * finds a benefit by name
+     * @param name name of the benefit
+     * @return returns found Benefit
+     * @throws IllegalArgumentException 
+     */
     public Benefit findByName(String name) throws IllegalArgumentException {
         return bf.findByName(name);
     }
 
+    /**
+     * finds all Benefits
+     * @return returns a list of Benefits
+     */
     public List<Benefit> findAll() {
         return bf.findAll();
     }
@@ -121,10 +149,20 @@ public class BenefitRepository {
         bf.edit(old);
     }
 
+    /**
+     * Deletes the Benefit
+     * @param id id of the Benefit
+     * @throws IllegalArgumentException 
+     */
     public void delete(Long id) throws IllegalArgumentException {
         bf.remove(bf.find(id));
     }
 
+    /**
+     * Deletes the Benefit
+     * @param name name of the Benefit
+     * @throws IllegalArgumentException 
+     */
     public void delete(String name) throws IllegalArgumentException {
         bf.remove(bf.findByName(name));
     }
