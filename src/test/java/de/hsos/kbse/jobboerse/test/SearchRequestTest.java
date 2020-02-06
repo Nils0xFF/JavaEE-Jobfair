@@ -78,9 +78,7 @@ public class SearchRequestTest {
                 .addPackage(CompanyRepository.class.getPackage())
                 .addPackage(BasicMatchingAlgorithm.class.getPackage())
                 .addPackage(Basic.class.getPackage())
-                //.addAsManifestResource(new File("src/test/java/resources/test-persistence.xml"), "persistence.xml")
                 .addAsResource(new File("src/test/java/resources/test-persistence.xml"), "META-INF/persistence.xml")
-                //.addAsResource("META-INF/persistence.xml")
                 .addAsWebInfResource(new File("src/test/java/resources/glassfish-resources.xml"))
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
         
@@ -215,7 +213,7 @@ public class SearchRequestTest {
         utx.begin();
         cmpyRegCntrl.createProfile("TestName", "TestBeschreibung", WorkerCount.low, null, null)
                 .createAddress("TestStreet", "TesthouseNumber123", "TestCity", "TestPostalCode123", "TestCountry")
-                .createContact(Salutation.mister, Title.Emtpy, "TestFirstname", "TestLastname", "123123", "contact@contact.de")
+                .createContact(Salutation.mister, Title.Empty, "TestFirstname", "TestLastname", "123123", "contact@contact.de")
                 .finishRegistration(benefitRepo.findAll(), "company@test.de");
         List<NeededRequirement> requirements = new ArrayList<>();
         List<Requirement> plainRequirements = requirementRepo.findAll();
@@ -239,7 +237,7 @@ public class SearchRequestTest {
         List<Requirement> fullfilledRequirements = new ArrayList<>();
         fullfilledRequirements.add(requirementRepo.findAll().get(0));
         utx.begin();
-        userRegCntrl.createUserProfile(Salutation.mister, Title.Emtpy, "TestFirstName", "TestLastName", "TestTelefon1234", new Date())
+        userRegCntrl.createUserProfile(Salutation.mister, Title.Empty, "TestFirstName", "TestLastName", "TestTelefon1234", new Date())
                 .createAddress("TestStreet", "TestHousenumber123", "TestCity", "TestPostal123", "TestCountry")
                 .createQualifications(Graduation.Real, fullfilledRequirements, "TestDesc")
                 .setupSearchParameters(benefitRepo.findAll(), jobFieldRepo.findAll())

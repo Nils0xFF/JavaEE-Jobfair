@@ -119,7 +119,7 @@ public class CompanyBuilderTest {
         utx.begin();
         cmpyRegCntrl.createProfile("TestName", "TestBeschreibung", WorkerCount.low, null, null)
                 .createAddress("TestStreet", "TesthouseNumber123", "TestCity", "TestPostalCode123", "TestCountry")
-                .createContact(Salutation.mister, Title.Emtpy, "TestFirstname", "TestLastname", "123123", "contact@contact.de")
+                .createContact(Salutation.mister, Title.Empty, "TestFirstname", "TestLastname", "123123", "contact@contact.de")
                 .finishRegistration(new ArrayList<>(), "test@test.de");
         Company toTest = cmpyRepo.getCompanyByEmail("test@test.de");
         Assert.assertEquals("Firmenname stimmt nicht überein", "TestName", toTest.getProfile().getName());

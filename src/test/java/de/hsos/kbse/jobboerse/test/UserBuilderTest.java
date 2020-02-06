@@ -125,7 +125,7 @@ public class UserBuilderTest {
     public void should_create_User() throws Exception {
         this.should_create_Login();
         utx.begin();
-        userRegCntrl.createUserProfile(Salutation.mister, Title.Emtpy, "TestFirstName", "TestLastName", "TestTelefon1234", new Date())
+        userRegCntrl.createUserProfile(Salutation.mister, Title.Empty, "TestFirstName", "TestLastName", "TestTelefon1234", new Date())
                 .createAddress("TestStreet", "TestHousenumber123", "TestCity", "TestPostal123", "TestCountry")
                 .createQualifications(Graduation.Real, new ArrayList<>(), "TestDesc")
                 .finishRegistration("test@test.de");
