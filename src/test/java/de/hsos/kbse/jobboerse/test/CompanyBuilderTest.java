@@ -69,16 +69,16 @@ public class CompanyBuilderTest {
     private UserTransaction utx;
 
     @Inject
-    CompanyRegistrationController cmpyRegCntrl;
+    private CompanyRegistrationController cmpyRegCntrl;
 
     @Inject
-    CompanyRepository cmpyRepo;
+    private CompanyRepository cmpyRepo;
     
     @Inject
-    CompanyFacade cmpyFacade;
+    private CompanyFacade cmpyFacade;
 
     @Inject
-    LoginFacade loginFacade;
+    private LoginFacade loginFacade;
 
 
     @Before

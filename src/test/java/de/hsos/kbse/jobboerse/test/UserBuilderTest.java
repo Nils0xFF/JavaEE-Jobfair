@@ -73,16 +73,16 @@ public class UserBuilderTest {
     private UserTransaction utx;
 
     @Inject
-    UserRegistrationController userRegCntrl;
+    private UserRegistrationController userRegCntrl;
 
     @Inject
-    GeneralUserRepository userRepo;
+    private GeneralUserRepository userRepo;
     
     @Inject
-    SeekingUserFacade userFacade;
+    private SeekingUserFacade userFacade;
 
     @Inject
-    LoginFacade loginFacade;
+    private LoginFacade loginFacade;
 
     @Before
     public void preparePersistenceTest() throws Exception {

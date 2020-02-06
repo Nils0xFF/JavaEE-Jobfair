@@ -89,46 +89,46 @@ public class SearchRequestTest {
     private UserTransaction utx;
 
     @Inject
-    CompanyRegistrationController cmpyRegCntrl;
+    private CompanyRegistrationController cmpyRegCntrl;
 
     @Inject
-    UserRegistrationController userRegCntrl;
+    private UserRegistrationController userRegCntrl;
 
     @Inject
-    GeneralUserRepository userRepo;
+    private GeneralUserRepository userRepo;
 
     @Inject
-    SeekingUserFacade userFacade;
+    private SeekingUserFacade userFacade;
 
     @Inject
-    CompanyRepository cmpyRepo;
+    private CompanyRepository cmpyRepo;
 
     @Inject
-    CompanyFacade cmpyFacade;
+    private CompanyFacade cmpyFacade;
 
     @Inject
-    LoginFacade loginFacade;
+    private LoginFacade loginFacade;
 
     @Inject
-    JobFieldRepository jobFieldRepo;
+    private JobFieldRepository jobFieldRepo;
 
     @Inject
-    RequirementRepository requirementRepo;
+    private RequirementRepository requirementRepo;
 
     @Inject
-    BenefitRepository benefitRepo;
+    private BenefitRepository benefitRepo;
 
     @Inject
-    JobCreationController jobCntrl;
+    private JobCreationController jobCntrl;
     
     @Inject @Basic
-    MatchingAlgorithm basicMatching;
+    private MatchingAlgorithm basicMatching;
     
     @Inject @Weighted
-    MatchingAlgorithm weightedMatching;
+    private MatchingAlgorithm weightedMatching;
     
     @Inject
-    SearchRepository searchRepo;
+    private SearchRepository searchRepo;
     
 
     @Test
