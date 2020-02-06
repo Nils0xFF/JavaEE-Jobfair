@@ -5,7 +5,6 @@
  */
 package de.hsos.kbse.jobboerse.boundary.resources;
 
-import de.hsos.kbse.jobboerse.annotations.Identificate;
 import de.hsos.kbse.jobboerse.entity.company.Company;
 import de.hsos.kbse.jobboerse.entity.shared.Login;
 import de.hsos.kbse.jobboerse.entity.user.SeekingUser;
@@ -16,23 +15,13 @@ import java.util.Map;
 import javax.annotation.security.PermitAll;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.security.enterprise.AuthenticationStatus;
 import javax.security.enterprise.SecurityContext;
-import static javax.security.enterprise.authentication.mechanism.http.AuthenticationParameters.withParams;
-import javax.security.enterprise.credential.Credential;
-import javax.security.enterprise.credential.Password;
-import javax.security.enterprise.credential.UsernamePasswordCredential;
 import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -56,10 +45,6 @@ public class LoginResource {
     
     @Inject
     private SecurityContext securityContext;
-    @Context
-    private HttpServletRequest servRequest;
-    @Context
-    private HttpServletResponse servResponse;
     
 
     // TO BE DELETED : Testing
@@ -71,7 +56,6 @@ public class LoginResource {
                 .password(hashPassword(login.getPassword()))
                 .group_name("ADMIN")
                 .build();
-
         try {
             userRepo.createUser(login);
             return Response.ok().build();
@@ -114,39 +98,12 @@ public class LoginResource {
         }
     }
 
-    @GET
-    @Path("authenticate")
-    @Identificate
-    public Response authenticate(@HeaderParam("user") String email, @HeaderParam("password") String password) {
-        System.out.println(email);
-        System.out.println(password);
-        
-        Credential credential = new UsernamePasswordCredential(email, new Password(password));
-
-        AuthenticationStatus status = securityContext
-                .authenticate(
-                        servRequest,
-                        servResponse,
-                        withParams().newAuthentication(true).credential(credential));
-
-        switch (status) {
-            case SEND_CONTINUE:
-                return Response.ok().build();
-            case SEND_FAILURE:
-                return Response.status(Response.Status.BAD_REQUEST.getStatusCode(), status.name()).build();
-            case SUCCESS:
-                return Response.ok().build();
-            case NOT_DONE:
-                return Response.status(Response.Status.BAD_REQUEST.getStatusCode(), status.name()).build();
-            default:
-                return Response.serverError().build();
-        }
-    }
-
     @PUT
     @Path("update")
-    @Identificate
-    public Response update(@HeaderParam("user") String email, Login login) {        
+    @PermitAll
+    public Response update(Login login) {
+        String email = securityContext.getCallerPrincipal().getName();
+        System.out.println(email);
         try {
             userRepo.editUserCredentials(email, login.getEmail(), login.getPassword());
             return Response.ok(userRepo.getUserByEmail(login.getEmail())).build();

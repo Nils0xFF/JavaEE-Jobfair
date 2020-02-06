@@ -5,14 +5,24 @@
  */
 package de.hsos.kbse.jobboerse.boundary.filter;
 
-import de.hsos.kbse.jobboerse.annotations.Identificate;
 import java.io.IOException;
 import java.util.Base64;
 import javax.annotation.Priority;
+import javax.inject.Inject;
+import javax.security.enterprise.AuthenticationStatus;
+import javax.security.enterprise.SecurityContext;
+import static javax.security.enterprise.authentication.mechanism.http.AuthenticationParameters.withParams;
+import javax.security.enterprise.credential.Credential;
+import javax.security.enterprise.credential.Password;
+import javax.security.enterprise.credential.UsernamePasswordCredential;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.Provider;
 
 /**
@@ -20,16 +30,27 @@ import javax.ws.rs.ext.Provider;
  * @author soere
  */
 
-@Identificate
 @Provider
 @Priority(1)
-public class IdentificationFilter implements ContainerRequestFilter {
-    
+public class AuthorizationFilter implements ContainerRequestFilter {
+
     private static final String AUTHENTICATION_SCHEME = "Basic";
+    
+    @Inject
+    private SecurityContext securityContext;
+    @Context
+    private HttpServletRequest servRequest;
+    @Context
+    private HttpServletResponse servResponse;
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-
+        
+        UriInfo info = requestContext.getUriInfo();
+        if (info.getPath().contains("register")) {
+            return;
+        }
+        
         String authorizationHeader
                 = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
 
@@ -46,8 +67,30 @@ public class IdentificationFilter implements ContainerRequestFilter {
                 .substring(AUTHENTICATION_SCHEME.length()).trim();
         String[] uap = new String(Base64.getDecoder().decode(credentials)).split(":");
         
-        requestContext.getHeaders().add("user", uap[0]);
-        requestContext.getHeaders().add("password", uap[1]);
+        Credential credential = new UsernamePasswordCredential(uap[0], new Password(uap[1]));
+
+        AuthenticationStatus status = securityContext
+                .authenticate(
+                        servRequest,
+                        servResponse,
+                        withParams().newAuthentication(true).credential(credential));
+
+        switch (status) {
+            case SEND_CONTINUE:
+                break;
+            case SEND_FAILURE:
+                abort(requestContext);
+                break;
+            case SUCCESS:
+                break;
+            case NOT_DONE:
+                abort(requestContext);
+                break;
+            default:
+                abort(requestContext);
+                break;
+        }
+        
     }
 
     public void abort(ContainerRequestContext requestContext) {
@@ -57,4 +100,5 @@ public class IdentificationFilter implements ContainerRequestFilter {
                                 AUTHENTICATION_SCHEME)
                         .build());
     }
+    
 }
