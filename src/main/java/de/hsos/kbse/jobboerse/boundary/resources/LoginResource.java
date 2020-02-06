@@ -7,9 +7,7 @@ package de.hsos.kbse.jobboerse.boundary.resources;
 
 import de.hsos.kbse.jobboerse.controllers.CompanyRegistrationController;
 import de.hsos.kbse.jobboerse.controllers.UserRegistrationController;
-import de.hsos.kbse.jobboerse.entity.company.Company;
 import de.hsos.kbse.jobboerse.entity.shared.Login;
-import de.hsos.kbse.jobboerse.entity.user.SeekingUser;
 import de.hsos.kbse.jobboerse.repositories.CompanyRepository;
 import de.hsos.kbse.jobboerse.repositories.GeneralUserRepository;
 import java.util.HashMap;

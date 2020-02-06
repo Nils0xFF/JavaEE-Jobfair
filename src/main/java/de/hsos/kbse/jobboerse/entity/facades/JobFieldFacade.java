@@ -1,12 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package de.hsos.kbse.jobboerse.entity.facades;
 
 import de.hsos.kbse.jobboerse.entity.company.JobField;
-import javax.ejb.Stateless;
 import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -38,7 +33,9 @@ public class JobFieldFacade extends AbstractFacade<JobField> {
         TypedQuery<JobField> query = em.createQuery(queryString, JobField.class);
         query.setParameter("name", name);
         JobField field = query.getSingleResult();
-        if (field == null) throw new IllegalArgumentException("Jobfield not found!");
+        if (field == null) {
+            throw new IllegalArgumentException("Jobfield not found!");
+        }
         return field;
     }    
 }

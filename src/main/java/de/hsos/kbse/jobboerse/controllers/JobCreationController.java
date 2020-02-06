@@ -5,12 +5,12 @@
  */
 package de.hsos.kbse.jobboerse.controllers;
 
-import de.hsos.kbse.jobboerse.repositories.CompanyRepository;
 import de.hsos.kbse.jobboerse.entity.company.Job;
 import de.hsos.kbse.jobboerse.entity.company.JobField;
 import de.hsos.kbse.jobboerse.entity.shared.Address;
 import de.hsos.kbse.jobboerse.entity.shared.NeededRequirement;
 import de.hsos.kbse.jobboerse.enums.Sal_Relation;
+import de.hsos.kbse.jobboerse.repositories.CompanyRepository;
 import de.hsos.kbse.jobboerse.repositories.JobRepository;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;

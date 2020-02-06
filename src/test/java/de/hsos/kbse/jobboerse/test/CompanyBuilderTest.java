@@ -82,7 +82,7 @@ public class CompanyBuilderTest {
 
 
     @Before
-    private void clearData() throws Exception {
+    public void clearData() throws Exception {
         utx.begin();
         System.out.println("Löschen der alten Datensätze...");
         
@@ -106,7 +106,7 @@ public class CompanyBuilderTest {
         utx.begin();
         Assert.assertTrue(cmpyRegCntrl.createLogin(email, password));
         utx.commit();
-        Login login = (Login) loginFacade.findByEmail(email);
+        Login login = loginFacade.findByEmail(email);
         Assert.assertTrue(email.equals(login.getEmail()));
         Assert.assertFalse(password.equals(login.getPassword()));
         Assert.assertTrue(login.getGroup_name().equals("COMPANY"));

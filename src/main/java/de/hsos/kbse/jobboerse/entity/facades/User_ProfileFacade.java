@@ -6,7 +6,6 @@
 package de.hsos.kbse.jobboerse.entity.facades;
 
 import de.hsos.kbse.jobboerse.entity.user.User_Profile;
-import javax.ejb.Stateless;
 import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

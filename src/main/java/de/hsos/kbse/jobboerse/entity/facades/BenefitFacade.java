@@ -37,7 +37,9 @@ public class BenefitFacade extends AbstractFacade<Benefit> {
         TypedQuery<Benefit> query = em.createQuery(queryString, Benefit.class);
         query.setParameter("name", name);
         Benefit benefit = query.getSingleResult();
-        if (benefit == null) throw new IllegalArgumentException("Benefit not found!");
+        if (benefit == null) {
+            throw new IllegalArgumentException("Benefit not found!");
+        }
         return benefit;
     } 
     

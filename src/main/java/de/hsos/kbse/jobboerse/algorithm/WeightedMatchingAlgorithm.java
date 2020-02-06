@@ -80,7 +80,9 @@ public class WeightedMatchingAlgorithm implements MatchingAlgorithm, Serializabl
                         break;
                     }
                 }
-                if(!foundBenefit) percentageBenefits -=  initPercentageBenfits / userRequest.getWishedBenefits().size();
+                if(!foundBenefit) {
+                    percentageBenefits -=  initPercentageBenfits / userRequest.getWishedBenefits().size();
+                }
             }
             for (NeededRequirement cmpyRequirement : available.getNeeded()) {
                 boolean foundRequirement = false;
@@ -90,7 +92,9 @@ public class WeightedMatchingAlgorithm implements MatchingAlgorithm, Serializabl
                         break; 
                     }
                 }
-                if(!foundRequirement) percentageRequirements -= initPercentageRequirements / (available.getNeeded().size() * cmpyRequirement.getWeight());
+                if(!foundRequirement) {
+                    percentageRequirements -= initPercentageRequirements / (available.getNeeded().size() * cmpyRequirement.getWeight());
+                }
                 
             }
             foundJob.setJob(available);

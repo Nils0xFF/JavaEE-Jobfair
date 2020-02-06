@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package de.hsos.kbse.util.converter;
 
-import de.hsos.kbse.jobboerse.entity.facades.RequirementFacade;
 import de.hsos.kbse.jobboerse.entity.shared.Requirement;
 import de.hsos.kbse.jobboerse.repositories.RequirementRepository;
 import javax.faces.component.UIComponent;
@@ -52,7 +47,6 @@ public class RequirementConverter implements Converter {
             
             if (string != null && string.trim().length() > 0) {
                 System.out.println(Long.parseLong(string.trim()));
-                System.out.println(requirementRepo);
                 return requirementRepo.find(Long.parseLong(string.trim()));
 
             }

@@ -59,10 +59,12 @@ public class RequirementRepository {
     public void update(Long id, String name, String desc) throws IllegalArgumentException, EntityExistsException {
         if (!exists(name)) {
             Requirement old = rf.find(id);
-            if (name != null)
+            if (name != null) {
                 old.setName(name);
-            if (desc != null)
+            }
+            if (desc != null) {
                 old.setDescription(desc);
+            }
             rf.edit(old);
         } else {
             throw new EntityExistsException("Requirement already exists!");
@@ -72,10 +74,12 @@ public class RequirementRepository {
     public void update(String name, String sub, String desc) throws IllegalArgumentException, EntityExistsException {
         if (!exists(name)) {
             Requirement old = rf.findByName(name);
-            if (sub != null)
+            if (sub != null) {
                 old.setName(sub);
-            if (desc != null)
+            }
+            if (desc != null) {
                 old.setDescription(desc);
+            }
             rf.edit(old);
         } else {
             throw new EntityExistsException("Requirement already exists!");

@@ -11,12 +11,12 @@ import de.hsos.kbse.jobboerse.entity.company.JobField;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
 import de.hsos.kbse.jobboerse.entity.shared.NeededRequirement;
 import de.hsos.kbse.jobboerse.entity.shared.Requirement;
-import de.hsos.kbse.jobboerse.entity.user.WeightedJob;
-import de.hsos.kbse.jobboerse.repositories.SearchRepository;
 import de.hsos.kbse.jobboerse.entity.shared.SearchRequest;
 import de.hsos.kbse.jobboerse.entity.user.SeekingUser;
-import de.hsos.kbse.jobboerse.repositories.JobRepository;
+import de.hsos.kbse.jobboerse.entity.user.WeightedJob;
 import de.hsos.kbse.jobboerse.repositories.GeneralUserRepository;
+import de.hsos.kbse.jobboerse.repositories.JobRepository;
+import de.hsos.kbse.jobboerse.repositories.SearchRepository;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,7 +82,9 @@ public class BasicMatchingAlgorithm implements MatchingAlgorithm, Serializable {
                         break;
                     }
                 }
-                if(!foundBenefit) percentageBenefits -=  initPercentageBenfits / userRequest.getWishedBenefits().size();
+                if(!foundBenefit) {
+                    percentageBenefits -=  initPercentageBenfits / userRequest.getWishedBenefits().size();
+                }
             }
             for (NeededRequirement cmpyRequirement : available.getNeeded()) {
                 boolean foundRequirement = false;
@@ -92,7 +94,9 @@ public class BasicMatchingAlgorithm implements MatchingAlgorithm, Serializable {
                         break; 
                     }
                 }
-                if(!foundRequirement) percentageRequirements -=   initPercentageRequirements / available.getNeeded().size();
+                if(!foundRequirement) {
+                    percentageRequirements -=   initPercentageRequirements / available.getNeeded().size();
+                }
                 
             }
             foundJob.setJob(available);
@@ -101,7 +105,9 @@ public class BasicMatchingAlgorithm implements MatchingAlgorithm, Serializable {
             foundJob.setTotalPercentage((percentageBenefits + percentageRequirements) / 2);
             suitableJobs.add(foundJob);
         }
-        if(suitableJobs.size() > 0) Collections.sort(suitableJobs, Collections.reverseOrder());
+        if(suitableJobs.size() > 0) {
+            Collections.sort(suitableJobs, Collections.reverseOrder());
+        }
         return suitableJobs;
 
     }

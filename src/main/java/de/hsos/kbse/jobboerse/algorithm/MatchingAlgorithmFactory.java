@@ -5,11 +5,6 @@
  */
 package de.hsos.kbse.jobboerse.algorithm;
 
-import de.hsos.kbse.jobboerse.algorithm.qualifiers.Basic;
-import de.hsos.kbse.jobboerse.algorithm.qualifiers.Weighted;
-import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.Produces;
-
 /**
  *
  * @author lennartwoltering

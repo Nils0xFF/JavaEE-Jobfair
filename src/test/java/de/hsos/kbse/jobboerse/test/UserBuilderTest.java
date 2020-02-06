@@ -18,7 +18,6 @@ import de.hsos.kbse.jobboerse.entity.user.SeekingUser;
 import de.hsos.kbse.jobboerse.enums.Graduation;
 import de.hsos.kbse.jobboerse.enums.Salutation;
 import de.hsos.kbse.jobboerse.enums.Title;
-import de.hsos.kbse.jobboerse.enums.WorkerCount;
 import de.hsos.kbse.jobboerse.repositories.CompanyRepository;
 import de.hsos.kbse.jobboerse.repositories.GeneralUserRepository;
 import java.io.File;
@@ -114,7 +113,7 @@ public class UserBuilderTest {
         utx.begin();
         Assert.assertTrue(userRegCntrl.createLogin(email, password));
         utx.commit();
-        Login login = (Login) loginFacade.findByEmail(email);
+        Login login = loginFacade.findByEmail(email);
         Assert.assertTrue(email.equals(login.getEmail()));
         Assert.assertFalse(password.equals(login.getPassword()));
         Assert.assertTrue(login.getGroup_name().equals("USER"));

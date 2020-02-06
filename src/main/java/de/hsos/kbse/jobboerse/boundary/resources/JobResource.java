@@ -6,12 +6,9 @@
 package de.hsos.kbse.jobboerse.boundary.resources;
 
 import de.hsos.kbse.jobboerse.entity.company.Job;
-import de.hsos.kbse.jobboerse.entity.shared.Address;
-import de.hsos.kbse.jobboerse.entity.shared.NeededRequirement;
 import de.hsos.kbse.jobboerse.repositories.JobRepository;
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;

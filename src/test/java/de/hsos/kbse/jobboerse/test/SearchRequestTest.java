@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package de.hsos.kbse.jobboerse.test;
 
 import de.hsos.kbse.jobboerse.ApplicationConfig;
@@ -44,7 +40,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import javax.transaction.UserTransaction;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -82,7 +77,6 @@ public class SearchRequestTest {
                 .addAsWebInfResource(new File("src/test/java/resources/glassfish-resources.xml"))
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
         
-        System.out.println(war.toString(true));
 
         return war;
 
@@ -145,7 +139,7 @@ public class SearchRequestTest {
         utx.begin();
         Assert.assertTrue(cmpyRegCntrl.createLogin(email, password));
         utx.commit();
-        Login login = (Login) loginFacade.findByEmail(email);
+        Login login = loginFacade.findByEmail(email);
         Assert.assertTrue(email.equals(login.getEmail()));
         Assert.assertFalse(password.equals(login.getPassword()));
         Assert.assertTrue(login.getGroup_name().equals("COMPANY"));
@@ -161,7 +155,7 @@ public class SearchRequestTest {
         Assert.assertTrue(userRegCntrl.createLogin(email, password));
         utx.commit();
         
-        Login login = (Login) loginFacade.findByEmail(email);
+        Login login = loginFacade.findByEmail(email);
         Assert.assertTrue(email.equals(login.getEmail()));
         Assert.assertFalse(password.equals(login.getPassword()));
         Assert.assertTrue(login.getGroup_name().equals("USER"));

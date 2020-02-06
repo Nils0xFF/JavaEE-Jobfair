@@ -6,20 +6,20 @@
 package de.hsos.kbse.jobboerse.repositories;
 
 import de.hsos.kbse.jobboerse.entity.company.Company;
+import de.hsos.kbse.jobboerse.entity.company.CompanyProfile;
 import de.hsos.kbse.jobboerse.entity.company.Contact;
+import de.hsos.kbse.jobboerse.entity.company.Job;
+import de.hsos.kbse.jobboerse.entity.company.JobField;
 import de.hsos.kbse.jobboerse.entity.facades.AddressFacade;
+import de.hsos.kbse.jobboerse.entity.facades.BenefitFacade;
 import de.hsos.kbse.jobboerse.entity.facades.CompanyFacade;
 import de.hsos.kbse.jobboerse.entity.facades.CompanyProfileFacade;
 import de.hsos.kbse.jobboerse.entity.facades.ContactFacade;
 import de.hsos.kbse.jobboerse.entity.facades.LoginFacade;
 import de.hsos.kbse.jobboerse.entity.facades.PictureFacade;
 import de.hsos.kbse.jobboerse.entity.shared.Address;
-import de.hsos.kbse.jobboerse.entity.shared.Login;
-import de.hsos.kbse.jobboerse.entity.company.CompanyProfile;
-import de.hsos.kbse.jobboerse.entity.company.Job;
-import de.hsos.kbse.jobboerse.entity.company.JobField;
-import de.hsos.kbse.jobboerse.entity.facades.BenefitFacade;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
+import de.hsos.kbse.jobboerse.entity.shared.Login;
 import de.hsos.kbse.jobboerse.entity.shared.Picture;
 import de.hsos.kbse.jobboerse.enums.Salutation;
 import de.hsos.kbse.jobboerse.enums.Title;
@@ -87,7 +87,6 @@ public class CompanyRepository {
         Login login = loginf.findByEmail(email);
         if (login != null) {
             login.getCompany().getProfile().setProfilePicture(toInsert);
-            System.out.println("ADD PIC");
             loginf.edit(login);
         }
     }

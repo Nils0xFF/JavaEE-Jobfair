@@ -38,7 +38,9 @@ public class JobFacade extends AbstractFacade<Job> {
         TypedQuery<Login> query = em.createQuery(queryString, Login.class);
         query.setParameter("name", name);
         List results = query.getResultList();
-        if(results.isEmpty()) throw new IllegalArgumentException("No jobs found!");
+        if(results.isEmpty()) {
+            throw new IllegalArgumentException("No jobs found!");
+        }
         return results;
     }
     

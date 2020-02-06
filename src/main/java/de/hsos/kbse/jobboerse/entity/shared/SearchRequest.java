@@ -6,17 +6,14 @@
 package de.hsos.kbse.jobboerse.entity.shared;
 
 import de.hsos.kbse.jobboerse.entity.company.JobField;
-import de.hsos.kbse.jobboerse.entity.user.WeightedJob;
 import java.io.Serializable;
 import java.util.List;
 import javax.enterprise.inject.Vetoed;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 
 /**
  *

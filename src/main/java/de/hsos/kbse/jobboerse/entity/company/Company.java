@@ -40,8 +40,9 @@ public class Company implements Serializable {
 
     @PreRemove
     public void prepareRemove() {
-        if(login != null)
-        login.setCompany(null);
+        if(login != null) {
+            login.setCompany(null);
+        }
     }
 
     public static class Builder {

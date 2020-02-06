@@ -18,18 +18,16 @@ import static javax.security.enterprise.AuthenticationStatus.NOT_DONE;
 import static javax.security.enterprise.AuthenticationStatus.SEND_CONTINUE;
 import static javax.security.enterprise.AuthenticationStatus.SEND_FAILURE;
 import static javax.security.enterprise.AuthenticationStatus.SUCCESS;
-import javax.security.enterprise.credential.UsernamePasswordCredential;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.Email;
 import javax.security.enterprise.SecurityContext;
 import static javax.security.enterprise.authentication.mechanism.http.AuthenticationParameters.withParams;
 import javax.security.enterprise.credential.Credential;
 import javax.security.enterprise.credential.Password;
+import javax.security.enterprise.credential.UsernamePasswordCredential;
 import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-//import javax.ws.rs.core.SecurityContext;
-
 @Named
 @RequestScoped
 public class LoginBacking {
@@ -83,7 +81,6 @@ public class LoginBacking {
                         (HttpServletRequest) externalContext.getRequest(),
                         (HttpServletResponse) externalContext.getResponse(),
                         withParams().newAuthentication(true).credential(credential));
-        System.out.println(status);
         return status;
     }
 
@@ -120,3 +117,4 @@ public class LoginBacking {
     }
 
 }
+//import javax.ws.rs.core.SecurityContext;

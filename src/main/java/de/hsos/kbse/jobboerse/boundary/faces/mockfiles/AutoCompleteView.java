@@ -5,7 +5,6 @@
  */
 package de.hsos.kbse.jobboerse.boundary.faces.mockfiles;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.enterprise.context.RequestScoped;

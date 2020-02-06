@@ -14,7 +14,6 @@ import de.hsos.kbse.jobboerse.entity.user.WeightedJob;
 import de.hsos.kbse.jobboerse.repositories.GeneralUserRepository;
 import de.hsos.kbse.jobboerse.repositories.JobFieldRepository;
 import de.hsos.kbse.jobboerse.repositories.SearchRepository;
-import java.io.IOException;
 import java.io.Serializable;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
