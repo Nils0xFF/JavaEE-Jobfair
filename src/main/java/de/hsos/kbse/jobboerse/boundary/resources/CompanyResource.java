@@ -6,25 +6,24 @@
 package de.hsos.kbse.jobboerse.boundary.resources;
 
 // import de.hsos.kbse.jobboerse.annotations.Secured;
-import de.hsos.kbse.jobboerse.annotations.Identificate;
 import de.hsos.kbse.jobboerse.entity.company.Company;
 import de.hsos.kbse.jobboerse.entity.company.CompanyProfile;
 import de.hsos.kbse.jobboerse.entity.company.Contact;
 import de.hsos.kbse.jobboerse.entity.company.Job;
+import de.hsos.kbse.jobboerse.entity.company.JobField;
 import de.hsos.kbse.jobboerse.entity.shared.Address;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
-import de.hsos.kbse.jobboerse.entity.shared.Login;
+import de.hsos.kbse.jobboerse.enums.WorkerCount;
 import de.hsos.kbse.jobboerse.repositories.CompanyRepository;
 import java.util.Collection;
-import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.json.bind.Jsonb;
+import javax.security.enterprise.SecurityContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -49,6 +48,8 @@ public class CompanyResource {
     
     @Inject
     private Jsonb jsonb;
+    @Inject
+    private SecurityContext securityContext; 
     
     @GET
     @Path("{id}")
@@ -87,10 +88,26 @@ public class CompanyResource {
         }
     }
     
+    @GET
+    @Path("benefits")
+    public Response getCompanyBenefits() {
+        String email = securityContext.getCallerPrincipal().getName();
+        try {
+            Collection<Benefit> all = companyRepo.getAllCompanyBenefits(email);
+            if (all.isEmpty()) {
+                return Response.noContent().build();
+            }
+            
+            return Response.ok(jsonb.toJson(all)).build();
+        } catch (Exception ex) {
+            return Response.status(Response.Status.BAD_REQUEST.getStatusCode(), ex.getMessage()).build();
+        }        
+    }
+    
     @PUT
     @Path("update/profile")
-    @Identificate
-    public Response updateCompanyProfile(@HeaderParam("user") String email, CompanyProfile profile) {
+    public Response updateCompanyProfile(CompanyProfile profile) {
+        String email = securityContext.getCallerPrincipal().getName();
         try {
             companyRepo.updateCompanyProfile(email, profile);
             return Response.ok(jsonb.toJson(companyRepo.getCompanyByEmail(email).getProfile())).build();
@@ -101,8 +118,8 @@ public class CompanyResource {
     
     @PUT
     @Path("update/profile/address")
-    @Identificate
-    public Response updateCompanyAddress(@HeaderParam("user") String email, Address address) {
+    public Response updateCompanyAddress(Address address) {
+        String email = securityContext.getCallerPrincipal().getName();
         try {
             companyRepo.updateCompanyAddress(email, address);
             return Response.ok(jsonb.toJson(companyRepo.getCompanyByEmail(email).getProfile().getAddress())).build();
@@ -113,58 +130,44 @@ public class CompanyResource {
     
     @PUT
     @Path("update/profile/contact")
-    @Identificate
-    public Response updateCompanyContact(@HeaderParam("user") String email, Contact contact) {
+    public Response updateCompanyContact(Contact contact) {
+        String email = securityContext.getCallerPrincipal().getName();
         try {
             companyRepo.updateCompanyContact(email, contact);
             return Response.ok(jsonb.toJson(companyRepo.getCompanyByEmail(email).getProfile().getContact())).build();
         } catch (Exception ex) {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
-        }
-        
-    }
+        }        
+    }    
     
     @PUT
-    @Path("update/profile/benefits")
-    @Identificate
-    public Response updateCompanyQualifications(@HeaderParam("user") String email, List<Benefit> benefits) {
-        try {
-            companyRepo.updateCompanyQualifications(email, benefits);
-            return Response.ok(jsonb.toJson(companyRepo.getCompanyByEmail(email).getProfile().getBenefits())).build();
-        } catch (Exception ex) {
-            return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
-        }
-    }
-    
-    @PUT
-    @Path("update/profile/benefits/add")
-    @Identificate
-    public Response addCompanyBenefit(@HeaderParam("user") String email, Benefit benefit) {
+    @Path("benefits/add")
+    public Response addCompanyBenefit(Benefit benefit) {
+        String email = securityContext.getCallerPrincipal().getName();
         try {
             companyRepo.addCompanyBenefit(email, benefit);
-            return Response.ok(jsonb.toJson(companyRepo.getCompanyByEmail(email).getProfile().getBenefits())).build();
+            return Response.ok(jsonb.toJson(companyRepo.getAllCompanyBenefits(email))).build();
         } catch (Exception ex) {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
         }        
     }
     
     @DELETE
-    @Path("delete/profile/benefits/remove")
-    @Identificate
-    public Response removeCompanyBenefit(@HeaderParam("user") String email, Benefit benefit) {
+    @Path("benefits/remove/{id}")
+    public Response removeCompanyBenefit(@PathParam("id") Long id) {
+        String email = securityContext.getCallerPrincipal().getName();
         try {
-            companyRepo.removeCompanyBenefit(email, benefit);
-            return Response.ok(jsonb.toJson(companyRepo.getCompanyByEmail(email).getProfile().getBenefits())).build();
-        } catch (Exception ex) {
+            companyRepo.removeCompanyBenefit(email, id);
+            return Response.ok().build();
+        } catch (Exception ex) {            
             return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
         }
     }
     
     @POST
     @Path("create/profile")
-    @Identificate
-    @RolesAllowed({"COMPANY"})
-    public Response createCompanyProfile(@HeaderParam("user") String email, CompanyProfile profile) {
+    public Response createCompanyProfile(CompanyProfile profile) {
+        String email = securityContext.getCallerPrincipal().getName();
         try {            
             companyRepo.createCompanyProfile(email, profile);
             return Response.ok(jsonb.toJson(companyRepo.getCompanyByEmail(email).getProfile())).build();
@@ -173,17 +176,79 @@ public class CompanyResource {
         }
     }    
     
+    @GET
+    @Path("jobs")
+    public Response getAllCompanyJobs()  {
+        String email = securityContext.getCallerPrincipal().getName();
+        try {
+            Collection<Job> all = companyRepo.getAllCompanyJobs(email);
+            if (all.isEmpty()) {
+                return Response.noContent().build();
+            }
+            
+            return Response.ok(jsonb.toJson(all)).build();
+        } catch (Exception ex) {
+            return Response.status(Response.Status.BAD_REQUEST.getStatusCode(), ex.getMessage()).build();
+        }   
+    }
+    
     @POST
-    @Path("create/job")
-    @Identificate
-    public Response addJob(@HeaderParam("email") String email, Job job) {
-        return Response.status(Response.Status.NOT_IMPLEMENTED).build();
+    @Path("jobs/create")
+    public Response addJob(Job job) {
+        String email = securityContext.getCallerPrincipal().getName();
+        try {
+            companyRepo.addJobtoCompany(email, job);
+            return Response.ok().build();
+        } catch (Exception ex) {
+            return Response.status(Response.Status.BAD_REQUEST.getStatusCode(), ex.getMessage()).build();
+        }
+    }
+    
+    @PUT
+    @Path("jobs/update/{id}")
+    public Response updateJob(@PathParam("id") Long id, Job job) {
+        String email = securityContext.getCallerPrincipal().getName();
+        try {
+            companyRepo.updateJobOfCompany(email, id, job);
+            return Response.ok().build();
+        } catch (Exception ex) {
+            return Response.status(Response.Status.BAD_REQUEST.getStatusCode(), ex.getMessage()).build();
+        }
+    }
+    
+    @PUT
+    @Path("jobs/update/address/{id}")
+    public Response updateJobAddress(@PathParam("id") Long id, Address address) {
+        String email = securityContext.getCallerPrincipal().getName();
+        try {
+            companyRepo.updateJobAddressOfCompany(email, id, address);
+            return Response.ok().build();
+        } catch (Exception ex) {
+            return Response.status(Response.Status.BAD_REQUEST.getStatusCode(), ex.getMessage()).build();
+        }
+    }
+    
+    @PUT
+    @Path("jobs/update/jobfield/{id}")
+    public Response updateJobJobField(@PathParam("id") Long id, JobField jobfield) {
+        String email = securityContext.getCallerPrincipal().getName();
+        try {
+            companyRepo.updateJobJobFieldOfCompany(email, id, jobfield);
+            return Response.ok().build();
+        } catch (Exception ex) {
+            return Response.status(Response.Status.BAD_REQUEST.getStatusCode(), ex.getMessage()).build();
+        }
     }
     
     @DELETE
-    @Path("delete/job/{email}")
-    @Identificate
-    public Response removeJob(@PathParam("email") String email) {
-        return Response.status(Response.Status.NOT_IMPLEMENTED).build();
+    @Path("jobs/remove/{id}")
+    public Response removeJob(@PathParam("id") Long id) {
+        String email = securityContext.getCallerPrincipal().getName();
+        try {
+            companyRepo.removeJobFromCompany(email, id);
+            return Response.ok().build();
+        } catch (Exception ex) {
+            return Response.status(Response.Status.BAD_REQUEST.getStatusCode(), ex.getMessage()).build();
+        }
     }
 }
