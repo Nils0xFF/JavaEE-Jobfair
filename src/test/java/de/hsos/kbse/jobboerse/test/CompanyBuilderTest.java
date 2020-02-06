@@ -54,8 +54,8 @@ public class CompanyBuilderTest {
                 .addPackage(SeekingUser.class.getPackage())
                 .addPackage(Graduation.class.getPackage())
                 .addPackage(CompanyRepository.class.getPackage())
-                .addAsResource("META-INF/persistence.xml")
-                .addAsWebInfResource(new File("src/main/webapp/WEB-INF/glassfish-resources.xml"))
+                .addAsResource(new File("src/test/java/resources/test-persistence.xml"), "META-INF/persistence.xml")
+                .addAsWebInfResource(new File("src/test/java/resources/glassfish-resources.xml"))
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
 
         return war;
@@ -80,11 +80,8 @@ public class CompanyBuilderTest {
     @Inject
     LoginFacade loginFacade;
 
-    @Before
-    public void preparePersistenceTest() throws Exception {
-        clearData();
-    }
 
+    @Before
     private void clearData() throws Exception {
         utx.begin();
         System.out.println("Löschen der alten Datensätze...");

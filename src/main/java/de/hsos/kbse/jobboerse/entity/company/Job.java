@@ -8,6 +8,7 @@ import java.util.List;
 import javax.enterprise.inject.Vetoed;
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -29,8 +31,12 @@ public class Job implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
+    @NotNull
+    @Column(nullable = false)
     private Sal_Relation relation;
     
+    @NotNull
+    @Column(nullable = false)
     private String name;
     
     private Double salary;

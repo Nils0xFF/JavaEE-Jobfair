@@ -18,6 +18,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.PreRemove;
+import javax.validation.constraints.NotNull;
 import org.eclipse.persistence.annotations.CascadeOnDelete;
 
 /**
@@ -32,9 +33,14 @@ public class Login implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @NotNull
+    @Column(nullable = false)
     private String password;
+    @NotNull
+    @Column(nullable = false)
     private String group_name;
 
+    @NotNull
     @Column(unique = true)
     private String email;
 
