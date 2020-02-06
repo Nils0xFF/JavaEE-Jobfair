@@ -52,7 +52,6 @@ public class AuthorizationFilter implements ContainerRequestFilter {
                 || info.getPath().startsWith("jobfields")
                 || info.getPath().startsWith("requirements")
                 || info.getPath().startsWith("jobs")) {
-            System.out.println(info.getPath());
             return;
         }
         

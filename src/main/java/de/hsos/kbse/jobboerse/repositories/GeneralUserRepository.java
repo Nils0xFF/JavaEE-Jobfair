@@ -81,6 +81,11 @@ public class GeneralUserRepository {
         }
         return false;
     }
+    
+    public void createUser(String email) throws IllegalArgumentException {
+        Login login = logins.findByEmail(email);
+        login.getSeekingUser().setLogin(login);
+    }
 
     public void createUser(Login toInsert) throws EntityExistsException {
         if (!checkEmailExists(toInsert.getEmail())) {
@@ -158,7 +163,7 @@ public class GeneralUserRepository {
         Login login = logins.findByEmail(email);
         if (login != null) {
             login.getSeekingUser().setProfile(profile);
-            login.getSeekingUser().setLogin(login);
+            login.getSeekingUser().setCompleted(true);
             logins.edit(login);
         } else {
             throw new IllegalArgumentException("User not found!");
@@ -236,8 +241,7 @@ public class GeneralUserRepository {
     }
 
     public SeekingUser getUser(Long id) throws IllegalArgumentException {
-        Login login = logins.find(id);
-        return login.getSeekingUser();
+        return users.find(id);
     }
 
     public SeekingUser getUserByEmail(String email) throws IllegalArgumentException {

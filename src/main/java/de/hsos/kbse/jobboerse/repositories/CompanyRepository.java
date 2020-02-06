@@ -104,6 +104,11 @@ public class CompanyRepository {
 
         return false;
     }
+    
+    public void createCompany(String email) throws IllegalArgumentException {
+        Login login = loginf.findByEmail(email);
+        login.getCompany().setLogin(login);
+    }
 
     public boolean updateCompany(CompanyProfile toInsert, String email) {
         Login login = loginf.findByEmail(email);
@@ -272,6 +277,7 @@ public class CompanyRepository {
         }
         login.getCompany().setProfile(profile);
         login.getCompany().setLogin(login);
+        login.getCompany().setCompleted(true);
         loginf.edit(login);
     }
 
