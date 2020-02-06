@@ -47,7 +47,12 @@ public class AuthorizationFilter implements ContainerRequestFilter {
     public void filter(ContainerRequestContext requestContext) throws IOException {
         
         UriInfo info = requestContext.getUriInfo();
-        if (info.getPath().contains("register")) {
+        if (info.getPath().contains("register") || info.getPath().contains("enums") 
+                || info.getPath().startsWith("benefits") 
+                || info.getPath().startsWith("jobfields")
+                || info.getPath().startsWith("requirements")
+                || info.getPath().startsWith("jobs")) {
+            System.out.println(info.getPath());
             return;
         }
         

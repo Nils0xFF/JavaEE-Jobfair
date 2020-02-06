@@ -106,7 +106,7 @@ public class LoginResource {
         System.out.println(email);
         try {
             userRepo.editUserCredentials(email, login.getEmail(), login.getPassword());
-            return Response.ok(userRepo.getUserByEmail(login.getEmail())).build();
+            return Response.ok().build();
         } catch (Exception ex) {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage()).build();
         }
