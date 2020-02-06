@@ -79,10 +79,10 @@ public class CompanyRegisterFace implements Serializable {
     private WorkerCount workercount;
 
     @Inject
-    BenefitRepository benefitRepo;
+    private BenefitRepository benefitRepo;
 
     @Inject
-    CompanyRegistrationController companyRegCntrl;
+    private CompanyRegistrationController companyRegCntrl;
 
     @Inject
     private SecurityContext context;

@@ -40,7 +40,14 @@ public class BasicMatchingAlgorithm implements MatchingAlgorithm, Serializable {
     @Inject
     private GeneralUserRepository userRepo;
 
-    
+    /**
+     * This algorithm searches for jobs that fullfill the jobfields the user is interested in.
+     * It creates for every Job a percentage of accordance
+     * 
+     * 
+     * @param email the email address for the user
+     * @return available jobs for the user with the specified email
+     */
     @Override
     @Transactional
     public List<WeightedJob> findSuitableJobs(String email) {

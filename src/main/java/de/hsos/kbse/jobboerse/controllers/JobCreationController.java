@@ -32,6 +32,17 @@ public class JobCreationController {
     private Job job;
     private Address address;
 
+    /**
+     * Creates a job Info and saves it in the job field
+     * 
+     * @param jobname Represents the jobname
+     * @param desc Represents the Description of the job
+     * @param jobfield Represents the jobfield so Seeking user can find this job
+     * @param requirements Represents the qualifications for the job (with weights)
+     * @param salary Represents the salary per hour
+     * @param relation Represents the SalaryRelation (enum)
+     * @return returns a reference to itself
+     */
     public JobCreationController createInfo(String jobname, String desc, JobField jobfield, List<NeededRequirement> requirements, Double salary, Sal_Relation relation) {
         job = Job.builder()
                 .name(jobname)
@@ -44,6 +55,15 @@ public class JobCreationController {
         return this;
     }
 
+    /**
+     * Creates a job address and saves it in the address field
+     * @param street Represents the street where the job is located
+     * @param housenumber Represents the housenumber where the job is located
+     * @param city Represents the city where the job is located
+     * @param postalcode Represents the postalcode of the city
+     * @param country Represents the country of the city
+     * @return returns a reference to itself
+     */
     public JobCreationController createAddress(
             String street, String housenumber, String city,
             String postalcode, String country) {
@@ -57,11 +77,19 @@ public class JobCreationController {
         return this;
     }
     
+    /**
+     * Completes the Creation of a job and saves it to the database
+     * @param email the email of the company 
+     */
     public void finishCreation(String email){
         job.setAddress(address);
         companyRepo.addJobtoCompany(email, job);
     }
     
+    /**
+     * Completes the Editing of a job and saves it to the database
+     * @param id the id of the job
+     */
     public void finishUpdating(Long id){
         job.setAddress(address);
         jobRepo.update(id, job);

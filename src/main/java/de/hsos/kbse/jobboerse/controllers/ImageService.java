@@ -32,6 +32,13 @@ public class ImageService {
     @Inject
     private JobRepository jobRepo;
 
+    /**
+     * Searches for a CompanyImage based on the JobID
+     * Needs a jobID as Requestparameter 
+     *
+     * @return A StreamedContent with the Image
+     * @throws IOException
+     */
     public StreamedContent getImage() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
@@ -48,6 +55,13 @@ public class ImageService {
         }
     }
 
+    /**
+     * Searches for a CompanyImage based on the email
+     * Needs a email as Requestparameter 
+     *
+     * @return A StreamedContent with the Image
+     * @throws IOException
+     */
     public StreamedContent getImagefromEmail() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
@@ -65,15 +79,5 @@ public class ImageService {
 
     }
 
-    public StreamedContent getTempImage(byte[] pictureData, String dataType) {
-        FacesContext context = FacesContext.getCurrentInstance();
-        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
-            // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
-            return new DefaultStreamedContent();
-        } else {
-            // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
-            return new DefaultStreamedContent(new ByteArrayInputStream(pictureData), dataType);
-        }
-    }
 
 }

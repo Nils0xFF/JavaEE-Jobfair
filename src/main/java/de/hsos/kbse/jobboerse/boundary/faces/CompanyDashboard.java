@@ -32,13 +32,13 @@ import javax.transaction.Transactional;
 public class CompanyDashboard implements Serializable {
 
     @Inject
-    CompanyRepository companyRepo;
+    private CompanyRepository companyRepo;
 
     @Inject
-    JobRepository jobRepo;
+    private JobRepository jobRepo;
 
     @Inject
-    SecurityContext context;
+    private SecurityContext context;
 
     @Transactional
     public void deleteJob(Long id) {

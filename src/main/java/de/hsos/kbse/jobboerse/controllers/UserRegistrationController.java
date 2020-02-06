@@ -45,10 +45,25 @@ public class UserRegistrationController implements Serializable{
     private Address userAddress;
     private SearchRequest searchrequest;
     
+     /**
+     * Checks the Availability of a Email in the Database
+     * 
+     * @param email the email address that should be checked
+     * @return returns true if the email is available
+     */
     public boolean checkEmailAvailability(String email){
         return !userRepo.checkEmailExists(email);
     }
     
+    /**
+     * Tries to create a new User Login in the Database.
+     * It hashes the password with pbkdf2 and uses USER as
+     * group_name.
+     * 
+     * @param email the email that should be persisted
+     * @param password the password that should be persisted
+     * @return returns true if the Login was successfull created
+     */
     public boolean createLogin(String email, String password){
         if(checkEmailAvailability(email)){
             Map<String, String> parameters = new HashMap<>();
@@ -68,6 +83,17 @@ public class UserRegistrationController implements Serializable{
             return false;
     }
     
+    /**
+     * Creates a User Profile and saves it to the userProfile field
+     *
+     * @param salutation An enum that represents the salutation of the user
+     * @param title An enum that represents the title of the user
+     * @param firstname Represents the firstname of the user
+     * @param lastname Represents the lastname of the user
+     * @param telefon Represents the phonenumber of the user
+     * @param birthday Represents the date of birth of the user
+     * @return returns a reference to itself
+     */
     public UserRegistrationController createUserProfile(Salutation salutation, Title title, String firstname, 
             String lastname, String telefon, Date birthday){
             userProfile = User_Profile.builder()
@@ -81,6 +107,16 @@ public class UserRegistrationController implements Serializable{
             return this;
     }
     
+    /**
+     * Creates a User address and saves it to the userProfile field
+     * 
+     * @param street Represents the street where the user lives
+     * @param housenumber Represents the housenumber where the user lives
+     * @param city Represents the city where the user lives
+     * @param postalcode Represents the postalcode of the city
+     * @param country Reprensents the country of the city
+     * @return returns a reference to itself
+     */
     public UserRegistrationController createAddress(String street, String housenumber, String city, 
             String postalcode, String country){
             userAddress = Address.builder()
@@ -94,6 +130,14 @@ public class UserRegistrationController implements Serializable{
             return this;
     }
     
+    /**
+     * Adds a Qualification to the userprofile
+     * 
+     * @param grad An enum that represents the graduation of the user
+     * @param fullfilledRequirements A list with fullfilled Requirements
+     * @param description Represents a description of the user
+     * @return returns a reference to itself
+     */
     public UserRegistrationController createQualifications(Graduation grad, List<Requirement> fullfilledRequirements, String description){
         userProfile.setGrad(grad);
         userProfile.setDescription(description);
@@ -101,6 +145,13 @@ public class UserRegistrationController implements Serializable{
         return this;
     }
     
+    /**
+     * Creates setupParameters and saves it to the searchrequest field
+     * 
+     * @param wishedBenefits Represents a list with wishedBenefits
+     * @param jobfields Represents the jobfields where the User wants to work
+     * @return returns a reference to itself
+     */
     public UserRegistrationController setupSearchParameters(List<Benefit> wishedBenefits, List<JobField> jobfields){
         searchrequest = SearchRequest.builder()
                 .benefits(wishedBenefits)
@@ -109,10 +160,21 @@ public class UserRegistrationController implements Serializable{
         return this;
     }
     
+    /**
+     * Completes the Registration and saves it to the database
+     * 
+     * @param email Email address of the user
+     * @return returns true if the email is assigned and the user is created
+     */
     public boolean finishRegistration(String email){
         return userRepo.createUser(userProfile,searchrequest, email);
     }
     
+    /**
+     * Completes the Updating and edits the data in the database
+     * @param email Email address of the user
+     * @return returns true if the email is assigned and the user is edited
+     */
     public boolean finishUpdating(String email){
         return userRepo.updateUser(userProfile, email);
     }
