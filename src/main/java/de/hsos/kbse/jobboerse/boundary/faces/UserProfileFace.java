@@ -5,9 +5,7 @@
  */
 package de.hsos.kbse.jobboerse.boundary.faces;
 
-import de.hsos.kbse.jobboerse.controllers.UserRegistrationController;
-import de.hsos.kbse.jobboerse.entity.company.JobField;
-import de.hsos.kbse.jobboerse.entity.shared.Benefit;
+import de.hsos.kbse.jobboerse.controllers.UserCreationController;
 import de.hsos.kbse.jobboerse.entity.shared.Requirement;
 import de.hsos.kbse.jobboerse.entity.user.SeekingUser;
 import de.hsos.kbse.jobboerse.enums.Graduation;
@@ -18,7 +16,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -26,12 +23,10 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.security.enterprise.SecurityContext;
 import javax.transaction.Transactional;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -48,7 +43,7 @@ public class UserProfileFace implements Serializable{
     private GeneralUserRepository userRepository;
     
     @Inject
-    private UserRegistrationController userCntrl;
+    private UserCreationController userCntrl;
 
     
     private boolean editMode = false;
@@ -57,27 +52,27 @@ public class UserProfileFace implements Serializable{
 
     private String email;
 
-    @NotEmpty
+    @NotBlank
     private String firstname;
-    @NotEmpty
+    @NotBlank
     private String lastname;
-    @NotEmpty
-    @Pattern(regexp = "^[^a-zA-Z]+$")
+    @NotBlank
+    @Pattern(regexp = "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*$", message = "{de.hsos.kbse.util.validation.invalidPhoneNumber}")
     private String telefon;
-    @NotEmpty
+    @NotBlank
     private String desc;
     @NotNull
     @Past
     private Date birthday;
     @Pattern(regexp = "^[^0-9]+$")
-    @NotEmpty
+    @NotBlank
     private String street;
-    @NotEmpty
+    @NotBlank
     private String housenumber;
-    @NotEmpty
+    @NotBlank
     @Pattern(regexp = "^[^0-9]+$")
     private String city;
-    @NotEmpty
+    @NotBlank
     private String postalcode, country;
     private List<Requirement> fullfilledRequirements;
 

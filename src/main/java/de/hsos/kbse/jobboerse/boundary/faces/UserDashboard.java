@@ -14,7 +14,6 @@ import de.hsos.kbse.jobboerse.entity.user.WeightedJob;
 import de.hsos.kbse.jobboerse.repositories.GeneralUserRepository;
 import de.hsos.kbse.jobboerse.repositories.JobFieldRepository;
 import de.hsos.kbse.jobboerse.repositories.SearchRepository;
-import java.io.IOException;
 import java.io.Serializable;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -35,27 +34,27 @@ import javax.transaction.Transactional;
 @ViewScoped
 public class UserDashboard implements Serializable{
     
-    DecimalFormat df = new DecimalFormat("#.##");
+    private DecimalFormat df = new DecimalFormat("#.##");
     
     
-    List<JobField> wishedJobfiels;
-    List<Benefit> wishedBenefits;
-    List<WeightedJob> availableJobs;
-    
-    @Inject
-    GeneralUserRepository userRepo;
+    private List<JobField> wishedJobfiels;
+    private List<Benefit> wishedBenefits;
+    private List<WeightedJob> availableJobs;
     
     @Inject
-    SecurityContext context;
+    private GeneralUserRepository userRepo;
+    
+    @Inject
+    private SecurityContext context;
     
     @Inject @Basic
-    MatchingAlgorithm matching;
+    private MatchingAlgorithm matching;
     
     @Inject
-    JobFieldRepository jobfieldRepo;
+    private JobFieldRepository jobfieldRepo;
     
     @Inject
-    SearchRepository searchRepo;
+    private SearchRepository searchRepo;
     
     @PostConstruct
     public void init(){
@@ -68,12 +67,8 @@ public class UserDashboard implements Serializable{
     }
     
     @Transactional
-    public void updateSearchRequest() throws IOException{
+    public void updateSearchRequest(){
         searchRepo.updateRequest(context.getCallerPrincipal().getName(), wishedBenefits, wishedJobfiels);
-        updateAvailableJobs();
-        
-        //ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        //ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
     }
 
     public List<JobField> getWishedJobfiels() {
@@ -96,7 +91,6 @@ public class UserDashboard implements Serializable{
         this.wishedBenefits = wishedBenefits;
     }
     
-    
    public void updateAvailableJobs(){
        availableJobs = matching.findSuitableJobs(context.getCallerPrincipal().getName());
    }
@@ -107,11 +101,11 @@ public class UserDashboard implements Serializable{
     }
     
     public String requirementToString(WeightedJob job){
-        return job.getJob().getNeeded().stream().map(req -> req.getRequirement().getName()).collect(Collectors.joining(","));
+        return job.getJob().getNeeded().stream().map(req -> req.getRequirement().getName()).collect(Collectors.joining(", "));
     }
     
     public String benefitsToString(WeightedJob job){
-        return job.getJob().getCompany().getProfile().getBenefits().stream().map(bene -> bene.getName()).collect(Collectors.joining(","));
+        return job.getJob().getCompany().getProfile().getBenefits().stream().map(bene -> bene.getName()).collect(Collectors.joining(", "));
     }
 
     public DecimalFormat getDf() {

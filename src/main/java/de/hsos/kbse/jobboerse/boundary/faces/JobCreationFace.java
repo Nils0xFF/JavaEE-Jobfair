@@ -5,7 +5,6 @@
  */
 package de.hsos.kbse.jobboerse.boundary.faces;
 
-import de.hsos.kbse.jobboerse.repositories.JobRepository;
 import de.hsos.kbse.jobboerse.controllers.JobCreationController;
 import de.hsos.kbse.jobboerse.entity.company.JobField;
 import de.hsos.kbse.jobboerse.entity.shared.NeededRequirement;
@@ -13,10 +12,13 @@ import de.hsos.kbse.jobboerse.entity.shared.Requirement;
 import de.hsos.kbse.jobboerse.enums.Sal_Relation;
 import de.hsos.kbse.jobboerse.repositories.JobFieldRepository;
 import de.hsos.kbse.jobboerse.repositories.RequirementRepository;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -24,60 +26,65 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.security.enterprise.SecurityContext;
 import javax.transaction.Transactional;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.PositiveOrZero;
 
 /**
  *
- * @author lennartwoltering
+ * @author lennartwoltering, nilsgeschwinde
  */
 @Named("JobCreation")
 @ViewScoped
 public class JobCreationFace implements Serializable {
 
-    @NotEmpty
+    @NotBlank
     private String jobname;
-    @NotEmpty
+    @NotBlank
     private String desc;
     @Pattern(regexp = "^[^0-9]+$")
-    @NotEmpty
+    @NotBlank
     private String street;
-    @NotEmpty
+    @NotBlank
     private String housenumber;
-    @NotEmpty
+    @NotBlank
     @Pattern(regexp = "^[^0-9]+$")
     private String city;
-    @NotEmpty
+    @NotBlank
     private String postalcode, country;
-    @Pattern(regexp = "^[^a-zA-Z]+$")
-    private String salary;
+    @PositiveOrZero
+    private Double salary;
     @Enumerated(EnumType.STRING)
     private Sal_Relation relation;
     private List<Requirement> wishedRequirement;
     private List<NeededRequirement> finishedWeightedRequirements = new ArrayList<>();
     private List<NeededRequirement> newWeightedRequirements = new ArrayList<>();
-    ;
+
     private JobField jobfield;
 
     @Inject
-    JobFieldRepository jobFieldRepo;
+    private JobFieldRepository jobFieldRepo;
 
     @Inject
-    RequirementRepository requirementRepo;
+    private RequirementRepository requirementRepo;
 
     @Inject
-    JobCreationController jobCntrl;
+    private JobCreationController jobCntrl;
 
     @Inject
-    SecurityContext context;
+    private SecurityContext context;
 
     @Transactional
-    public String createJob() {
+    public void createJob() {
         jobCntrl.createInfo(jobname, desc, jobfield, finishedWeightedRequirements, salary, relation)
                 .createAddress(street, housenumber, city, postalcode, country)
                 .finishCreation(context.getCallerPrincipal().getName());
-        
-        return "pages/members/index.xhtml?faces-redirect=true";
+
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/dashboard");
+        } catch (IOException ex) {
+            Logger.getLogger(CompanyRegisterFace.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public String getDesc() {
@@ -128,11 +135,11 @@ public class JobCreationFace implements Serializable {
         this.country = country;
     }
 
-    public String getSalary() {
+    public Double getSalary() {
         return salary;
     }
 
-    public void setSalary(String salary) {
+    public void setSalary(Double salary) {
         this.salary = salary;
     }
 

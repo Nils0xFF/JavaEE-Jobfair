@@ -26,13 +26,13 @@ import javax.inject.Named;
 public class Autocomplete {
     
     @Inject
-    BenefitRepository benefitRepo;
+    private BenefitRepository benefitRepo;
     
     @Inject
-    RequirementRepository requirementRepo;
+    private RequirementRepository requirementRepo;
     
     @Inject
-    JobFieldRepository jobFieldRepo;
+    private JobFieldRepository jobFieldRepo;
     
     public List<Benefit> completeBenefitData(String query) {
         String queryLowerCase = query.toLowerCase();

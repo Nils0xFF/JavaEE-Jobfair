@@ -17,9 +17,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PreRemove;
+import org.eclipse.persistence.annotations.CascadeOnDelete;
 
 /**
  *
@@ -31,30 +32,40 @@ public class SeekingUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
     private boolean completed;
     
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL,
+            orphanRemoval=true)
+    @CascadeOnDelete
     private Login login;
     
     @OneToOne(cascade = CascadeType.ALL,
             orphanRemoval=true)
+    @CascadeOnDelete
     private User_Profile profile;
     
     @OneToOne(cascade = CascadeType.ALL,
             orphanRemoval=true)
-    private SearchRequest searchrequest; 
     
-    @OneToMany(cascade = CascadeType.ALL,
-            orphanRemoval=true)
-    private List<Job> favorites;
+    private SearchRequest searchrequest; 
 
+    
+    @PreRemove
+    public void prepareRemove(){
+        if(login != null){
+        login.setSeekingUser(null);
+        login = null;
+        }
+        
+    }
     public static class Builder {
 
         private boolean completed;
         private User_Profile profile;
+        private Login login;
 
         private Builder() {
         }
@@ -63,9 +74,14 @@ public class SeekingUser implements Serializable {
             this.profile = value;
             return this;
         }
+        
+        public Builder login(final Login value) {
+            this.login = value;
+            return this;
+        }
 
         public SeekingUser build() {
-            return new SeekingUser(false, profile);
+            return new SeekingUser(false, profile, login);
         }
     }
 
@@ -84,15 +100,15 @@ public class SeekingUser implements Serializable {
         this.login = login;
     }
 
-    private SeekingUser(final boolean completed, final User_Profile profile) {
+    private SeekingUser(final boolean completed, final User_Profile profile, final Login login) {
         this.completed = completed;
-        this.favorites = new ArrayList<>();
         this.searchrequest = new SearchRequest();
-        if(profile == null){
+        if (profile == null){
             this.profile = new User_Profile();
-        }else{
+        } else {
             this.profile = profile;
         }
+        this.login = login;
     }
 
     public SearchRequest getSearchrequest() {

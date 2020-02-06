@@ -32,6 +32,13 @@ public class ImageService {
     @Inject
     private JobRepository jobRepo;
 
+    /**
+     * Searches for a CompanyImage based on the JobID
+     * Needs a jobID as Requestparameter 
+     *
+     * @return A StreamedContent with the Image
+     * @throws IOException
+     */
     public StreamedContent getImage() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
@@ -48,6 +55,13 @@ public class ImageService {
         }
     }
 
+    /**
+     * Searches for a CompanyImage based on the email
+     * Needs a email as Requestparameter 
+     *
+     * @return A StreamedContent with the Image
+     * @throws IOException
+     */
     public StreamedContent getImagefromEmail() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
@@ -64,5 +78,6 @@ public class ImageService {
         return new DefaultStreamedContent();
 
     }
+
 
 }

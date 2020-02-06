@@ -7,6 +7,7 @@ package de.hsos.kbse.jobboerse.algorithm;
 
 import de.hsos.kbse.jobboerse.algorithm.qualifiers.Weighted;
 import de.hsos.kbse.jobboerse.entity.company.Job;
+import de.hsos.kbse.jobboerse.entity.company.JobField;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
 import de.hsos.kbse.jobboerse.entity.shared.NeededRequirement;
 import de.hsos.kbse.jobboerse.entity.shared.Requirement;
@@ -30,7 +31,8 @@ import javax.transaction.Transactional;
  * @author lennartwoltering
  */
 @Weighted
-public class WeightedMatchingAlgorithm implements MatchingAlgorithm, Serializable{
+public class WeightedMatchingAlgorithm implements MatchingAlgorithm, Serializable {
+
     @Inject
     private SearchRepository searchRepo;
     @Inject
@@ -38,22 +40,40 @@ public class WeightedMatchingAlgorithm implements MatchingAlgorithm, Serializabl
     @Inject
     private GeneralUserRepository userRepo;
 
+    /**
+     * This algorithm searches for jobs that fullfill the jobfields the user is interested in.
+     * It creates for every Job a percentage of accordance. The Difference towards the basic algorithm 
+     * is that this algorithm uses the Weight of the requirement
+     * 
+     * @param email the email address for the user
+     * @return available jobs for the user with the specified email
+     */
     @Override
     @Transactional
     public List<WeightedJob> findSuitableJobs(String email) {
         SeekingUser user = userRepo.getUserByEmail(email);
-        System.out.println(user.getProfile().getFirstname());
         SearchRequest userRequest = user.getSearchrequest();
         List<Requirement> fullfilledRequirements = user.getProfile().getFullfiledRequirements();
         List<WeightedJob> suitableJobs = new ArrayList<>();
         Set<Job> availableJobs = new HashSet<>();
+        for (JobField jobfield : userRequest.getJobfield()) {
+            try {
+                List<Job> jobs = jobRepo.findJobsByJobField(jobfield.getName());
+                availableJobs.addAll(jobs);
+            } catch (Exception ex) {
+                
+            }
+        }
+        //Arquillian Test Suite kann nicht mit Lambda Funktionen umgehen
+        /*
         userRequest.getJobfield().forEach((jobfield) -> {
             List<Job> jobs = jobRepo.findJobsByJobField(jobfield.getName());
             if(jobs != null){
                 availableJobs.addAll(jobs);
             }
-            System.out.println(availableJobs.size());
         });
+         */
+
         float initPercentageBenfits = 100.0f;
         float initPercentageRequirements = 100.0f;
         for (Job available : availableJobs) {
@@ -68,7 +88,9 @@ public class WeightedMatchingAlgorithm implements MatchingAlgorithm, Serializabl
                         break;
                     }
                 }
-                if(!foundBenefit) percentageBenefits -=  initPercentageBenfits / userRequest.getWishedBenefits().size();
+                if(!foundBenefit) {
+                    percentageBenefits -=  initPercentageBenfits / userRequest.getWishedBenefits().size();
+                }
             }
             for (NeededRequirement cmpyRequirement : available.getNeeded()) {
                 boolean foundRequirement = false;
@@ -78,7 +100,9 @@ public class WeightedMatchingAlgorithm implements MatchingAlgorithm, Serializabl
                         break; 
                     }
                 }
-                if(!foundRequirement) percentageRequirements -= initPercentageRequirements / (available.getNeeded().size() * cmpyRequirement.getWeight());
+                if(!foundRequirement) {
+                    percentageRequirements -= initPercentageRequirements / (available.getNeeded().size() * cmpyRequirement.getWeight());
+                }
                 
             }
             foundJob.setJob(available);
@@ -87,10 +111,9 @@ public class WeightedMatchingAlgorithm implements MatchingAlgorithm, Serializabl
             foundJob.setTotalPercentage((percentageBenefits + percentageRequirements) / 2);
             suitableJobs.add(foundJob);
         }
-        System.out.println(suitableJobs.size());
-        //searchRepo.updateFoundJobs(email, suitableJobs);
-        System.out.println("MATCHING!");
-        if(suitableJobs.size() > 0) Collections.sort(suitableJobs, Collections.reverseOrder());
+        if (suitableJobs.size() > 0) {
+            Collections.sort(suitableJobs, Collections.reverseOrder());
+        }
         return suitableJobs;
 
     }

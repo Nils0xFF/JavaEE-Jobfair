@@ -6,10 +6,7 @@
 package de.hsos.kbse.jobboerse.boundary.faces;
 
 import de.hsos.kbse.jobboerse.entity.facades.LoginFacade;
-import de.hsos.kbse.jobboerse.entity.shared.Login;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
@@ -21,47 +18,43 @@ import static javax.security.enterprise.AuthenticationStatus.NOT_DONE;
 import static javax.security.enterprise.AuthenticationStatus.SEND_CONTINUE;
 import static javax.security.enterprise.AuthenticationStatus.SEND_FAILURE;
 import static javax.security.enterprise.AuthenticationStatus.SUCCESS;
-import javax.security.enterprise.credential.UsernamePasswordCredential;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 import javax.security.enterprise.SecurityContext;
 import static javax.security.enterprise.authentication.mechanism.http.AuthenticationParameters.withParams;
 import javax.security.enterprise.credential.Credential;
 import javax.security.enterprise.credential.Password;
+import javax.security.enterprise.credential.UsernamePasswordCredential;
 import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
-import javax.transaction.Transactional;
-//import javax.ws.rs.core.SecurityContext;
-
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 @Named
 @RequestScoped
 public class LoginBacking {
-    
+
     @Inject
     private LoginFacade cf;
-    
-    @NotEmpty
+
+    @NotBlank
     // @Size(min = 8, message = "Password must have at least 8 characters")
     private String password;
- 
-    @NotEmpty
+
+    @NotBlank
     @Email(message = "Please provide a valid e-mail")
     private String email;
- 
+
     @Inject
     private Pbkdf2PasswordHash passwordHash;
-    
+
     @Inject
     private SecurityContext securityContext;
- 
+
     private final ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
- 
+
     private final FacesContext facesContext = FacesContext.getCurrentInstance();
- 
+
     public void submit() throws IOException {
- 
+
         switch (continueAuthentication()) {
             case SEND_CONTINUE:
                 facesContext.responseComplete();
@@ -78,20 +71,19 @@ public class LoginBacking {
             case NOT_DONE:
         }
     }
- 
+
     private AuthenticationStatus continueAuthentication() {
-       Credential credential = new UsernamePasswordCredential(
-          email, new Password(password));
-       
-       AuthenticationStatus status = securityContext
-          .authenticate(
-            (HttpServletRequest)externalContext.getRequest(),
-            (HttpServletResponse)externalContext.getResponse(),
-            withParams().newAuthentication(true).credential(credential));
-       System.out.println(status);
-       return status;
+        Credential credential = new UsernamePasswordCredential(
+                email, new Password(password));
+
+        AuthenticationStatus status = securityContext
+                .authenticate(
+                        (HttpServletRequest) externalContext.getRequest(),
+                        (HttpServletResponse) externalContext.getResponse(),
+                        withParams().newAuthentication(true).credential(credential));
+        return status;
     }
-    
+
     /*
     @Transactional
     public void register(){
@@ -106,11 +98,8 @@ public class LoginBacking {
         callere.setGroup_name("USER");
         cf.create(callere);
     }
-    */
-    
- 
-   // getters & setters
-
+     */
+    // getters & setters
     public String getPassword() {
         return password;
     }
@@ -126,6 +115,6 @@ public class LoginBacking {
     public void setEmail(String email) {
         this.email = email;
     }
-    
-    
+
 }
+//import javax.ws.rs.core.SecurityContext;

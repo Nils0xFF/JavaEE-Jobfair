@@ -5,8 +5,8 @@
  */
 package de.hsos.kbse.jobboerse.boundary.faces;
 
-import de.hsos.kbse.jobboerse.controllers.CompanyRegistrationController;
-import de.hsos.kbse.jobboerse.controllers.UserRegistrationController;
+import de.hsos.kbse.jobboerse.controllers.CompanyCreationController;
+import de.hsos.kbse.jobboerse.controllers.UserCreationController;
 import de.hsos.kbse.jobboerse.repositories.GeneralUserRepository;
 import java.io.Serializable;
 import javax.faces.application.FacesMessage;
@@ -16,7 +16,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import org.primefaces.PrimeFaces;
 
@@ -28,11 +28,11 @@ import org.primefaces.PrimeFaces;
 @ViewScoped
 public class LoginRegisterFace implements Serializable {
 
-    @NotEmpty
-    @Email(message = "Es muss eine gültige Email sein")
+    @NotBlank
+    @Email
     private String email;
-    @NotEmpty
-    @Size(min = 2, max = 24, message = "Passwort muss länger als 5 Zeichen sein.")
+    @NotBlank
+    @Size(min = 2, max = 24)
     private String pw, pw2;
 
     private boolean seekingUser = false;
@@ -40,10 +40,10 @@ public class LoginRegisterFace implements Serializable {
     private boolean successful = false;
 
     @Inject
-    private CompanyRegistrationController companyRegCntrl;
+    private CompanyCreationController companyRegCntrl;
 
     @Inject
-    private UserRegistrationController userRegCntrl;
+    private UserCreationController userRegCntrl;
 
     @Inject
     private GeneralUserRepository generalUserRepository;

@@ -6,7 +6,6 @@
 package de.hsos.kbse.util.converter;
 
 import de.hsos.kbse.jobboerse.entity.company.JobField;
-import de.hsos.kbse.jobboerse.entity.shared.Requirement;
 import de.hsos.kbse.jobboerse.repositories.JobFieldRepository;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -21,7 +20,7 @@ import javax.inject.Inject;
 @FacesConverter(value = "JobFieldConverter", managed = true)
 public class JobFieldConverter implements Converter{
     @Inject
-    JobFieldRepository jobfieldRepo;
+    private JobFieldRepository jobfieldRepo;
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {

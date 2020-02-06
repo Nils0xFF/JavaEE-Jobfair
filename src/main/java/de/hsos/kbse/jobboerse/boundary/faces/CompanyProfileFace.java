@@ -5,11 +5,11 @@
  */
 package de.hsos.kbse.jobboerse.boundary.faces;
 
-import de.hsos.kbse.jobboerse.controllers.CompanyRegistrationController;
+import de.hsos.kbse.jobboerse.controllers.CompanyCreationController;
+import de.hsos.kbse.jobboerse.controllers.ImageService;
 import de.hsos.kbse.jobboerse.entity.company.Company;
 import de.hsos.kbse.jobboerse.entity.shared.Benefit;
 import de.hsos.kbse.jobboerse.entity.shared.Picture;
-import de.hsos.kbse.jobboerse.enums.Graduation;
 import de.hsos.kbse.jobboerse.enums.Salutation;
 import de.hsos.kbse.jobboerse.enums.Title;
 import de.hsos.kbse.jobboerse.enums.WorkerCount;
@@ -25,7 +25,7 @@ import javax.persistence.Enumerated;
 import javax.security.enterprise.SecurityContext;
 import javax.transaction.Transactional;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import org.primefaces.event.FileUploadEvent;
 
@@ -42,43 +42,46 @@ public class CompanyProfileFace implements Serializable {
 
     @Inject
     private CompanyRepository compRepository;
-    
+
     @Inject
-    private CompanyRegistrationController companyCntrl;
+    private CompanyCreationController companyCntrl;
+
+    @Inject
+    private ImageService imageService;
 
     private boolean editMode = false;
 
     private Company companyDetails;
 
-    @NotEmpty
-    @Email(message = "Es muss eine gültige Email sein")
+    @NotBlank
+    @Email
     private String email;
 
-    @NotEmpty
+    @NotBlank
     private String firmname;
-    @NotEmpty
+    @NotBlank
     private String firstname;
-    @NotEmpty
+    @NotBlank
     private String lastname;
-    @NotEmpty
-    @Pattern(regexp = "^[^a-zA-Z]+$")
+    @NotBlank
+    @Pattern(regexp = "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*$", message = "{de.hsos.kbse.util.validation.invalidPhoneNumber}")
     private String telefon;
 
-    @NotEmpty
-    @Email(message = "Es muss eine gültige Email sein")
+    @NotBlank
+    @Email
     private String contactEmail;
 
-    @NotEmpty
+    @NotBlank
     private String desc;
     @Pattern(regexp = "^[^0-9]+$")
-    @NotEmpty
+    @NotBlank
     private String street;
-    @NotEmpty
+    @NotBlank
     private String housenumber;
-    @NotEmpty
+    @NotBlank
     @Pattern(regexp = "^[^0-9]+$")
     private String city;
-    @NotEmpty
+    @NotBlank
     private String postalcode, country;
     private List<Benefit> fullfilledBenefits;
 
@@ -88,6 +91,8 @@ public class CompanyProfileFace implements Serializable {
     private Title titles;
     @Enumerated(EnumType.STRING)
     private WorkerCount workercount;
+    
+    private Picture toInsert;
 
     @PostConstruct
     private void init() {
@@ -103,7 +108,7 @@ public class CompanyProfileFace implements Serializable {
         city = companyDetails.getProfile().getAddress().getCity();
         postalcode = companyDetails.getProfile().getAddress().getPostalcode();
         country = companyDetails.getProfile().getAddress().getCountry();
-        
+
         fullfilledBenefits = companyDetails.getProfile().getBenefits();
 
         salutation = companyDetails.getProfile().getContact().getSalutation();
@@ -114,20 +119,25 @@ public class CompanyProfileFace implements Serializable {
         contactEmail = companyDetails.getProfile().getContact().getEmail();
 
     }
-    
+
     @Transactional
-    public void handleFileUpload(FileUploadEvent event){
+    public void handleFileUpload(FileUploadEvent event) {
         Picture toInsert = Picture.builder().data(event.getFile().getContents()).dataType(event.getFile().getContentType()).build();
         compRepository.addPicture(context.getCallerPrincipal().getName(), toInsert);
+        companyDetails.getProfile().setProfilePicture(toInsert);
     }
-    
+
     @Transactional
-    public void updateProfile(){
-        companyCntrl.createProfile(firmname, desc, workercount, null, null)
+    public void updateProfile() {
+
+        Picture comPicture = companyDetails.getProfile().getProfilePicture();
+
+        companyCntrl
+                .createProfile(firmname, desc, workercount, comPicture != null ? comPicture.getData() : null, comPicture != null ? comPicture.getDataType() : null)
                 .createAddress(street, housenumber, city, postalcode, country)
-                .createContact(salutation, titles, firstname, lastname, email, contactEmail)
+                .createContact(salutation, titles, firstname, lastname, telefon, contactEmail)
                 .finishUpdating(fullfilledBenefits, context.getCallerPrincipal().getName());
-                
+
         editMode = false;
     }
 

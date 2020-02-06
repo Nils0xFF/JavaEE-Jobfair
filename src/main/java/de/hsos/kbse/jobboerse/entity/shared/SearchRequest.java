@@ -6,17 +6,14 @@
 package de.hsos.kbse.jobboerse.entity.shared;
 
 import de.hsos.kbse.jobboerse.entity.company.JobField;
-import de.hsos.kbse.jobboerse.entity.user.WeightedJob;
 import java.io.Serializable;
 import java.util.List;
 import javax.enterprise.inject.Vetoed;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 
 /**
  *
@@ -28,7 +25,7 @@ public class SearchRequest implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
     @ManyToMany
@@ -86,12 +83,28 @@ public class SearchRequest implements Serializable {
         this.jobfield = jobfield;
     }
     
+    public void addJobField(JobField field) {
+        this.jobfield.add(field);
+    }
+    
+    public void removeJobfield(JobField field) {
+        this.jobfield.remove(field);
+    }
+    
     public List<Benefit> getWishedBenefits() {
         return wishedBenefits;
     }
 
     public void setWishedBenefits(List<Benefit> wishedBenefits) {
         this.wishedBenefits = wishedBenefits;
+    }
+    
+    public void addWishedBenefit(Benefit benefit) {
+        this.wishedBenefits.add(benefit);
+    }
+    
+    public void removeWishedBenefit(Benefit benefit) {
+        this.wishedBenefits.remove(benefit);
     }
 
     public Long getId() {

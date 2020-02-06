@@ -22,7 +22,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
-import javax.faces.annotation.ManagedProperty;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -32,8 +31,9 @@ import javax.persistence.Enumerated;
 import javax.security.enterprise.SecurityContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.PositiveOrZero;
 
 /**
  *
@@ -59,22 +59,22 @@ public class JobEditFace implements Serializable {
 
     private Job jobDetails;
 
-    @NotEmpty
+    @NotBlank
     private String jobname;
-    @NotEmpty
+    @NotBlank
     private String desc;
-    @Pattern(regexp = "^[^0-9]+$")
-    @NotEmpty
+    @Pattern(regexp = "^[^0-9]+$", message = "{}")
+    @NotBlank
     private String street;
-    @NotEmpty
+    @NotBlank
     private String housenumber;
-    @NotEmpty
-    @Pattern(regexp = "^[^0-9]+$")
+    @NotBlank
+    @Pattern(regexp = "^[^0-9]+$", message = "{}")
     private String city;
-    @NotEmpty
+    @NotBlank
     private String postalcode, country;
-    @Pattern(regexp = "^[^a-zA-Z]+$")
-    private String salary;
+    @PositiveOrZero
+    private Double salary;
     @Enumerated(EnumType.STRING)
     private Sal_Relation relation;
     private List<Requirement> wishedRequirement;
@@ -83,7 +83,7 @@ public class JobEditFace implements Serializable {
     private JobField jobfield;
 
     @Inject
-    JobCreationController jobCntrl;
+    private JobCreationController jobCntrl;
 
     @PostConstruct
     private void init() {
@@ -110,7 +110,7 @@ public class JobEditFace implements Serializable {
         postalcode = jobDetails.getAddress().getPostalcode();
         country = jobDetails.getAddress().getCountry();
 
-        salary = jobDetails.getSalary().toString();
+        salary = jobDetails.getSalary();
         relation = jobDetails.getRelation();
 
         // Get list of wished requirements using the wished requirements
@@ -176,11 +176,11 @@ public class JobEditFace implements Serializable {
         this.country = country;
     }
 
-    public String getSalary() {
+    public Double getSalary() {
         return salary;
     }
 
-    public void setSalary(String salary) {
+    public void setSalary(Double salary) {
         this.salary = salary;
     }
 

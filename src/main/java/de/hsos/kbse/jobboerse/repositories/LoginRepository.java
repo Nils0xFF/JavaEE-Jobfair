@@ -26,6 +26,10 @@ public class LoginRepository {
     
     public LoginRepository() { }
     
+    /*
+    Funktionen haben sprechende Bezeichner
+    */
+    
     public Login create(String email, String password) throws Exception {
         Login login = Login.builder().email(email).password(password).build();
         logins.create(login);
