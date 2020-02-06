@@ -23,7 +23,7 @@ import javax.transaction.Transactional;
 public class RequirementRepository {
 
     @Inject
-    RequirementFacade rf;
+    private RequirementFacade rf;
 
     public boolean exists(String name) {
         try {

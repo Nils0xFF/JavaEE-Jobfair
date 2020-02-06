@@ -79,19 +79,19 @@ public class UserRegisterFace implements Serializable {
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
     @Inject
-    UserRegistrationController userRegCntrl;
+    private UserRegistrationController userRegCntrl;
 
     @Inject
-    RequirementRepository requirementRepo;
+    private RequirementRepository requirementRepo;
 
     @Inject
-    BenefitRepository benefitRepo;
+    private BenefitRepository benefitRepo;
 
     @Inject
-    JobFieldRepository jobFieldRepo;
+    private JobFieldRepository jobFieldRepo;
 
     @Inject
-    SecurityContext context;
+    private SecurityContext context;
 
     @Transactional
     public void registerUser() {

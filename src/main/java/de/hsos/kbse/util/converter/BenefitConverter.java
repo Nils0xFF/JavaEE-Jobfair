@@ -23,7 +23,7 @@ import org.primefaces.model.DualListModel;
 public class BenefitConverter implements Converter{
     
     @Inject
-    BenefitRepository benefitRepo;
+    private BenefitRepository benefitRepo;
     
     @Override
     public Object getAsObject(FacesContext fc, UIComponent uic, String string) {

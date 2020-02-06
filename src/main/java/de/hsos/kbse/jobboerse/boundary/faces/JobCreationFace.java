@@ -63,16 +63,16 @@ public class JobCreationFace implements Serializable {
     private JobField jobfield;
 
     @Inject
-    JobFieldRepository jobFieldRepo;
+    private JobFieldRepository jobFieldRepo;
 
     @Inject
-    RequirementRepository requirementRepo;
+    private RequirementRepository requirementRepo;
 
     @Inject
-    JobCreationController jobCntrl;
+    private JobCreationController jobCntrl;
 
     @Inject
-    SecurityContext context;
+    private SecurityContext context;
 
     @Transactional
     public void createJob() {

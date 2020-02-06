@@ -20,7 +20,7 @@ import javax.inject.Inject;
 @FacesConverter(value = "JobFieldConverter", managed = true)
 public class JobFieldConverter implements Converter{
     @Inject
-    JobFieldRepository jobfieldRepo;
+    private JobFieldRepository jobfieldRepo;
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {

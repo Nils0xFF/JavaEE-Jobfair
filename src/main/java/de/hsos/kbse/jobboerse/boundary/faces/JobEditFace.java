@@ -83,7 +83,7 @@ public class JobEditFace implements Serializable {
     private JobField jobfield;
 
     @Inject
-    JobCreationController jobCntrl;
+    private JobCreationController jobCntrl;
 
     @PostConstruct
     private void init() {

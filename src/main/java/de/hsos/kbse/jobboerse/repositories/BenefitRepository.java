@@ -23,7 +23,7 @@ import javax.transaction.Transactional;
 public class BenefitRepository {
 
     @Inject
-    BenefitFacade bf;
+    private BenefitFacade bf;
 
     public BenefitRepository() {
     }

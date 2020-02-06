@@ -34,27 +34,27 @@ import javax.transaction.Transactional;
 @ViewScoped
 public class UserDashboard implements Serializable{
     
-    DecimalFormat df = new DecimalFormat("#.##");
+    private DecimalFormat df = new DecimalFormat("#.##");
     
     
-    List<JobField> wishedJobfiels;
-    List<Benefit> wishedBenefits;
-    List<WeightedJob> availableJobs;
-    
-    @Inject
-    GeneralUserRepository userRepo;
+    private List<JobField> wishedJobfiels;
+    private List<Benefit> wishedBenefits;
+    private List<WeightedJob> availableJobs;
     
     @Inject
-    SecurityContext context;
+    private GeneralUserRepository userRepo;
+    
+    @Inject
+    private SecurityContext context;
     
     @Inject @Basic
-    MatchingAlgorithm matching;
+    private MatchingAlgorithm matching;
     
     @Inject
-    JobFieldRepository jobfieldRepo;
+    private JobFieldRepository jobfieldRepo;
     
     @Inject
-    SearchRepository searchRepo;
+    private SearchRepository searchRepo;
     
     @PostConstruct
     public void init(){
