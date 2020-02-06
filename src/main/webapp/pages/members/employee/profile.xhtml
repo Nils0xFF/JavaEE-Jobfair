@@ -155,6 +155,7 @@
                                                  readonly="#{!userProfileFace.editMode}" disabled="#{!userProfileFace.editMode}">
                                     <p:clientValidator event="keyup"/>
                                 </p:inputTextarea>
+                                <h:message for="@previous" class="small text-danger"/>
                             </div>
                         </div>
                         <div class="list-group-item">
@@ -167,7 +168,7 @@
                                 </ui:fragment>
                                 <ui:fragment rendered="#{userProfileFace.editMode}">
                                     <div class="col-6">
-                                        <p:commandButton class="btn btn-block bg-light text-dark" ajax="true" update="@form" value="Abbrechen" action="#{userProfileFace.cancleEdit}"></p:commandButton>
+                                        <p:commandButton class="btn btn-block bg-light text-dark" ajax="true" update="@form" value="Abbrechen" action="#{userProfileFace.cancleEdit}" immediate="true"></p:commandButton>
                                     </div>
                                     <div class="col-6">
                                         <p:commandButton class="btn btn-block bg-dark" ajax="true" update="@form" value="Speichern" action="#{userProfileFace.updateProfile()}"></p:commandButton>   
