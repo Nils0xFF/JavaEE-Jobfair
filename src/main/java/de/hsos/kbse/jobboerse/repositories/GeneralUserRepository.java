@@ -5,11 +5,16 @@
  */
 package de.hsos.kbse.jobboerse.repositories;
 
+import de.hsos.kbse.jobboerse.entity.company.JobField;
 import de.hsos.kbse.jobboerse.entity.facades.AddressFacade;
+import de.hsos.kbse.jobboerse.entity.facades.BenefitFacade;
+import de.hsos.kbse.jobboerse.entity.facades.JobFieldFacade;
 import de.hsos.kbse.jobboerse.entity.facades.LoginFacade;
+import de.hsos.kbse.jobboerse.entity.facades.RequirementFacade;
 import de.hsos.kbse.jobboerse.entity.facades.SeekingUserFacade;
 import de.hsos.kbse.jobboerse.entity.facades.User_ProfileFacade;
 import de.hsos.kbse.jobboerse.entity.shared.Address;
+import de.hsos.kbse.jobboerse.entity.shared.Benefit;
 import de.hsos.kbse.jobboerse.entity.shared.Login;
 import de.hsos.kbse.jobboerse.entity.shared.Requirement;
 import de.hsos.kbse.jobboerse.entity.shared.SearchRequest;
@@ -51,6 +56,15 @@ public class GeneralUserRepository {
     private AddressFacade addresses;
 
     @Inject
+    private BenefitFacade benefits;
+    
+    @Inject
+    private RequirementFacade reqs;
+    
+    @Inject
+    private JobFieldFacade fields;
+
+    @Inject
     private Pbkdf2PasswordHash passwordHash;
 
     public boolean checkEmailExists(String email) {
@@ -81,10 +95,12 @@ public class GeneralUserRepository {
         }
         return false;
     }
-    
+
     public void createUser(String email) throws IllegalArgumentException {
         Login login = logins.findByEmail(email);
+        login.getSeekingUser().setSearchrequest(new SearchRequest());
         login.getSeekingUser().setLogin(login);
+        logins.edit(login);
     }
 
     public void createUser(Login toInsert) throws EntityExistsException {
@@ -174,11 +190,21 @@ public class GeneralUserRepository {
         Login login = logins.findByEmail(email);
         if (login != null) {
             User_Profile toEdit = login.getSeekingUser().getProfile();
-            toEdit.setSalutation(salutation);
-            toEdit.setTitle(title);
-            toEdit.setFirstname(firstname);
-            toEdit.setLastname(lastname);
-            toEdit.setTelefon(telefon);
+            if (salutation != null) {
+                toEdit.setSalutation(salutation);
+            }
+            if (title != null) {
+                toEdit.setTitle(title);
+            }
+            if (firstname != null) {
+                toEdit.setFirstname(firstname);
+            }
+            if (lastname != null) {
+                toEdit.setLastname(lastname);
+            }
+            if (telefon != null) {
+                toEdit.setTelefon(telefon);
+            }
             userprofiles.edit(toEdit);
         } else {
             throw new IllegalArgumentException("User not found!");
@@ -199,11 +225,21 @@ public class GeneralUserRepository {
     public void editUserAddress(String email, String street, String housenumber, String city, String postalcode, String country) throws IllegalArgumentException {
         Login login = logins.findByEmail(email);
         Address toEdit = login.getSeekingUser().getProfile().getAddress();
-        toEdit.setStreet(street);
-        toEdit.setHousenumber(housenumber);
-        toEdit.setCity(city);
-        toEdit.setPostalcode(postalcode);
-        toEdit.setCountry(country);
+        if (street != null) {
+            toEdit.setStreet(street);
+        }
+        if (housenumber != null) {
+            toEdit.setHousenumber(housenumber);
+        }
+        if (city != null) {
+            toEdit.setCity(city);
+        }
+        if (postalcode != null) {
+            toEdit.setPostalcode(postalcode);
+        }
+        if (country != null) {
+            toEdit.setCountry(country);
+        }
         addresses.edit(toEdit);
     }
 
@@ -228,7 +264,80 @@ public class GeneralUserRepository {
         login.setEmail(newEmail);
         login.setPassword(passwordHash.generate(newPassword.toCharArray()));
         logins.edit(login);
+    }
 
+    public void addUserBenefit(String email, Benefit benefit) throws IllegalArgumentException {
+        Login login = logins.findByEmail(email);
+        if (login.getSeekingUser().getSearchrequest() == null) {
+            login.getSeekingUser().setSearchrequest(new SearchRequest());
+        }
+        benefit = benefits.findByName(benefit.getName());
+        if (!login.getSeekingUser().getSearchrequest().getWishedBenefits().contains(benefit)) {
+            login.getSeekingUser().getSearchrequest().addWishedBenefit(benefit);
+        } else {
+            throw new IllegalArgumentException("Benefit already exists!");
+        }
+        logins.edit(login);
+    }
+    
+    public void removeUserBenefit(String email, Long id) throws IllegalArgumentException {
+        Login login = logins.findByEmail(email);
+        if (login.getSeekingUser().getSearchrequest() == null) {
+            throw new IllegalArgumentException("No Searchrequest exists.");
+        }
+        Benefit benefit = benefits.find(id);
+        login.getSeekingUser().getSearchrequest().removeWishedBenefit(benefit);
+        logins.edit(login);
+    }
+    
+    public void addUserRequirement(String email, Requirement req) throws IllegalArgumentException {
+        Login login = logins.findByEmail(email);
+        if (login.getSeekingUser().getSearchrequest() == null) {
+            login.getSeekingUser().setSearchrequest(new SearchRequest());
+        }
+        req = reqs.findByName(req.getName());
+        if (login.getSeekingUser().getProfile() == null) {
+            throw new IllegalArgumentException("No Userprofile.");
+        }
+        if (!login.getSeekingUser().getProfile().getFullfiledRequirements().contains(req)) {
+            login.getSeekingUser().getProfile().addRequirement(req);
+        } else {
+            throw new IllegalArgumentException("Benefit already exists!");
+        }
+        logins.edit(login);
+    }
+    
+    public void removeUserRequirement(String email, Long id) throws IllegalArgumentException {
+        Login login = logins.findByEmail(email);
+        if (login.getSeekingUser().getProfile() == null) {
+            throw new IllegalArgumentException("No Userprofile exists.");
+        }
+        Requirement req = reqs.find(id);
+        login.getSeekingUser().getProfile().removeRequirement(req);
+    }
+    
+    public void addUserJobField(String email, JobField field) throws IllegalArgumentException {
+        Login login = logins.findByEmail(email);
+        if (login.getSeekingUser().getSearchrequest() == null) {
+            login.getSeekingUser().setSearchrequest(new SearchRequest());
+        }
+        field = fields.findByName(field.getName());
+        if (!login.getSeekingUser().getSearchrequest().getJobfield().contains(field)) {
+            login.getSeekingUser().getSearchrequest().addJobField(field);
+        } else {
+            throw new IllegalArgumentException("Benefit already exists!");
+        }
+        logins.edit(login);
+    }
+    
+    public void removeUserJobField(String email, Long id) throws IllegalArgumentException {
+        Login login = logins.findByEmail(email);
+        if (login.getSeekingUser().getSearchrequest() == null) {
+            throw new IllegalArgumentException("No Searchrequest exists.");
+        }
+        JobField field = fields.find(id);
+        login.getSeekingUser().getSearchrequest().removeJobfield(field);
+        logins.edit(login);
     }
 
     public void deleteUser(String email) throws IllegalArgumentException {
@@ -246,6 +355,22 @@ public class GeneralUserRepository {
 
     public SeekingUser getUserByEmail(String email) throws IllegalArgumentException {
         return logins.findByEmail(email).getSeekingUser();
+    }
+
+    public User_Profile getUserProfile(String email) throws IllegalArgumentException {
+        return logins.findByEmail(email).getSeekingUser().getProfile();
+    }
+
+    public Collection<Benefit> getUserBenefits(String email) throws IllegalArgumentException {
+        return logins.findByEmail(email).getSeekingUser().getSearchrequest().getWishedBenefits();
+    }
+
+    public Collection<Requirement> getUserRequirements(String email) throws IllegalArgumentException {
+        return logins.findByEmail(email).getSeekingUser().getProfile().getFullfiledRequirements();
+    }
+    
+    public Collection<JobField> getUserJobFields(String email) throws IllegalArgumentException {
+        return logins.findByEmail(email).getSeekingUser().getSearchrequest().getJobfield();
     }
 
     public void edit(SeekingUser value) throws IllegalArgumentException {

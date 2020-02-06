@@ -83,12 +83,28 @@ public class SearchRequest implements Serializable {
         this.jobfield = jobfield;
     }
     
+    public void addJobField(JobField field) {
+        this.jobfield.add(field);
+    }
+    
+    public void removeJobfield(JobField field) {
+        this.jobfield.remove(field);
+    }
+    
     public List<Benefit> getWishedBenefits() {
         return wishedBenefits;
     }
 
     public void setWishedBenefits(List<Benefit> wishedBenefits) {
         this.wishedBenefits = wishedBenefits;
+    }
+    
+    public void addWishedBenefit(Benefit benefit) {
+        this.wishedBenefits.add(benefit);
+    }
+    
+    public void removeWishedBenefit(Benefit benefit) {
+        this.wishedBenefits.remove(benefit);
     }
 
     public Long getId() {
