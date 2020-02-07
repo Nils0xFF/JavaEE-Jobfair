@@ -12,7 +12,10 @@
         <div class="card">
             <h5 class="card-header">Erstmalige Einrichtung</h5>
             <div class="card-body">
-                <h:form enctype="multipart/form-data">
+                <h:form enctype="multipart/form-data" onkeypress="if (event.keyCode === 13) {
+                            PF('wiz').next();
+                            return false;
+                        }" >
                     <p:wizard showNavBar="false" showStepStatus="true" widgetVar="wiz">
                         <p:tab id="personal" title="Allgemeines">
                             <p:separator/>
