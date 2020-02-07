@@ -16,6 +16,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityExistsException;
@@ -55,7 +57,12 @@ public class AdminDashboardFace {
 
     @Transactional
     public void createRequirement() {
-        requirementRepo.create(requirementName, requirementName);
+        try {
+            requirementRepo.create(requirementName, requirementName);
+        } catch (EntityExistsException e) {
+            nameAlreadyExitsError();
+        }
+
         init();
     }
 
@@ -64,13 +71,18 @@ public class AdminDashboardFace {
         try {
             requirementRepo.update(id, newName, newName);
         } catch (IllegalArgumentException ex) {
-            Logger.getLogger(AdminDashboardFace.class.getName()).log(Level.SEVERE, null, ex);
+            nameAlreadyExitsError();
         }
     }
 
     @Transactional
     public void createBenefit() {
-        benefitRepo.create(benefitName, benefitName);
+        try {
+            benefitRepo.create(benefitName, benefitName);
+        } catch (EntityExistsException e) {
+            nameAlreadyExitsError();
+        }
+
         init();
     }
 
@@ -79,7 +91,7 @@ public class AdminDashboardFace {
         try {
             benefitRepo.update(id, newName, newName);
         } catch (IllegalArgumentException ex) {
-            Logger.getLogger(AdminDashboardFace.class.getName()).log(Level.SEVERE, null, ex);
+            nameAlreadyExitsError();
         }
     }
 
@@ -89,7 +101,7 @@ public class AdminDashboardFace {
             jobFieldRepo.create(jobFieldName);
             init();
         } catch (EntityExistsException ex) {
-            Logger.getLogger(AdminDashboardFace.class.getName()).log(Level.SEVERE, null, ex);
+            nameAlreadyExitsError();
         }
     }
 
@@ -98,14 +110,19 @@ public class AdminDashboardFace {
         try {
             jobFieldRepo.updateName(id, newName);
         } catch (IllegalArgumentException ex) {
-            Logger.getLogger(AdminDashboardFace.class.getName()).log(Level.SEVERE, null, ex);
+            nameAlreadyExitsError();
         }
+    }
+
+    private void nameAlreadyExitsError() {
+        FacesContext.getCurrentInstance().addMessage("creationGrowl",
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Der Name existiert bereits", null));
     }
 
     public String getRequirementName() {
         return requirementName;
     }
-    
+
     public void setRequirementName(String requirementName) {
         this.requirementName = requirementName;
     }
