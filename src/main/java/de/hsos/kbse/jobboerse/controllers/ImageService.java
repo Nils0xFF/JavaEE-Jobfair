@@ -21,6 +21,9 @@ import org.primefaces.model.StreamedContent;
 /**
  *
  * @author lennartwoltering
+ * 
+ * Source: https://stackoverflow.com/questions/8207325/display-dynamic-image-from-database-or-remote-source-with-pgraphicimage-and-str/
+ * 
  */
 @Named("ImageService")
 @ApplicationScoped
